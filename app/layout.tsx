@@ -2,10 +2,16 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
+// Brand token overrides, layered on top of globals.css by import order. JS
+// import order is deterministic; a CSS `@import` inside globals.css could be
+// hoisted by Tailwind's postcss plugin and lose the cascade precedence that
+// this file depends on. See app/brand.css.
+import './brand.css';
 import '@openmaic/renderer/fonts.css';
 import 'animate.css';
 import 'katex/dist/katex.min.css';
 import { ThemeProvider } from '@/lib/hooks/use-theme';
+import { DEFAULT_BRAND } from '@/lib/brand/brand-config';
 import { I18nProvider } from '@/lib/hooks/use-i18n';
 import { Toaster } from '@/components/ui/sonner';
 import { AgentRegistryInit } from '@/components/agent-registry-init';
@@ -39,9 +45,8 @@ import '@fontsource-variable/inter';
 const THEME_INIT_SCRIPT = `try{var t=localStorage.getItem('theme');if(t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}`;
 
 export const metadata: Metadata = {
-  title: 'OpenMAIC',
-  description:
-    'The open-source AI interactive classroom. Upload a PDF to instantly generate an immersive, multi-agent learning experience.',
+  title: DEFAULT_BRAND.productName,
+  description: '启云课堂 — AI 互动课堂。上传 PDF，即可生成沉浸式的多智能体学习体验。',
 };
 
 export default function RootLayout({

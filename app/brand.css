@@ -1,0 +1,33 @@
+/**
+ * Brand token overrides.
+ *
+ * Imported after `globals.css`, so declarations here win the cascade over the
+ * upstream defaults of the same name. `globals.css` is the file upstream edits
+ * on nearly every shadcn component change; keeping brand values out of it means
+ * `git upsync` never produces a conflict in the brand layer — the diff below is
+ * the entire footprint.
+ *
+ * Rules for this file:
+ *   - Declare a token ONLY when the brand value differs from the upstream
+ *     default. A declaration identical to `globals.css` is noise that drifts
+ *     the next time upstream changes that default.
+ *   - Tokens not listed here fall through to `globals.css` unchanged.
+ *   - Override both `:root` and `.dark`. A token set in only one of them will
+ *     render the light-theme value in dark mode, since `.dark` redefines the
+ *     full token set.
+ */
+
+:root {
+  --primary: #e8884a;
+  /* Overridden together with --primary, not after it. #e8884a is a light
+     orange: white text on it is 2.61:1, which fails WCAG AA (4.5:1) for body
+     text. oklch(0.205 0 0) is the near-black used for foreground text
+     elsewhere in this palette and gives 4.77:1. If --primary is ever darkened
+     enough to pass AA against white, this must be revisited in the same edit. */
+  --primary-foreground: oklch(0.205 0 0);
+}
+
+.dark {
+  --primary: #e8884a;
+  --primary-foreground: oklch(0.205 0 0);
+}

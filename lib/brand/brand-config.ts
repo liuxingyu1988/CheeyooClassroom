@@ -25,10 +25,12 @@ export interface BrandConfig {
 
 /** The default brand: the product itself, with no vendor overrides. */
 export const DEFAULT_BRAND: BrandConfig = {
-  productName: 'OpenMAIC',
-  shortName: 'OpenMAIC',
+  productName: 'CheeyooClassroom',
+  shortName: '启云课堂',
   logoSrc: '/logo-horizontal.png',
   logoHasWordmark: true,
-  markSrc: '/openmaic-mark.png',
-  themeColor: '#722ed1',
+  markSrc: '/logo.png',
+  // Must stay in step with --primary in app/brand.css. This one is a meta tag
+  // for the browser chrome; the token drives the UI itself.
+  themeColor: '#e8884a',
 };
