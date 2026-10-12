@@ -9,6 +9,7 @@ on:
     branches:
       [
         main,
+        custom/main,
         integration/kv-asset-server-backend,
         integration/agent-workbench,
         integration/material-library,
