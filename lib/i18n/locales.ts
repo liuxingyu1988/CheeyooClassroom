@@ -27,3 +27,13 @@ export const supportedLocales = [
   { code: 'vi-VN', label: 'Tiếng Việt', shortLabel: 'VI' },
   { code: 'de-DE', label: 'Deutsch', shortLabel: 'DE' },
 ] as const satisfies readonly LocaleEntry[];
+
+/**
+ * Locales offered in the language picker. Translation files stay for every
+ * locale in `supportedLocales`; this only narrows what users can select.
+ */
+const PICKER_VISIBLE_CODES = ['zh-CN', 'en-US'] as const;
+
+export const pickerLocales = supportedLocales.filter((l) =>
+  (PICKER_VISIBLE_CODES as readonly string[]).includes(l.code),
+);

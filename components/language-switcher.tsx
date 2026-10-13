@@ -1,7 +1,7 @@
 'use client';
 
 import { useI18n } from '@/lib/hooks/use-i18n';
-import { supportedLocales } from '@/lib/i18n';
+import { supportedLocales, pickerLocales } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
@@ -37,7 +37,7 @@ export function LanguageSwitcher({ onOpen }: LanguageSwitcherProps) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8} className="min-w-[120px]">
-        {supportedLocales.map((l) => (
+        {pickerLocales.map((l) => (
           <DropdownMenuItem
             key={l.code}
             onSelect={() => setLocale(l.code)}
