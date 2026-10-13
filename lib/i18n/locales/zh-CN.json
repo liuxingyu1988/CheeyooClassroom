@@ -10,7 +10,7 @@
     "close": "关闭"
   },
   "home": {
-    "slogan": "Generative Learning in Multi-Agent Interactive Classroom",
+    "slogan": "多智能体交互课堂",
     "greetingWithName": "嗨，{{name}}"
   },
   "toolbar": {
@@ -259,8 +259,8 @@
       "emptyHint": "点击播放按钮开始授课",
       "pageLabel": "第 {{n}} 页",
       "currentPage": "当前页",
-      "jumpToLine": "Jump to this line",
-      "jumpUnavailable": "Jump unavailable for this line"
+      "jumpToLine": "跳转到该行",
+      "jumpUnavailable": "该行暂不支持跳转"
     },
     "badge": {
       "qa": "Q&A",
@@ -823,9 +823,9 @@
     "autoPlay": "自动播放",
     "autoPlayOff": "关闭自动播放",
     "speed": "倍速",
-    "previousLine": "Previous line",
-    "nextLine": "Next line",
-    "lineProgress": "Line {{current}} / {{total}}",
+    "previousLine": "上一行",
+    "nextLine": "下一行",
+    "lineProgress": "第 {{current}} / {{total}} 行",
     "voiceInput": "语音输入",
     "voiceInputDisabled": "语音输入已禁用",
     "textInput": "文字输入",
@@ -1371,7 +1371,7 @@
     "cannotDeleteBuiltInModel": "无法删除内置模型",
     "cannotEditBuiltInModel": "无法编辑内置模型",
     "noModelsAvailable": "没有可用于测试的模型",
-    "providerMetadata": "Provider 元数据",
+    "providerMetadata": "服务商元数据",
     "modelsManagementDescription": "管理此提供方可用的模型列表和模型能力。",
     "howToUse": "使用说明",
     "step1ConfigureProvider": "前往\"模型提供方\"页面，选择或添加一个提供方，配置连接信息（API 密钥、Base URL 等）",
@@ -1415,7 +1415,7 @@
     "voxcpmVoicesTitle": "VoxCPM 音色",
     "voxcpmVoicesDescription": "保存在当前浏览器，进入统一音色池后可在 Agent Bar 中使用。",
     "voxcpmAutoVoicePrivacyNote": "自动音色会把 Agent 人设作为音色提示词发送到你配置的 VoxCPM 后端。",
-    "voxcpmPromptCount": "Prompt {{count}}",
+    "voxcpmPromptCount": "提示词 {{count}}",
     "voxcpmCloneCount": "克隆 {{count}}",
     "voxcpmCloneUnsupported": "当前后端不支持克隆",
     "voxcpmVoicePool": "音色池",
@@ -1697,7 +1697,7 @@
     "providerGrokImage": "Grok Image（xAI）",
     "providerGlmImage": "GLM 图像（智谱）",
     "providerOpenRouterImage": "OpenRouter 图像",
-    "providerComfyUIImage": "ComfyUI Image",
+    "providerComfyUIImage": "ComfyUI 图像",
     "providerLemonadeImage": "Lemonade 图像（本地）",
     "testImageGeneration": "测试图像生成",
     "testImageConnectivity": "测试连接",
@@ -2054,7 +2054,7 @@
       },
       "picker": {
         "follow": "跟随{{name}}",
-        "providers": "Provider",
+        "providers": "服务商",
         "providerDefault": "默认模型",
         "modelId": "模型 ID",
         "use": "使用",
