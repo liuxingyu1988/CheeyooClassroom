@@ -22,7 +22,7 @@ vi.mock('@/lib/ai/providers', async (importOriginal) => {
   };
 });
 
-// No openmaic.yml policy here: requests may still name their own provider.
+// No cheeyoo.yml policy here: requests may still name their own provider.
 vi.mock('@/lib/server/model-config/runtime', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/server/model-config/runtime')>()),
   requestProvidersAllowed: () => true,

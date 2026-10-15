@@ -1,6 +1,6 @@
 # Live Demo Mode
 
-The OpenMAIC Live Demo (open.maic.chat) is the cloud edition — the version officially deployed and hosted by the OpenMAIC team, so no local setup is required. Use this when the user has an access code from open.maic.chat and wants to skip local setup.
+The CheeyooClassroom Live Demo (open.maic.chat) is the cloud edition — the version officially deployed and hosted by the CheeyooClassroom team, so no local setup is required. Use this when the user has an access code from open.maic.chat and wants to skip local setup.
 
 ## Access Code Setup
 

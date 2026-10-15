@@ -1,12 +1,12 @@
 /**
  * The deployment layer for slot resolution (RFC #1701, tracked in #1725).
  *
- * `openmaic.yml` (or the file named by OPENMAIC_CONFIG) is the deployment
+ * `cheeyoo.yml` (or the file named by CHEEYOO_CONFIG) is the deployment
  * layer when it exists. Otherwise providers, DEFAULT_MODEL and MODEL_FALLBACK
  * are translated into one (see legacy-config.ts): its assignments are server
  * defaults, exactly as `slots` in the file are, and it locks nothing.
  * MODEL_ROUTES is not translated: a deployment that sets it without
- * openmaic.yml gets an error asking for the file.
+ * cheeyoo.yml gets an error asking for the file.
  */
 import {
   getServerProviderConfig,
@@ -23,7 +23,7 @@ import type { SlotCapability } from '@/lib/config/model-slots';
 import type { ModelConfigLayer } from '@/lib/server/model-config/resolve-slot';
 
 export interface DeploymentLayer {
-  /** Providers, server defaults and locks: openmaic.yml, or the legacy configuration. */
+  /** Providers, server defaults and locks: cheeyoo.yml, or the legacy configuration. */
   layer: ModelConfigLayer | null;
   /**
    * The layer was translated from the legacy variables: media routes keep
@@ -37,7 +37,7 @@ export interface DeploymentLayer {
 export class LegacyRoutesError extends Error {
   constructor() {
     super(
-      'MODEL_ROUTES does not carry over to the model configuration: write the per-stage models as slots in openmaic.yml (or the file named by OPENMAIC_CONFIG) and remove MODEL_ROUTES',
+      'MODEL_ROUTES does not carry over to the model configuration: write the per-stage models as slots in cheeyoo.yml (or the file named by CHEEYOO_CONFIG) and remove MODEL_ROUTES',
     );
     this.name = 'LegacyRoutesError';
   }
@@ -66,7 +66,7 @@ function hasLegacyConfiguration(): boolean {
 /**
  * Reads the process environment and working directory, like the legacy
  * loaders it translates (which cache what they read). Throws
- * LegacyRoutesError for MODEL_ROUTES without openmaic.yml.
+ * LegacyRoutesError for MODEL_ROUTES without cheeyoo.yml.
  */
 export function loadDeploymentLayer(): DeploymentLayer {
   const file = loadModelConfigFile();
@@ -78,7 +78,7 @@ export function loadDeploymentLayer(): DeploymentLayer {
       notices: [
         ...(legacy
           ? [
-              'openmaic.yml is present, so slot resolution uses it and not the legacy provider variables, server-providers.yml, DEFAULT_MODEL, MODEL_ROUTES or MODEL_FALLBACK',
+              'cheeyoo.yml is present, so slot resolution uses it and not the legacy provider variables, server-providers.yml, DEFAULT_MODEL, MODEL_ROUTES or MODEL_FALLBACK',
             ]
           : []),
         ...Object.entries(file.providers ?? {})
@@ -92,7 +92,7 @@ export function loadDeploymentLayer(): DeploymentLayer {
           )
           .map(
             ([id]) =>
-              `Server-managed provider "${id}" has no explicit model list. Set openmaic.yml providers.${id}.models; only default/fallback models are usable.`,
+              `Server-managed provider "${id}" has no explicit model list. Set cheeyoo.yml providers.${id}.models; only default/fallback models are usable.`,
           ),
       ],
     };
@@ -108,7 +108,7 @@ export function loadDeploymentLayer(): DeploymentLayer {
     layer: config.providers || config.slots ? { source: 'deployment', config } : null,
     legacy: true,
     notices: [
-      'The model configuration comes from the legacy provider variables, server-providers.yml, DEFAULT_MODEL and MODEL_FALLBACK, which are deprecated; move it to openmaic.yml',
+      'The model configuration comes from the legacy provider variables, server-providers.yml, DEFAULT_MODEL and MODEL_FALLBACK, which are deprecated; move it to cheeyoo.yml',
       ...notices,
       ...Object.entries(getServerProviderConfig()).flatMap(([section, entries]) =>
         section === 'disabled' || section === 'pdf'

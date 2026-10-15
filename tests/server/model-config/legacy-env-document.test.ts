@@ -1,6 +1,6 @@
 /**
  * The document slot of a deployment configured only through the legacy
- * PDF_* provider variables (no openmaic.yml): the real provider loader,
+ * PDF_* provider variables (no cheeyoo.yml): the real provider loader,
  * translation and slot lookup, end to end.
  */
 import fs from 'node:fs';
@@ -18,7 +18,7 @@ const PDF_ENV = [
   'ALIDOCMIND_ACCESS_KEY_ID',
   'ALIDOCMIND_ACCESS_KEY_SECRET',
   'ALIDOCMIND_BASE_URL',
-  'OPENMAIC_CONFIG',
+  'CHEEYOO_CONFIG',
   'DEFAULT_MODEL',
   'MODEL_ROUTES',
   'MODEL_FALLBACK',
@@ -81,10 +81,10 @@ describe('document slot from the legacy provider variables', () => {
     expect(services.documentStatus).toBe('unassigned');
   });
 
-  it('lets openmaic.yml win over the variables', async () => {
+  it('lets cheeyoo.yml win over the variables', async () => {
     vi.stubEnv('PDF_MINERU_CLOUD_API_KEY', 'cloud-key');
     fs.writeFileSync(
-      path.join(dir, 'openmaic.yml'),
+      path.join(dir, 'cheeyoo.yml'),
       [
         'providers:',
         '  mineru:',

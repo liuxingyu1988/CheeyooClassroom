@@ -2,7 +2,7 @@
  * POST /api/model-config/import — merge settings a browser kept into the
  * workspace (RFC #1701): the one-way import of the provider settings earlier
  * builds stored in the browser. Body: `{ providers?, slots? }` as in
- * openmaic.yml. Existing settings always win; each item is checked like an
+ * cheeyoo.yml. Existing settings always win; each item is checked like an
  * edit, and the answer lists what was imported and what was skipped and why,
  * with the new view. Safe to repeat: a second import finds everything there.
  */

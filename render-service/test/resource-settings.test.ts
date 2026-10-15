@@ -14,7 +14,7 @@ vi.mock('node:fs', () => ({
   readFileSync: vi.fn(),
   realpathSync: vi.fn(),
 }));
-const settings = '/etc/openmaic/settings.json';
+const settings = '/etc/cheeyoo/settings.json';
 const stats = new Map<string, { uid: number; mode: number; type: string }>();
 beforeEach(() => {
   vi.clearAllMocks();

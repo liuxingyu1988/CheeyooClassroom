@@ -5,7 +5,7 @@
  * `server-providers.yml`), `DEFAULT_MODEL` as the llm root and `MODEL_FALLBACK`
  * as its fallback. Per-stage `MODEL_ROUTES` do not map one to one onto slots
  * (several stages share a slot, the agent driver and retries follow rules of
- * their own), so a deployment that sets them has to write `openmaic.yml`; see
+ * their own), so a deployment that sets them has to write `cheeyoo.yml`; see
  * `loadDeploymentLayer`.
  *
  * The translation is lenient: an entry that cannot carry over becomes a notice
@@ -105,10 +105,10 @@ const WEB_SEARCH_PRIORITY = ['tavily', 'exa', 'bocha', 'baidu', 'minimax', 'clau
  */
 const DOCUMENT_PRIORITY = ['mineru-cloud', 'mineru'];
 
-/** `providerId` or `providerId:modelId`, as openmaic.yml accepts it. */
+/** `providerId` or `providerId:modelId`, as cheeyoo.yml accepts it. */
 const MODEL_REF_SHAPE_ANY = /^[a-z0-9][a-z0-9-]{0,62}(?::.+)?$/;
 
-/** What `providerId:modelId` looks like in openmaic.yml (no line breaks in the model id). */
+/** What `providerId:modelId` looks like in cheeyoo.yml (no line breaks in the model id). */
 const MODEL_REF_SHAPE = /^[a-z0-9][a-z0-9-]{0,62}:.+$/;
 
 /** A registry id with a preset for this capability, safe to name in a notice. */
@@ -158,7 +158,7 @@ export function translateLegacyConfig(
     for (const registryId of disabled ?? []) {
       if (!isKnown(capability, registryId)) continue;
       notices.push(
-        `${section}.${registryId} is switched off by the operator; openmaic.yml has no such switch, so leave it out or set its slot to null`,
+        `${section}.${registryId} is switched off by the operator; cheeyoo.yml has no such switch, so leave it out or set its slot to null`,
       );
     }
   }
@@ -205,7 +205,7 @@ export function translateLegacyConfig(
     // A fallback belongs to an assignment, and without DEFAULT_MODEL there is
     // none to hold it: calls that retried on MODEL_FALLBACK stop retrying.
     notices.push(
-      'MODEL_FALLBACK is not carried over without DEFAULT_MODEL, so calls that retried on it no longer do; set the llm slot with a fallback in openmaic.yml',
+      'MODEL_FALLBACK is not carried over without DEFAULT_MODEL, so calls that retried on it no longer do; set the llm slot with a fallback in cheeyoo.yml',
     );
   }
 
@@ -233,7 +233,7 @@ export function translateLegacyConfig(
     // agent's image tool failed on it before): never another vendor instead.
     if (section === 'image' && settings.defaultImageProvider && !preferred) {
       notices.push(
-        `DEFAULT_IMAGE_PROVIDER "${settings.defaultImageProvider}" has no usable configuration, so no image model is assigned; set the image slot in openmaic.yml`,
+        `DEFAULT_IMAGE_PROVIDER "${settings.defaultImageProvider}" has no usable configuration, so no image model is assigned; set the image slot in cheeyoo.yml`,
       );
       continue;
     }

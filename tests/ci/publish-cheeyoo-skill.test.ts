@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 
 const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
-const publishScript = resolve(repositoryRoot, '.github/scripts/publish-openmaic-skill.sh');
+const publishScript = resolve(repositoryRoot, '.github/scripts/publish-cheeyoo-skill.sh');
 const packageJsonPath = resolve(repositoryRoot, 'package.json');
 const semverPackageJsonPath = createRequire(packageJsonPath).resolve('semver/package.json');
 const fixtureRoot = mkdtempSync(resolve(tmpdir(), 'clawhub-publish-test-'));
@@ -98,7 +98,7 @@ function expectFailure(result: ReturnType<typeof runPublish>['result'], message:
   expect(result.stderr).toBe(`::error::${message}\n`);
 }
 
-describe('publish-openmaic-skill shell contract', () => {
+describe('publish-cheeyoo-skill shell contract', () => {
   it('performs a real publish with no positional argument under macOS Bash 3.2', () => {
     const { calls, result } = runPublish();
 
@@ -176,7 +176,7 @@ describe('publish-openmaic-skill shell contract', () => {
 
   it('rejects unsupported arguments', () => {
     const usage = runPublish({ args: ['--publish'] });
-    expectFailure(usage.result, 'Usage: publish-openmaic-skill.sh [--dry-run]');
+    expectFailure(usage.result, 'Usage: publish-cheeyoo-skill.sh [--dry-run]');
     expect(usage.calls).toEqual([]);
   });
 
@@ -186,7 +186,7 @@ describe('publish-openmaic-skill shell contract', () => {
   ])('rejects %s without invoking ClawHub', (_name, args) => {
     const { calls, result } = runPublish({ args });
 
-    expectFailure(result, 'Usage: publish-openmaic-skill.sh [--dry-run]');
+    expectFailure(result, 'Usage: publish-cheeyoo-skill.sh [--dry-run]');
     expect(calls).toEqual([]);
   });
 

@@ -207,7 +207,7 @@
     "success": "課堂匯入成功",
     "pptxSuccess": "PPTX 解析成功（{{count}} 張投影片，輸出已記錄至主控台）",
     "error": {
-      "invalidZip": "檔案無效，請選擇有效的 .maic.zip 檔案。",
+      "invalidZip": "檔案無效，請選擇有效的 .cheeyoo.zip 檔案。",
       "invalidPptx": "PPTX 解析失敗，請檢查檔案是否有效。",
       "parserUnavailable": "PPTX 匯入功能不可用：解析器套件未部署，請重新執行安裝/同步。",
       "invalidManifest": "課堂檔案無效：manifest.json 遺失或損毀。",
@@ -1830,7 +1830,7 @@
       "download": "下載",
       "detailFailed": "技能詳情載入失敗",
       "contentLabel": "正文",
-      "builtinDetailNote": "該技能隨 OpenMAIC 提供。下載後可匯入其他智能體工作台。",
+      "builtinDetailNote": "該技能隨 CheeyooClassroom 提供。下載後可匯入其他智能體工作台。",
       "upload": "上傳",
       "uploading": "正在上傳…",
       "uploadFailed": "技能上傳失敗。請檢查檔案後重試。",
@@ -1985,7 +1985,7 @@
       "conflict": "設定已在別處被修改並已重新載入，請檢查後重試。",
       "lockedNow": "管理員已固定此項，因此未變更。",
       "unconfirmed": "伺服器的回應遺失，已重新載入設定，請確認修改是否生效。",
-      "serverOnly": "此服務只能透過伺服器設定（openmaic.yml）設定，請聯絡伺服器管理員。",
+      "serverOnly": "此服務只能透過伺服器設定（cheeyoo.yml）設定，請聯絡伺服器管理員。",
       "serverOnlyPolicy": "此伺服器不允許工作區新增自己的服務，請聯絡伺服器管理員。",
       "endpointServerOnly": "此服務使用其官方位址；只有伺服器設定可以改為其他位址。",
       "endpointChatOnly": "使用自訂位址時，此服務僅用於語言模型。",
@@ -2169,8 +2169,8 @@
       "reason": {
         "refused": "伺服器未接受：{{detail}}",
         "reserved": "伺服器已用同一名稱設定了服務。",
-        "customService": "自訂語音服務只能在伺服器上設定（openmaic.yml）。",
-        "keyPair": "使用金鑰對的服務只能在伺服器上設定（openmaic.yml）。",
+        "customService": "自訂語音服務只能在伺服器上設定（cheeyoo.yml）。",
+        "keyPair": "使用金鑰對的服務只能在伺服器上設定（cheeyoo.yml）。",
         "unsupported": "此類自訂服務商無法遷移：請作為 OpenAI 相容端點重新新增。",
         "unconfirmed": "伺服器未確認已匯入。"
       }

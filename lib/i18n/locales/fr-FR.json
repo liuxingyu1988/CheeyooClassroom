@@ -207,7 +207,7 @@
     "success": "Classe importée avec succès",
     "pptxSuccess": "PPTX analysé avec succès ({{count}} diapositives, résultat consigné dans la console)",
     "error": {
-      "invalidZip": "Fichier invalide. Veuillez sélectionner un fichier .maic.zip valide.",
+      "invalidZip": "Fichier invalide. Veuillez sélectionner un fichier .cheeyoo.zip valide.",
       "invalidPptx": "Échec de l’analyse du PPTX. Vérifiez que le fichier est valide.",
       "parserUnavailable": "L’import PPTX est indisponible : le module d’analyse n’est pas déployé. Relancez l’installation ou la synchronisation.",
       "invalidManifest": "Fichier de classe invalide : manifest.json est absent ou corrompu.",
@@ -1845,7 +1845,7 @@
       "download": "Télécharger",
       "detailFailed": "Impossible de charger les détails du skill",
       "contentLabel": "Contenu",
-      "builtinDetailNote": "Ce skill est fourni avec OpenMAIC. Téléchargez-le pour l’importer dans un autre espace de travail d’agent.",
+      "builtinDetailNote": "Ce skill est fourni avec CheeyooClassroom. Téléchargez-le pour l’importer dans un autre espace de travail d’agent.",
       "upload": "Importer",
       "uploading": "Importation…",
       "uploadFailed": "Impossible d’importer le skill. Vérifiez le fichier et réessayez.",
@@ -2000,7 +2000,7 @@
       "conflict": "Les paramètres ont été modifiés ailleurs et rechargés. Vérifiez-les puis réessayez.",
       "lockedNow": "L’administrateur l’a fixé, il n’a donc pas été modifié.",
       "unconfirmed": "La réponse du serveur a été perdue ; les paramètres ont été rechargés. Vérifiez si la modification a été prise en compte.",
-      "serverOnly": "Seule la configuration du serveur (openmaic.yml) peut configurer ce service. Contactez l'administrateur du serveur.",
+      "serverOnly": "Seule la configuration du serveur (cheeyoo.yml) peut configurer ce service. Contactez l'administrateur du serveur.",
       "serverOnlyPolicy": "Ce serveur ne permet pas aux espaces de travail d'ajouter leurs propres services. Contactez l'administrateur du serveur.",
       "endpointServerOnly": "Ce service est joint à son propre point d'accès ; seule la configuration du serveur peut en indiquer un autre.",
       "endpointChatOnly": "Avec son propre point d'accès, ce service ne sert qu'aux modèles de langage.",
@@ -2184,8 +2184,8 @@
       "reason": {
         "refused": "Le serveur ne l'a pas accepté : {{detail}}",
         "reserved": "Le serveur configure déjà un service sous ce nom.",
-        "customService": "Un service vocal personnalisé ne peut être configuré que sur le serveur (openmaic.yml).",
-        "keyPair": "Un service utilisant une paire de clés ne peut être configuré que sur le serveur (openmaic.yml).",
+        "customService": "Un service vocal personnalisé ne peut être configuré que sur le serveur (cheeyoo.yml).",
+        "keyPair": "Un service utilisant une paire de clés ne peut être configuré que sur le serveur (cheeyoo.yml).",
         "unsupported": "Ce type de fournisseur personnalisé ne peut pas être transféré : ajoutez-le à nouveau comme point de terminaison compatible OpenAI.",
         "unconfirmed": "Le serveur n'a pas confirmé l'importation."
       }

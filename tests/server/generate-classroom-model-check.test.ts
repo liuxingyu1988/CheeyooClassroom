@@ -169,7 +169,7 @@ describe('requiredModelRefusal', () => {
       }),
     ).toEqual({
       code: 'MODEL_CONFIG_INVALID',
-      message: 'A proxy can only be configured by the deployment (openmaic.yml)',
+      message: 'A proxy can only be configured by the deployment (cheeyoo.yml)',
     });
   });
 });

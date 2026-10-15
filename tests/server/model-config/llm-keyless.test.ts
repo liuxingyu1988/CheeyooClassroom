@@ -1,6 +1,6 @@
 /**
  * A self-hosted OpenAI-compatible server without a key (Ollama, vLLM declared
- * in openmaic.yml as `preset: openai-compatible` with no `apiKey`): the slot
+ * in cheeyoo.yml as `preset: openai-compatible` with no `apiKey`): the slot
  * model builds and its requests carry no Authorization header. OpenAI itself
  * still needs a key.
  */

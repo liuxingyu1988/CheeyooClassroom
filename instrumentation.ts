@@ -213,11 +213,11 @@ async function validateBootConfiguration(): Promise<void> {
   const { requireDatabaseUrl } = await import('@/lib/server/database-requirement');
   runConfigurationCheck(() => requireDatabaseUrl());
 
-  // The deployment's model configuration: openmaic.yml (or the file named by
-  // OPENMAIC_CONFIG), else the legacy provider variables translated. A
+  // The deployment's model configuration: cheeyoo.yml (or the file named by
+  // CHEEYOO_CONFIG), else the legacy provider variables translated. A
   // malformed file, an unset `${VAR}` or a slot pointing at an undeclared
   // provider is refused here with every problem listed, and so is a
-  // MODEL_ROUTES left without openmaic.yml, rather than discovered by the
+  // MODEL_ROUTES left without cheeyoo.yml, rather than discovered by the
   // first generation. Loaded once; the notices are printed here.
   const { deploymentConfig } = await import('@/lib/server/model-config/runtime');
   runConfigurationCheck(deploymentConfig);

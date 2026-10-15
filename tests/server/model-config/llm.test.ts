@@ -71,7 +71,7 @@ describe('resolveStageModel', () => {
     expect(legacyRequest).not.toHaveBeenCalled();
   });
 
-  it("keeps openmaic.yml's default over what the request names, and a legacy default under it", async () => {
+  it("keeps cheeyoo.yml's default over what the request names, and a legacy default under it", async () => {
     const { setDeploymentConfigForTests } = await import('@/lib/server/model-config/runtime');
     const deployment = layer('deployment', {
       providers: { openai: { preset: 'openai', apiKey: 'sk-operator', models: ['gpt-5.6-mini'] } },
@@ -81,7 +81,7 @@ describe('resolveStageModel', () => {
     const run = (legacyRequest: () => Promise<ResolvedModel | undefined>) =>
       resolveStageModel({ stage: 'scene-outlines-stream', workspaceId: null, legacyRequest });
     try {
-      // openmaic.yml: its default stands.
+      // cheeyoo.yml: its default stands.
       setDeploymentConfigForTests({ layer: deployment, legacy: false, notices: [] });
       expect(await run(async () => legacyModel)).toMatchObject({ modelId: 'gpt-5.6' });
       // The same default translated from DEFAULT_MODEL: the request's model first, as before.

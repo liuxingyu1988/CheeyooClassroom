@@ -1,5 +1,5 @@
 /**
- * `openmaic.yml`: the operator's model configuration (RFC #1701, tracked in
+ * `cheeyoo.yml`: the operator's model configuration (RFC #1701, tracked in
  * #1725).
  *
  * The file declares providers, the server's default assignments (`slots`),
@@ -25,7 +25,7 @@ import {
 import { getProviderPreset } from '@/lib/config/provider-presets';
 import { VALID_EFFORTS, VALID_LEVELS, VALID_MODES } from '@/lib/server/model-routes';
 
-export const DEFAULT_MODEL_CONFIG_FILE = 'openmaic.yml';
+export const DEFAULT_MODEL_CONFIG_FILE = 'cheeyoo.yml';
 
 /** The environment variables `${VAR}` references are read from. */
 export type ConfigEnv = Readonly<Record<string, string | undefined>>;
@@ -261,7 +261,7 @@ export function parseModelRef(ref: string): { providerId: string; modelId?: stri
  * The problem with an assignment that sets a thinking effort on a slot that
  * may not carry one (the agent: its tool calls cannot be combined with a
  * reasoning effort on every transport), else undefined. Checked for
- * openmaic.yml at load and for a workspace change when it is saved.
+ * cheeyoo.yml at load and for a workspace change when it is saved.
  */
 export function thinkingEffortIssue(slot: SlotId, assignment: SlotAssignment): string | undefined {
   if (!assignment || typeof assignment === 'string') return undefined;
@@ -440,19 +440,19 @@ export function parseModelConfig(
 }
 
 /**
- * Reads the operator's model configuration. `OPENMAIC_CONFIG` names the file
- * explicitly and must then exist; otherwise `openmaic.yml` in the working
+ * Reads the operator's model configuration. `CHEEYOO_CONFIG` names the file
+ * explicitly and must then exist; otherwise `cheeyoo.yml` in the working
  * directory is used when present. Returns null when there is no file.
  */
 export function loadModelConfigFile(
   env: ConfigEnv = process.env,
   cwd: string = process.cwd(),
 ): ModelConfigFile | null {
-  const explicit = env.OPENMAIC_CONFIG?.trim();
+  const explicit = env.CHEEYOO_CONFIG?.trim();
   const file = path.resolve(cwd, explicit || DEFAULT_MODEL_CONFIG_FILE);
   if (!fs.existsSync(file)) {
     if (explicit)
-      throw new ModelConfigError(file, ['OPENMAIC_CONFIG points at a file that does not exist']);
+      throw new ModelConfigError(file, ['CHEEYOO_CONFIG points at a file that does not exist']);
     return null;
   }
   return parseModelConfig(fs.readFileSync(file, 'utf-8'), { file, env });

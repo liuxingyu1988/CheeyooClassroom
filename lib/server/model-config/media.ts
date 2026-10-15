@@ -83,7 +83,7 @@ export interface MediaConnection {
   /** Multi-part credentials (AliDocMind's key pair). */
   credentials?: Record<string, string>;
   proxy?: string;
-  /** The provider's non-secret options (openmaic.yml `options`): its adapter's settings. */
+  /** The provider's non-secret options (cheeyoo.yml `options`): its adapter's settings. */
   options?: Record<string, string | number | boolean>;
   /** The provider is operator configuration (deployment or server providers). */
   managed: boolean;
@@ -141,12 +141,12 @@ async function fromTarget(
     // transport instead (lib/server/model-config/llm.ts).
     if (target.proxy) {
       throw new WorkspaceEndpointError(
-        'A proxy can only be configured by the deployment (openmaic.yml)',
+        'A proxy can only be configured by the deployment (cheeyoo.yml)',
       );
     }
     if (target.customBaseUrl) {
       throw new WorkspaceEndpointError(
-        `A custom endpoint for ${slot} can only be configured by the deployment (openmaic.yml)`,
+        `A custom endpoint for ${slot} can only be configured by the deployment (cheeyoo.yml)`,
       );
     }
     // A self-hosted preset's default endpoint is on the server's own network.
@@ -154,7 +154,7 @@ async function fromTarget(
       target.baseUrl ?? registryDefaultBaseUrl(getSlot(slot).capability, target.registryId);
     if (endpoint && isLocalEndpoint(endpoint)) {
       throw new WorkspaceEndpointError(
-        `The ${target.presetId} preset runs on the server's own network; only the deployment (openmaic.yml) can configure it`,
+        `The ${target.presetId} preset runs on the server's own network; only the deployment (cheeyoo.yml) can configure it`,
       );
     }
   }

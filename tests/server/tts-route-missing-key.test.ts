@@ -210,7 +210,7 @@ describe('POST /api/generate/tts missing-key contract (#665)', () => {
       success: false,
       errorCode: 'INVALID_URL',
       error:
-        'Local/private network URLs are not allowed for a client-supplied endpoint. ALLOW_LOCAL_NETWORKS does not apply to this path. The endpoint must be a provider configured by the operator in openmaic.yml.',
+        'Local/private network URLs are not allowed for a client-supplied endpoint. ALLOW_LOCAL_NETWORKS does not apply to this path. The endpoint must be a provider configured by the operator in cheeyoo.yml.',
     });
     expect(mocks.generateTTS).not.toHaveBeenCalled();
   });

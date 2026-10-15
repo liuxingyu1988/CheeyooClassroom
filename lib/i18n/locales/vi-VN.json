@@ -207,7 +207,7 @@
     "success": "Đã nhập lớp học thành công",
     "pptxSuccess": "Đã đọc PPTX thành công ({{count}} slide, kết quả ghi ra console)",
     "error": {
-      "invalidZip": "Tệp không hợp lệ. Vui lòng chọn tệp .maic.zip đúng định dạng.",
+      "invalidZip": "Tệp không hợp lệ. Vui lòng chọn tệp .cheeyoo.zip đúng định dạng.",
       "invalidPptx": "Không đọc được PPTX. Vui lòng kiểm tra lại tệp.",
       "parserUnavailable": "Không dùng được chức năng nhập PPTX: chưa triển khai gói bộ đọc. Hãy chạy lại install/sync.",
       "invalidManifest": "Tệp lớp học không hợp lệ: thiếu hoặc hỏng manifest.json.",
@@ -1845,7 +1845,7 @@
       "download": "Tải xuống",
       "detailFailed": "Không thể tải chi tiết skill",
       "contentLabel": "Nội dung",
-      "builtinDetailNote": "Skill này đi kèm với OpenMAIC. Tải xuống để nhập vào không gian làm việc của agent khác.",
+      "builtinDetailNote": "Skill này đi kèm với CheeyooClassroom. Tải xuống để nhập vào không gian làm việc của agent khác.",
       "upload": "Tải lên",
       "uploading": "Đang tải lên…",
       "uploadFailed": "Không thể tải skill lên. Hãy kiểm tra tệp và thử lại.",
@@ -2000,7 +2000,7 @@
       "conflict": "Cài đặt đã được thay đổi ở nơi khác và đã tải lại. Hãy kiểm tra rồi thử lại.",
       "lockedNow": "Quản trị viên đã cố định mục này nên nó không được thay đổi.",
       "unconfirmed": "Mất phản hồi từ máy chủ nên cài đặt đã được tải lại. Hãy kiểm tra xem thay đổi đã có hiệu lực chưa.",
-      "serverOnly": "Chỉ cấu hình máy chủ (openmaic.yml) mới thiết lập được dịch vụ này. Hãy liên hệ quản trị viên máy chủ.",
+      "serverOnly": "Chỉ cấu hình máy chủ (cheeyoo.yml) mới thiết lập được dịch vụ này. Hãy liên hệ quản trị viên máy chủ.",
       "serverOnlyPolicy": "Máy chủ này không cho phép không gian làm việc thêm dịch vụ riêng. Hãy liên hệ quản trị viên máy chủ.",
       "endpointServerOnly": "Dịch vụ này dùng endpoint riêng của nó; chỉ cấu hình máy chủ mới đổi được sang endpoint khác.",
       "endpointChatOnly": "Khi dùng endpoint riêng, dịch vụ này chỉ dùng cho mô hình ngôn ngữ.",
@@ -2184,8 +2184,8 @@
       "reason": {
         "refused": "Máy chủ không chấp nhận: {{detail}}",
         "reserved": "Máy chủ đã cấu hình một dịch vụ với tên này.",
-        "customService": "Dịch vụ giọng nói tùy chỉnh chỉ có thể được cấu hình trên máy chủ (openmaic.yml).",
-        "keyPair": "Dịch vụ dùng cặp khóa chỉ có thể được cấu hình trên máy chủ (openmaic.yml).",
+        "customService": "Dịch vụ giọng nói tùy chỉnh chỉ có thể được cấu hình trên máy chủ (cheeyoo.yml).",
+        "keyPair": "Dịch vụ dùng cặp khóa chỉ có thể được cấu hình trên máy chủ (cheeyoo.yml).",
         "unsupported": "Không thể chuyển loại nhà cung cấp tùy chỉnh này: hãy thêm lại dưới dạng endpoint tương thích OpenAI.",
         "unconfirmed": "Máy chủ không xác nhận đã nhập."
       }

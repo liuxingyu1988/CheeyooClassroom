@@ -44,7 +44,7 @@
 
 ## 🗞️ 动态
 
-- **2026-10-04** — [v1.2.0-rc.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.2.0-rc.1)（预发布）：**服务端优先。** 1.1.x 及以前，课程生成由浏览器一步步驱动，课程、密钥和模型设置也都存在浏览器里：关掉页面课程就停在半路，每个浏览器都要单独配置，无头 API 还是另一套流水线。1.2.0 把这些都交给服务端：生成在服务端运行，关页面、重启都不中断；模型在 `openmaic.yml` 里统一配置（默认值、锁定、可禁止用户自带密钥）；资料添加即解析；网页端和 API 共用同一条流水线。需要 PostgreSQL 和常驻的 Node 服务，Vercel 部署请继续使用 1.1.x。升级前请先阅读[更新日志](CHANGELOG.md)。
+- **2026-10-04** — [v1.2.0-rc.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.2.0-rc.1)（预发布）：**服务端优先。** 1.1.x 及以前，课程生成由浏览器一步步驱动，课程、密钥和模型设置也都存在浏览器里：关掉页面课程就停在半路，每个浏览器都要单独配置，无头 API 还是另一套流水线。1.2.0 把这些都交给服务端：生成在服务端运行，关页面、重启都不中断；模型在 `cheeyoo.yml` 里统一配置（默认值、锁定、可禁止用户自带密钥）；资料添加即解析；网页端和 API 共用同一条流水线。需要 PostgreSQL 和常驻的 Node 服务，Vercel 部署请继续使用 1.1.x。升级前请先阅读[更新日志](CHANGELOG.md)。
 - **2026-09-28** — [v1.1.2](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.1.2)：安全更新——provider 请求只连接已校验地址并拒绝重定向（[GHSA-g87c-cm4q-cw5x](https://github.com/THU-MAIC/OpenMAIC/security/advisories/GHSA-g87c-cm4q-cw5x)）。
 - **2026-09-27** — [v1.1.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.1.1)：安全更新——加固 MinerU Cloud 文档解析（[GHSA-cpjc-vgjh-c5jp](https://github.com/THU-MAIC/OpenMAIC/security/advisories/GHSA-cpjc-vgjh-c5jp)）。
 - **2026-09-24** — [v1.1.0](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.1.0)：课堂对话改为 Agent 循环（可针对幻灯片元素、交互组件、白板内容提问）；设置按课程流程重构；Token Plan 一键接入。
@@ -104,10 +104,10 @@ pnpm install
 
 ```bash
 cp .env.example .env.local            # API Key 与服务端选项
-cp openmaic.example.yml openmaic.yml  # 服务端使用哪些模型
+cp cheeyoo.example.yml cheeyoo.yml  # 服务端使用哪些模型
 ```
 
-复制出的示例只需要在 `.env.local` 中设置 `OPENAI_API_KEY`（也可以把其中的服务商换成你有 key 的那家）；其余内容都已注释，需要时再打开。`openmaic.yml` 声明服务端可以调用的**服务商**（账号），并为每个**槽位**（一处用到 AI 的地方：大纲、幻灯片内容、语音合成、联网搜索……）指定模型。Key 留在 `.env.local` 里，通过 `${VAR}` 引用：
+复制出的示例只需要在 `.env.local` 中设置 `OPENAI_API_KEY`（也可以把其中的服务商换成你有 key 的那家）；其余内容都已注释，需要时再打开。`cheeyoo.yml` 声明服务端可以调用的**服务商**（账号），并为每个**槽位**（一处用到 AI 的地方：大纲、幻灯片内容、语音合成、联网搜索……）指定模型。Key 留在 `.env.local` 里，通过 `${VAR}` 引用：
 
 ```yaml
 providers:
@@ -130,7 +130,7 @@ slots:
 | --- | --- |
 | 槽位、预设、回退模型、`lock`、`allowUserKeys`、`OPENMAIC_SECRET_KEY` | [配置说明](packages/docs/content/docs/configuration.zh-cn.mdx) |
 | 所有服务商预设与模型 ID | [支持的模型](packages/docs/content/docs/supported-models.zh-cn.mdx) |
-| 升级：没有 `openmaic.yml` 时，服务商环境变量、`server-providers.yml`、`DEFAULT_MODEL` 和 `MODEL_FALLBACK` 仍然有效；`MODEL_ROUTES` 需改写为槽位 | [从旧配置迁移](packages/docs/content/docs/configuration.zh-cn.mdx#从旧配置迁移) |
+| 升级：没有 `cheeyoo.yml` 时，服务商环境变量、`server-providers.yml`、`DEFAULT_MODEL` 和 `MODEL_FALLBACK` 仍然有效；`MODEL_ROUTES` 需改写为槽位 | [从旧配置迁移](packages/docs/content/docs/configuration.zh-cn.mdx#从旧配置迁移) |
 
 **支持的服务商：** OpenAI、Azure OpenAI、Anthropic、Amazon Bedrock、Google Gemini、DeepSeek、通义千问 Qwen、Kimi、MiniMax、Grok (xAI)、OpenRouter、TokenDance、豆包、腾讯混元 / TokenHub、小米 MiMo、智谱 GLM、Ollama、[Lemonade](#lemonade-local-ai) 与 [FunASR](#funasr-local-asr)（本地），以及任何兼容 OpenAI API 的服务。
 
@@ -246,7 +246,7 @@ cp .env.example .env.local
 docker compose up --build
 ```
 
-打开 **http://localhost:3000**。整套服务是两个容器：应用和 PostgreSQL。课程、生成的媒体和运行时会话保存在命名卷 `openmaic-postgres` 与 `openmaic-data` 中，`docker compose down` 和重新构建后依然保留；`docker compose down -v` 会删除它们。如需用 `openmaic.yml` 配置模型，请从 `openmaic.example.yml` 复制出该文件，并取消 `docker-compose.yml` 中对应挂载行的注释；否则启动后在模型设置里接入模型服务即可。
+打开 **http://localhost:3000**。整套服务是两个容器：应用和 PostgreSQL。课程、生成的媒体和运行时会话保存在命名卷 `openmaic-postgres` 与 `openmaic-data` 中，`docker compose down` 和重新构建后依然保留；`docker compose down -v` 会删除它们。如需用 `cheeyoo.yml` 配置模型，请从 `cheeyoo.example.yml` 复制出该文件，并取消 `docker-compose.yml` 中对应挂载行的注释；否则启动后在模型设置里接入模型服务即可。
 
 Compose 文件默认是**个人安装**：以[单用户模式](#服务端持久化postgresql)运行（所有浏览器看到同一个课程库），且只监听 `127.0.0.1:3000`。要让其他机器访问，请先加上保护：
 
@@ -423,7 +423,7 @@ docker compose --profile video-export up --build
 
 [MinerU](https://github.com/opendatalab/MinerU) 提供更强的表格、公式和 OCR 解析能力。你可以使用 [MinerU 官方 API](https://mineru.net/) 或[自行部署](https://opendatalab.github.io/MinerU/quick_start/docker_deployment/)。
 
-在 `openmaic.yml` 中声明它并分配给 `document` 槽位：官方 API 使用 `mineru-cloud`，自行部署的实例使用 `mineru` 并填写其 `baseUrl`。
+在 `cheeyoo.yml` 中声明它并分配给 `document` 槽位：官方 API 使用 `mineru-cloud`，自行部署的实例使用 `mineru` 并填写其 `baseUrl`。
 
 ```yaml
 providers:
@@ -435,13 +435,13 @@ slots:
   document: mineru
 ```
 
-没有 `openmaic.yml` 时，在 `.env.local` 中设置旧版变量 `PDF_MINERU_CLOUD_API_KEY` 或 `PDF_MINERU_BASE_URL` 仍然有效。
+没有 `cheeyoo.yml` 时，在 `.env.local` 中设置旧版变量 `PDF_MINERU_CLOUD_API_KEY` 或 `PDF_MINERU_BASE_URL` 仍然有效。
 
 ### 可选：VoxCPM2（自托管 TTS，支持音色克隆）
 
 [VoxCPM2](https://github.com/OpenBMB/VoxCPM) 是 OpenBMB 开源的 TTS 模型，支持声音克隆。OpenMAIC 自带适配器，把 VoxCPM 跑在自己机器上即可对接。
 
-**1. 部署 VoxCPM 后端。** 三种部署形态，背后是同一套 OpenMAIC 适配器，在 `openmaic.yml` 中用 `options.backend` 选择（见第 2 步）。
+**1. 部署 VoxCPM 后端。** 三种部署形态，背后是同一套 OpenMAIC 适配器，在 `cheeyoo.yml` 中用 `options.backend` 选择（见第 2 步）。
 
 | 后端 | 接口 | 适用场景 |
 | --- | --- | --- |
@@ -451,7 +451,7 @@ slots:
 
 每种后端的具体启动步骤见 [VoxCPM 仓库](https://github.com/OpenBMB/VoxCPM)。
 
-**2. 在 OpenMAIC 中配置。** VoxCPM2 运行在你自己的网络中，因此由部署在 `openmaic.yml` 中配置（不需要 API Key）；工作区不能在 **设置 → 模型服务** 中添加它：
+**2. 在 OpenMAIC 中配置。** VoxCPM2 运行在你自己的网络中，因此由部署在 `cheeyoo.yml` 中配置（不需要 API Key）；工作区不能在 **设置 → 模型服务** 中添加它：
 
 ```yaml
 providers:
@@ -467,7 +467,7 @@ slots:
 
 音色注册只在 `vllm-omni` 后端可用；`python-api` 和 `nano-vllm` 会随每次请求发送音色提示。
 
-没有 `openmaic.yml` 时，旧版的 `TTS_VOXCPM_BASE_URL=http://localhost:8000/v1` 可以设置端点，但无法选择后端。
+没有 `cheeyoo.yml` 时，旧版的 `TTS_VOXCPM_BASE_URL=http://localhost:8000/v1` 可以设置端点，但无法选择后端。
 
 **3. 管理音色。** 把 VoxCPM2 分配给 `tts` 槽位后，打开 **设置 → 模型服务 → 语音合成 → VoxCPM2**（只有 `tts` 解析到 `voxcpm-tts` 服务商时才会出现音色管理）。三种音色模式：
 
@@ -672,7 +672,7 @@ AI 老师配合聚光灯和激光笔动作进行语音讲解——如同真实�
 <tr>
 <td valign="top">
 
-OpenMAIC 的技能包（`skills/openmaic/`）采用标准 SKILL.md 格式，可被各类 Agent 工作台加载——除了 OpenClaw，也包括 **Codex**、**DeepSeek**、**WorkBuddy** 等。它是一份引导式 SOP：覆盖在线体验、本地部署、课堂生成和基于 `@openmaic/*` SDK 的二次开发。
+OpenMAIC 的技能包（`skills/cheeyoo/`）采用标准 SKILL.md 格式，可被各类 Agent 工作台加载——除了 OpenClaw，也包括 **Codex**、**DeepSeek**、**WorkBuddy** 等。它是一份引导式 SOP：覆盖在线体验、本地部署、课堂生成和基于 `@openmaic/*` SDK 的二次开发。
 
 其中 [OpenClaw](https://github.com/openclaw/openclaw) 是一个连接你日常使用的消息平台（飞书、Slack、Discord、Telegram、WhatsApp 等）的个人 AI 助手。通过这个集成，你可以**直接在聊天应用中生成和查看互动课堂**，无需碰命令行。
 
@@ -702,7 +702,7 @@ OpenMAIC 的技能包（`skills/openmaic/`）采用标准 SKILL.md 格式，可�
 clawhub install openmaic
 ```
 
-或在 Codex、DeepSeek、WorkBuddy 等其他 Agent 工作台中，把仓库中的 `skills/openmaic/` 文件夹（或打包后的 zip）导入对应智能体工作台即可使用：
+或在 Codex、DeepSeek、WorkBuddy 等其他 Agent 工作台中，把仓库中的 `skills/cheeyoo/` 文件夹（或打包后的 zip）导入对应智能体工作台即可使用：
 
 </td></tr></table>
 
@@ -748,7 +748,7 @@ clawhub install openmaic
 
 导入课堂 ZIP 会先将包内音频、图片、视频及封面保存到服务器资源池，再保存课程，因此其他浏览器无需导入端的本地缓存即可读取这些资源。ZIP 也可用于在部署之间迁移课程：从一处导出，在另一处导入。
 
-**离线 / 内网课堂：** 导出课堂（`.maic.zip`）或资源包时，OpenMAIC 会把互动场景引用的外部资源（KaTeX、Three.js 含 `three/addons`、Tailwind CDN、Google Fonts、图片）以 `data:` URI 形式内联进导出的 HTML。导出的课程在导入到内网/离线实例后即可完全离线播放，播放时不再访问任何公网 CDN。导出时无法抓取的资源（如开启了 CORS 限制的图床）会被记录并保留为原始 URL。本功能上线*之前*导出的课堂仍引用 CDN，需要重新导出才能离线播放。
+**离线 / 内网课堂：** 导出课堂（`.cheeyoo.zip`）或资源包时，OpenMAIC 会把互动场景引用的外部资源（KaTeX、Three.js 含 `three/addons`、Tailwind CDN、Google Fonts、图片）以 `data:` URI 形式内联进导出的 HTML。导出的课程在导入到内网/离线实例后即可完全离线播放，播放时不再访问任何公网 CDN。导出时无法抓取的资源（如开启了 CORS 限制的图床）会被记录并保留为原始 URL。本功能上线*之前*导出的课堂仍引用 CDN，需要重新导出才能离线播放。
 
 ### 更多功能
 

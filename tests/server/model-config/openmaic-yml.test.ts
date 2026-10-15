@@ -338,17 +338,17 @@ describe('loadModelConfigFile', () => {
     expect(loadModelConfigFile({}, tempDir())).toBeNull();
   });
 
-  it('reads openmaic.yml from the working directory', () => {
+  it('reads cheeyoo.yml from the working directory', () => {
     const dir = tempDir();
-    fs.writeFileSync(path.join(dir, 'openmaic.yml'), EXAMPLE);
+    fs.writeFileSync(path.join(dir, 'cheeyoo.yml'), EXAMPLE);
     expect(loadModelConfigFile(env, dir)?.slots?.llm).toBe('minimax:MiniMax-M3');
   });
 
-  it('reads the file named by OPENMAIC_CONFIG, and refuses a missing one', () => {
+  it('reads the file named by CHEEYOO_CONFIG, and refuses a missing one', () => {
     const dir = tempDir();
     fs.writeFileSync(path.join(dir, 'models.yml'), 'slots:\n  video: null\n');
-    expect(loadModelConfigFile({ OPENMAIC_CONFIG: 'models.yml' }, dir)?.slots?.video).toBeNull();
-    expect(() => loadModelConfigFile({ OPENMAIC_CONFIG: 'missing.yml' }, dir)).toThrow(
+    expect(loadModelConfigFile({ CHEEYOO_CONFIG: 'models.yml' }, dir)?.slots?.video).toBeNull();
+    expect(() => loadModelConfigFile({ CHEEYOO_CONFIG: 'missing.yml' }, dir)).toThrow(
       ModelConfigError,
     );
   });

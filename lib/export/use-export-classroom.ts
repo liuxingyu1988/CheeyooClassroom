@@ -54,7 +54,7 @@ const log = createLogger('ExportClassroom');
 
 /**
  * One consistent export snapshot of a classroom: the portable manifest plus
- * the bytes of every payload it names. Both the `.maic.zip` archive and the
+ * the bytes of every payload it names. Both the `.cheeyoo.zip` archive and the
  * standalone HTML export are serialized from this one structure, so the two
  * formats cannot drift apart.
  */

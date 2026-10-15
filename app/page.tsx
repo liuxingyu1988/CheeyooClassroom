@@ -39,6 +39,7 @@ import { SettingsDialog } from '@/components/settings';
 import { GenerationToolbar } from '@/components/generation/generation-toolbar';
 import { AgentBar } from '@/components/agent/agent-bar';
 import { useTheme } from '@/lib/hooks/use-theme';
+import { useBrand } from '@/lib/brand/brand-context';
 import {
   courseGenerationUsable,
   requireModelCapabilities,
@@ -143,6 +144,7 @@ function HomePage() {
   const { t } = useI18n();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const brand = useBrand();
   // Do not replay the classic hero's entrance after the route handoff already
   // carried the lockup and composer into place. The entrance is CSS, not a
   // JS-driven animation, so the server-rendered hero is painted (and fades in)
@@ -766,8 +768,9 @@ function HomePage() {
         {/* ── Logo ── */}
         <div className="relative" data-pro-morph="lockup">
           <img
-            src="/logo-horizontal.png"
-            alt="OpenMAIC"
+            src={brand.logoSrc}
+            alt={brand.displayName}
+            data-testid="home-hero-logo"
             className={cn(
               'h-12 md:h-16 mb-2 -ml-2 md:-ml-3',
               heroEnter('fade-in zoom-in-90 duration-500 delay-100'),
@@ -1312,9 +1315,9 @@ function HomePage() {
       />
 
       {/* Footer — flows with content, at the very end */}
-      <div className="mt-auto pt-12 pb-4 text-center text-xs text-muted-foreground/40">
-        OpenMAIC Open Source Project
-      </div>
+      {/* <div className="mt-auto pt-12 pb-4 text-center text-xs text-muted-foreground/40">
+        {brand.displayName} Open Source Project
+      </div> */}
     </div>
   );
 }

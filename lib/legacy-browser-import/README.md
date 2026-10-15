@@ -189,7 +189,7 @@ Not carried over:
 
 - per-stage routes (`llmStageRoutes`), which do not map one to one onto
   slots: set per-stage models in Settings → Course Model Config (or `slots` in
-  `openmaic.yml`);
+  `cheeyoo.yml`);
 - research switched off (`webSearchEnabled` stored as false): switching it off only
   stopped course research, while chat and the agent kept searching through
   the same provider, which the `webSearch` slot now serves; and an image,
@@ -200,7 +200,7 @@ Not carried over:
 - thinking settings (`thinkingConfigs`, per-route `thinking`): set `thinking`
   on a slot assignment instead;
 - the VoxCPM backend (`providerOptions.backend`): set `options.backend` on the
-  provider in `openmaic.yml`;
+  provider in `cheeyoo.yml`;
 - custom speech and transcription providers, AliDocMind's key pair (a
   workspace provider holds one key), and custom chat providers without an
   endpoint or of a type other than OpenAI, Anthropic or Google: these are

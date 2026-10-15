@@ -10,7 +10,7 @@
     "close": "关闭"
   },
   "home": {
-    "slogan": "多智能体交互课堂",
+    "slogan": "名师课堂AI造，24小时随时学，沉浸式体验随时开！",
     "greetingWithName": "嗨，{{name}}"
   },
   "toolbar": {
@@ -207,7 +207,7 @@
     "success": "课堂导入成功",
     "pptxSuccess": "PPTX 解析成功（共 {{count}} 页，输出已打印到控制台）",
     "error": {
-      "invalidZip": "无效文件，请选择有效的 .maic.zip 文件。",
+      "invalidZip": "无效文件，请选择有效的 .cheeyoo.zip 文件。",
       "invalidPptx": "PPTX 解析失败，请检查文件是否有效。",
       "parserUnavailable": "PPTX 导入不可用：解析器未部署。请重新执行安装/同步步骤。",
       "invalidManifest": "无效课堂文件：manifest.json 缺失或已损坏。",
@@ -1121,7 +1121,7 @@
     "courseMaterialFormats": "支持 {{formats}}，单个最大 {{size}}MB",
     "formatListSeparator": "、",
     "generateFailed": "生成课堂失败，请重试",
-    "requirementPlaceholder": "输入你想学的任何内容，例如：\n「从零学 Python，30 分钟写出第一个程序」\n「用白板给我讲解傅里叶变换」\n「阿瓦隆桌游怎么玩」",
+    "requirementPlaceholder": "输入你想学的任何内容，例如：\n「一次函数图像的互动探究」\n「用仿真实验理解欧姆定律」\n「元素周期表的记忆闯关」\n「议论文阅读的答题思路」\n「英语作文高分句式专题」",
     "requirementRequired": "请输入课程需求",
     "fileTooLarge": "文件过大，请选择小于 50MB 的文件",
     "courseMaterialCountLimit": "最多可上传 5 个课程材料文件",
@@ -1845,7 +1845,7 @@
       "download": "下载",
       "detailFailed": "技能详情加载失败",
       "contentLabel": "正文",
-      "builtinDetailNote": "该技能随 OpenMAIC 提供。下载后可导入其他智能体工作台。",
+      "builtinDetailNote": "该技能随 CheeyooClassroom 提供。下载后可导入其他智能体工作台。",
       "upload": "上传",
       "uploading": "正在上传…",
       "uploadFailed": "技能上传失败。请检查文件后重试。",
@@ -2000,7 +2000,7 @@
       "conflict": "设置已在别处被修改并已重新加载，请检查后重试。",
       "lockedNow": "管理员已固定此项，因此未更改。",
       "unconfirmed": "服务器的响应丢失，已重新加载设置，请确认修改是否生效。",
-      "serverOnly": "此服务只能通过服务器配置（openmaic.yml）设置，请联系服务器管理员。",
+      "serverOnly": "此服务只能通过服务器配置（cheeyoo.yml）设置，请联系服务器管理员。",
       "serverOnlyPolicy": "此服务器不允许工作区添加自己的服务，请联系服务器管理员。",
       "endpointServerOnly": "此服务使用其官方地址；只有服务器配置可以改为其他地址。",
       "endpointChatOnly": "使用自定义地址时，此服务仅用于语言模型。",
@@ -2184,8 +2184,8 @@
       "reason": {
         "refused": "服务器未接受：{{detail}}",
         "reserved": "服务器已用同一名称配置了服务。",
-        "customService": "自定义语音服务只能在服务器上配置（openmaic.yml）。",
-        "keyPair": "使用密钥对的服务只能在服务器上配置（openmaic.yml）。",
+        "customService": "自定义语音服务只能在服务器上配置（cheeyoo.yml）。",
+        "keyPair": "使用密钥对的服务只能在服务器上配置（cheeyoo.yml）。",
         "unsupported": "此类自定义服务商无法迁移：请作为 OpenAI 兼容端点重新添加。",
         "unconfirmed": "服务器未确认已导入。"
       }

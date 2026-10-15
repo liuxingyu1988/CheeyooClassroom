@@ -57,14 +57,14 @@ afterEach(() => {
 });
 
 function configFile(text: string): string {
-  const file = path.join(dir, 'openmaic.yml');
+  const file = path.join(dir, 'cheeyoo.yml');
   fs.writeFileSync(file, text);
   return file;
 }
 
 describe('model configuration at boot', () => {
   it('exits the server when the configuration file is invalid, before anything starts', async () => {
-    vi.stubEnv('OPENMAIC_CONFIG', configFile('slots:\n  llm: ghost:model\n'));
+    vi.stubEnv('CHEEYOO_CONFIG', configFile('slots:\n  llm: ghost:model\n'));
     const { register } = await import('@/instrumentation');
 
     await expect(register()).rejects.toThrow(/Invalid model configuration/);
@@ -78,7 +78,7 @@ describe('model configuration at boot', () => {
   });
 
   it('boots unchanged without a configuration file', async () => {
-    vi.stubEnv('OPENMAIC_CONFIG', '');
+    vi.stubEnv('CHEEYOO_CONFIG', '');
     vi.spyOn(process, 'cwd').mockReturnValue(dir);
     const { register } = await import('@/instrumentation');
 
@@ -89,7 +89,7 @@ describe('model configuration at boot', () => {
   });
 
   it('refuses to start with MODEL_ROUTES and no configuration file', async () => {
-    vi.stubEnv('OPENMAIC_CONFIG', '');
+    vi.stubEnv('CHEEYOO_CONFIG', '');
     vi.spyOn(process, 'cwd').mockReturnValue(dir);
     vi.stubEnv('MODEL_ROUTES', '{"scene-content":"openai:gpt-5.6"}');
     const { register } = await import('@/instrumentation');
@@ -97,13 +97,13 @@ describe('model configuration at boot', () => {
     await expect(register()).rejects.toThrow(/MODEL_ROUTES does not carry over/);
 
     expect(exit).toHaveBeenCalledWith(1);
-    expect(stderr[0]).toContain('write the per-stage models as slots in openmaic.yml');
+    expect(stderr[0]).toContain('write the per-stage models as slots in cheeyoo.yml');
     expect(startAssetCollectorSchedule).not.toHaveBeenCalled();
   });
 
   it('boots with MODEL_ROUTES left over next to a configuration file', async () => {
     vi.stubEnv('MODEL_ROUTES', '{"scene-content":"openai:gpt-5.6"}');
-    vi.stubEnv('OPENMAIC_CONFIG', configFile('slots:\n  video: null\n'));
+    vi.stubEnv('CHEEYOO_CONFIG', configFile('slots:\n  video: null\n'));
     const { register } = await import('@/instrumentation');
 
     await expect(register()).resolves.toBeUndefined();
@@ -114,7 +114,7 @@ describe('model configuration at boot', () => {
   it('boots with a valid configuration file', async () => {
     vi.stubEnv('MINIMAX_API_KEY', 'sk-test');
     vi.stubEnv(
-      'OPENMAIC_CONFIG',
+      'CHEEYOO_CONFIG',
       configFile(
         'providers:\n  minimax:\n    preset: minimax\n    apiKey: ${MINIMAX_API_KEY}\nslots:\n  llm: minimax:MiniMax-M3\n',
       ),

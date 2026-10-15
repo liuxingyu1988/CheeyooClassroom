@@ -17,7 +17,7 @@ beforeEach(() => {
   vi.spyOn(process, 'cwd').mockReturnValue(dir);
   for (const key of [
     'DATABASE_URL',
-    'OPENMAIC_CONFIG',
+    'CHEEYOO_CONFIG',
     'DEFAULT_MODEL',
     'MODEL_FALLBACK',
     'MODEL_ROUTES',
@@ -150,7 +150,7 @@ it('Bedrock credential chain is guarded in slots, legacy requests and picker', a
 it('startup warns only for credentialed model selection in YAML and legacy configuration', async () => {
   const { loadDeploymentLayer } = await import('@/lib/server/model-config/deployment-layer');
   fs.writeFileSync(
-    path.join(dir, 'openmaic.yml'),
+    path.join(dir, 'cheeyoo.yml'),
     `providers:
   parser:
     preset: mineru-cloud
@@ -179,7 +179,7 @@ it('startup warns only for credentialed model selection in YAML and legacy confi
       expect.stringContaining('providers.chain.models'),
     ],
   );
-  fs.unlinkSync(path.join(dir, 'openmaic.yml'));
+  fs.unlinkSync(path.join(dir, 'cheeyoo.yml'));
   vi.stubEnv('TAVILY_API_KEY', 'key');
   vi.stubEnv('PDF_MINERU_CLOUD_API_KEY', 'key');
   vi.stubEnv('WEB_SEARCH_CLAUDE_API_KEY', 'key');

@@ -7,11 +7,17 @@
  * request (vendor UA parsing) and injects them through the provider. This
  * workspace is single-brand and has no desktop shell, so the provider accepts
  * the values as props (for future wiring) and defaults to the static brand /
- * non-desktop, which is also what the hooks read when no provider is mounted.
+ * non-desktop.
+ *
+ * The provider additionally resolves `displayName` against the live i18n
+ * language, so Chinese locales render 启云课堂 and the rest render the Latin
+ * name. i18n starts on the default locale (zh-CN) and only switches after
+ * hydration, so the server render and the first client render agree.
  */
 
-import { createContext, useContext } from 'react';
-import { DEFAULT_BRAND, type BrandConfig } from './brand-config';
+import { createContext, useContext, useMemo, useSyncExternalStore } from 'react';
+import i18n from '@/lib/i18n/config';
+import { DEFAULT_BRAND, resolveBrand, type BrandConfig } from './brand-config';
 
 interface BrandContextValue {
   brand: BrandConfig;
@@ -24,6 +30,17 @@ const BrandContext = createContext<BrandContextValue>({
   isDesktop: false,
 });
 
+function subscribeToLanguage(onStoreChange: () => void): () => void {
+  i18n.on('languageChanged', onStoreChange);
+  return () => {
+    i18n.off('languageChanged', onStoreChange);
+  };
+}
+
+function readLanguage(): string {
+  return i18n.language;
+}
+
 export function BrandProvider({
   brand = DEFAULT_BRAND,
   isDesktop = false,
@@ -33,7 +50,14 @@ export function BrandProvider({
   isDesktop?: boolean;
   children: React.ReactNode;
 }) {
-  return <BrandContext.Provider value={{ brand, isDesktop }}>{children}</BrandContext.Provider>;
+  const locale = useSyncExternalStore(subscribeToLanguage, readLanguage, readLanguage);
+
+  const value = useMemo<BrandContextValue>(
+    () => ({ brand: resolveBrand(brand, locale), isDesktop }),
+    [brand, locale, isDesktop],
+  );
+
+  return <BrandContext.Provider value={value}>{children}</BrandContext.Provider>;
 }
 
 export function useBrand(): BrandConfig {

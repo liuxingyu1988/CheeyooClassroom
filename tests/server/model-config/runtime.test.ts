@@ -162,7 +162,7 @@ describe('requestMayChoose', () => {
     expect(requestMayChoose(at('llm', { deployment: null, workspace: null }), yml)).toBe(true);
   });
 
-  it("keeps openmaic.yml's default, the workspace's choice and a lock", () => {
+  it("keeps cheeyoo.yml's default, the workspace's choice and a lock", () => {
     expect(requestMayChoose(at('llm', { deployment, workspace: null }), yml)).toBe(false);
     expect(requestMayChoose(at('llm', { deployment, workspace }), yml)).toBe(false);
     expect(requestMayChoose(at('llm', { deployment, workspace }), legacy)).toBe(false);

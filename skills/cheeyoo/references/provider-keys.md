@@ -2,23 +2,23 @@
 
 ## Critical Boundary
 
-OpenMAIC generation does not automatically reuse the OpenClaw agent's current model or API key.
+CheeyooClassroom generation does not automatically reuse the OpenClaw agent's current model or API key.
 
-OpenMAIC resolves every model and key on the server, from its own model configuration:
+CheeyooClassroom resolves every model and key on the server, from its own model configuration:
 
-- `openmaic.yml` (written by the operator; path overridable with `OPENMAIC_CONFIG`) declares providers and assigns models to capability slots. Keys stay in `.env.local` and are referenced from the file as `${VAR}`.
-- The model settings in the OpenMAIC web app (**Settings → Token Plan**, **Model Services** and **Course Model Config**) edit the slots and providers `openmaic.yml` leaves open, for the current workspace.
+- `cheeyoo.yml` (written by the operator; path overridable with `CHEEYOO_CONFIG`) declares providers and assigns models to capability slots. Keys stay in `.env.local` and are referenced from the file as `${VAR}`.
+- The model settings in the CheeyooClassroom web app (**Settings → Token Plan**, **Model Services** and **Course Model Config**) edit the slots and providers `cheeyoo.yml` leaves open, for the current workspace.
 
 This skill does not rely on runtime overrides for model, provider, API key, base URL, or provider type. The old request headers (`x-model`, `x-api-key`, `x-base-url`, `x-model-routes`, `x-*-provider`, …) are deprecated and ignored once a slot is configured; never use them as a workaround.
 
-If the user wants to change the model or provider, they edit `openmaic.yml` (and `.env.local` for the key) or use the model settings in the web app.
+If the user wants to change the model or provider, they edit `cheeyoo.yml` (and `.env.local` for the key) or use the model settings in the web app.
 
 ## Interaction Flow
 
 1. Recommend one provider path first (see "Recommendation Paths" below). Do not start by asking for an API key.
-2. Ask whether the user wants to configure it in `openmaic.yml` + `.env.local` (recommended for self-hosting and anything reproducible) or in the web app's model settings after starting (simplest for a personal install).
+2. Ask whether the user wants to configure it in `cheeyoo.yml` + `.env.local` (recommended for self-hosting and anything reproducible) or in the web app's model settings after starting (simplest for a personal install).
 3. Tell the user exactly which file and fields to edit — they edit the files themselves. Do not offer to write the key for them, do not ask for the literal key in chat, and do not suggest temporary request-time overrides.
-4. Wait for the user to confirm they finished editing before continuing. `openmaic.yml` is read at startup: a running server must be restarted after it changes.
+4. Wait for the user to confirm they finished editing before continuing. `cheeyoo.yml` is read at startup: a running server must be restarted after it changes.
 5. If startup or generation later fails because of auth, provider, or model selection, direct the user back to the same configuration and wait for confirmation before retrying.
 
 ## The Configuration File
@@ -27,7 +27,7 @@ Start from the example in the repository:
 
 ```bash
 cp .env.example .env.local
-cp openmaic.example.yml openmaic.yml
+cp cheeyoo.example.yml cheeyoo.yml
 ```
 
 As shipped, the example has one active provider (`openai`, reading `OPENAI_API_KEY`) and the `llm` slot; everything else is commented out. Startup refuses any `${VAR}` that is not set, so tell the user to either set that one key or replace the provider with the path they chose below, and to uncomment optional blocks only together with the variables they name.
@@ -52,7 +52,7 @@ slots:
 
 with `ANTHROPIC_API_KEY=sk-ant-...` in `.env.local`.
 
-Slots written in `openmaic.yml` are server defaults that users may still change in the model settings; slots left out follow their parent (`llm` for chat slots). To fix slots for everyone, list them under `lock` (`lock: all` fixes every slot); `allowUserKeys: false` keeps users from adding keys or token plans of their own.
+Slots written in `cheeyoo.yml` are server defaults that users may still change in the model settings; slots left out follow their parent (`llm` for chat slots). To fix slots for everyone, list them under `lock` (`lock: all` fixes every slot); `allowUserKeys: false` keeps users from adding keys or token plans of their own.
 
 ## Recommendation Paths
 
@@ -94,15 +94,15 @@ Same shape for `openai` (`OPENAI_API_KEY`), `anthropic`, `deepseek`, `qwen`, `gl
 
 ### 3. Web App Only
 
-For a personal install where the user does not want to edit files: start OpenMAIC, open **Settings → Token Plan** and enter a plan key, or **Settings → Model Services** and enter a service key. The key is entered in the browser, stored encrypted on the server, and never shown again. Nothing to edit in `openmaic.yml`.
+For a personal install where the user does not want to edit files: start CheeyooClassroom, open **Settings → Token Plan** and enter a plan key, or **Settings → Model Services** and enter a service key. The key is entered in the browser, stored encrypted on the server, and never shown again. Nothing to edit in `cheeyoo.yml`.
 
 ### 4. Existing Environment-Variable Setups
 
-A deployment configured through provider variables (`OPENAI_API_KEY`, …), `server-providers.yml`, `DEFAULT_MODEL` and `MODEL_FALLBACK` still works while there is no `openmaic.yml`; the server translates it at startup and logs a deprecation notice. Recommend moving to `openmaic.yml` when the user touches the configuration anyway. `MODEL_ROUTES` is no longer read: a server that sets it without `openmaic.yml` refuses to start, and the per-stage models must be written as slots (see the Configuration docs, "Migrating from the legacy configuration").
+A deployment configured through provider variables (`OPENAI_API_KEY`, …), `server-providers.yml`, `DEFAULT_MODEL` and `MODEL_FALLBACK` still works while there is no `cheeyoo.yml`; the server translates it at startup and logs a deprecation notice. Recommend moving to `cheeyoo.yml` when the user touches the configuration anyway. `MODEL_ROUTES` is no longer read: a server that sets it without `cheeyoo.yml` refuses to start, and the per-stage models must be written as slots (see the Configuration docs, "Migrating from the legacy configuration").
 
 ## Model Reference Rule
 
-In `openmaic.yml`, a chat slot always names `<provider id>:<model id>`, where the provider id is the key under `providers` (not necessarily the preset):
+In `cheeyoo.yml`, a chat slot always names `<provider id>:<model id>`, where the provider id is the key under `providers` (not necessarily the preset):
 
 - `google:gemini-2.5-flash`
 - `anthropic:claude-sonnet-4-6`
@@ -146,16 +146,16 @@ These are all optional. Classroom generation works without them — they only un
 
 ## Recognizing Configuration Errors
 
-- **Server exits at startup with `Invalid model configuration in …/openmaic.yml`** — the message lists each problem with its path (an unset `${VAR}`, an unknown preset or slot, a provider not declared under `providers`, a chat slot without a model id). Relay it to the user unchanged.
-- **`MODEL_ROUTES does not carry over to the model configuration …`** — the user must write the per-stage models as slots in `openmaic.yml` and remove `MODEL_ROUTES`.
-- **`No model is configured for <slot>`** — assign that slot (or its parent, e.g. `llm`) in `openmaic.yml` or the model settings.
+- **Server exits at startup with `Invalid model configuration in …/cheeyoo.yml`** — the message lists each problem with its path (an unset `${VAR}`, an unknown preset or slot, a provider not declared under `providers`, a chat slot without a model id). Relay it to the user unchanged.
+- **`MODEL_ROUTES does not carry over to the model configuration …`** — the user must write the per-stage models as slots in `cheeyoo.yml` and remove `MODEL_ROUTES`.
+- **`No model is configured for <slot>`** — assign that slot (or its parent, e.g. `llm`) in `cheeyoo.yml` or the model settings.
 - **`The <slot> capability is turned off`** — the slot is `null`; the operator turned it off on purpose.
 
 ## Recommended Prompts To The User
 
 Example phrasing the agent can adapt:
 
-- "I recommend configuring OpenMAIC with `openmaic.yml`: copy `openmaic.example.yml`, keep your key in `.env.local`, and tell me when you're done."
+- "I recommend configuring CheeyooClassroom with `cheeyoo.yml`: copy `cheeyoo.example.yml`, keep your key in `.env.local`, and tell me when you're done."
 - "For the least setup, one token plan key covers chat, images, narration, video and search. If you already have an Anthropic or Google key, a single `llm` line is enough. Which path do you want?"
 
 The "do not ask for the key in chat / do not offer to write it" rules are covered in [Interaction Flow](#interaction-flow) above — do not open by requesting the key.

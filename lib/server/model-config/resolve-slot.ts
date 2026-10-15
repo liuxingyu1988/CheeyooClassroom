@@ -6,7 +6,7 @@
  * the subtree, and reaching the root without an assignment leaves the
  * capability unassigned. There is no fallback to any vendor.
  *
- * Two layers take part. The deployment layer (openmaic.yml, or what the legacy
+ * Two layers take part. The deployment layer (cheeyoo.yml, or what the legacy
  * variables translate to) holds the server's defaults and names what is
  * locked; the workspace layer holds the web settings.
  * - A slot in a locked subtree (the slot or an ancestor is named by `lock`, or
@@ -45,7 +45,7 @@ import {
   type SlotAssignment,
 } from '@/lib/server/model-config/openmaic-yml';
 
-/** Where a layer comes from: the deployment (openmaic.yml) or the web settings. */
+/** Where a layer comes from: the deployment (cheeyoo.yml) or the web settings. */
 export type ConfigSource = 'deployment' | 'workspace';
 
 /**
@@ -77,7 +77,7 @@ export interface ResolvedModelTarget {
   /** Multi-part credentials for vendors without a single key. */
   credentials?: Record<string, string>;
   proxy?: string;
-  /** The provider's non-secret, provider-specific settings (openmaic.yml `options`). */
+  /** The provider's non-secret, provider-specific settings (cheeyoo.yml `options`). */
   options?: Record<string, string | number | boolean>;
   /** The base URL is the provider's own, not the preset's or registry's. */
   customBaseUrl?: true;

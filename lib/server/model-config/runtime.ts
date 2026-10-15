@@ -1,7 +1,7 @@
 /**
  * Slot resolution at request time (RFC #1701, tracked in #1725).
  *
- * The answer comes from the deployment layer (openmaic.yml, or the legacy
+ * The answer comes from the deployment layer (cheeyoo.yml, or the legacy
  * variables translated, loaded once per process) and the workspace layer (the
  * request owner's web settings), walked together over the whole slot tree: a
  * workspace model on `llm` covers every chat slot below it that has nothing
@@ -33,7 +33,7 @@ const globalState = globalThis as typeof globalThis & { [STATE_KEY]?: Deployment
 
 /**
  * The deployment layer, loaded on first use and kept for
- * the life of the process (openmaic.yml applies on restart). Startup calls
+ * the life of the process (cheeyoo.yml applies on restart). Startup calls
  * this so that a broken file or a leftover MODEL_ROUTES stops the server
  * before it serves anything, and prints the notices once.
  */
@@ -73,7 +73,7 @@ export function requestProvidersAllowed(): boolean {
  * resolved like this: when nothing is assigned and nothing locks it, and on a
  * deployment still configured through the legacy variables, over a default
  * they translate to (DEFAULT_MODEL always ranked below the model a request
- * named). openmaic.yml's defaults, the workspace's own choice and a lock all
+ * named). cheeyoo.yml's defaults, the workspace's own choice and a lock all
  * stand.
  */
 export function requestMayChoose(
@@ -255,7 +255,7 @@ export class SlotUnassignedError extends Error {
     readonly locked = false,
   ) {
     super(
-      `No model is configured for ${slot}. Set one in the model settings, or assign the slot (or an ancestor) in openmaic.yml.`,
+      `No model is configured for ${slot}. Set one in the model settings, or assign the slot (or an ancestor) in cheeyoo.yml.`,
     );
     this.name = 'SlotUnassignedError';
   }

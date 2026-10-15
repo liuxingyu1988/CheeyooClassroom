@@ -8,8 +8,8 @@ import { afterAll, describe, expect, it } from 'vitest';
 
 const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
 const scriptPath = resolve(repositoryRoot, '.github/scripts/check-clawhub-version.mjs');
-const publishScriptPath = resolve(repositoryRoot, '.github/scripts/publish-openmaic-skill.sh');
-const workflowPath = resolve(repositoryRoot, '.github/workflows/publish-openmaic-skill.yml');
+const publishScriptPath = resolve(repositoryRoot, '.github/scripts/publish-cheeyoo-skill.sh');
+const workflowPath = resolve(repositoryRoot, '.github/workflows/publish-cheeyoo-skill.yml');
 const packageJsonPath = resolve(repositoryRoot, 'package.json');
 const requireFromRoot = createRequire(packageJsonPath);
 const semverPackageJsonPath = requireFromRoot.resolve('semver/package.json');
@@ -121,15 +121,13 @@ describe('check-clawhub-version', () => {
     const publishScript = readFileSync(publishScriptPath, 'utf8');
 
     expect(
-      workflow.match(/bash \.github\/scripts\/publish-openmaic-skill\.sh --dry-run/g),
+      workflow.match(/bash \.github\/scripts\/publish-cheeyoo-skill\.sh --dry-run/g),
     ).toHaveLength(1);
-    expect(
-      workflow.match(/^\s+bash \.github\/scripts\/publish-openmaic-skill\.sh$/gm),
-    ).toHaveLength(1);
-    expect(workflow.match(/bash -n \.github\/scripts\/publish-openmaic-skill\.sh/g)).toHaveLength(
-      2,
+    expect(workflow.match(/^\s+bash \.github\/scripts\/publish-cheeyoo-skill\.sh$/gm)).toHaveLength(
+      1,
     );
-    expect(workflow.match(/- "\.github\/scripts\/publish-openmaic-skill\.sh"/g)).toHaveLength(2);
+    expect(workflow.match(/bash -n \.github\/scripts\/publish-cheeyoo-skill\.sh/g)).toHaveLength(2);
+    expect(workflow.match(/- "\.github\/scripts\/publish-cheeyoo-skill\.sh"/g)).toHaveLength(2);
     expect(publishScript).toContain('set -euo pipefail');
     expect(publishScript).toContain('source_commit="$(git rev-parse HEAD)"');
   });
@@ -151,7 +149,7 @@ describe('check-clawhub-version', () => {
     expect(compatibilityJob).toContain('BASH_VERSINFO[0]');
     expect(compatibilityJob).toContain('if [[ "$bash_version" != "3.2" ]]');
     expect(
-      compatibilityJob.match(/\/bin\/bash \.github\/scripts\/publish-openmaic-skill\.sh/g),
+      compatibilityJob.match(/\/bin\/bash \.github\/scripts\/publish-cheeyoo-skill\.sh/g),
     ).toHaveLength(2);
     expect(compatibilityJob).toContain("PUBLISH_VERSION='0.4.0'");
     expect(compatibilityJob).toContain('"status":"would-publish"');
@@ -203,21 +201,21 @@ describe('check-clawhub-version', () => {
       String.raw`echo "::error::Unable to resolve the checked-out origin/main commit\."`,
       String.raw`exit 1`,
       String.raw`fi`,
-      String.raw`if ! git cat-file -e "HEAD\^\{tree\}:skills/openmaic" 2>/dev/null; then`,
-      String.raw`handle_divergence "skills/openmaic was deleted"`,
+      String.raw`if ! git cat-file -e "HEAD\^\{tree\}:skills/cheeyoo" 2>/dev/null; then`,
+      String.raw`handle_divergence "skills/cheeyoo was deleted"`,
       String.raw`fi`,
-      String.raw`if ! git cat-file -e "origin/main\^\{tree\}:skills/openmaic" 2>/dev/null; then`,
-      String.raw`handle_divergence "skills/openmaic was removed from main"`,
+      String.raw`if ! git cat-file -e "origin/main\^\{tree\}:skills/cheeyoo" 2>/dev/null; then`,
+      String.raw`handle_divergence "skills/cheeyoo was removed from main"`,
       String.raw`fi`,
-      String.raw`source_tree="\$\(git rev-parse HEAD:skills/openmaic\)"`,
-      String.raw`main_tree="\$\(git rev-parse origin/main:skills/openmaic\)"`,
+      String.raw`source_tree="\$\(git rev-parse HEAD:skills/cheeyoo\)"`,
+      String.raw`main_tree="\$\(git rev-parse origin/main:skills/cheeyoo\)"`,
       String.raw`if \[\[ "\$source_tree" != "\$main_tree" \]\]; then`,
-      String.raw`handle_divergence "skills/openmaic changed on main"`,
+      String.raw`handle_divergence "skills/cheeyoo changed on main"`,
       String.raw`fi`,
-      String.raw`bash \.github/scripts/publish-openmaic-skill\.sh`,
+      String.raw`bash \.github/scripts/publish-cheeyoo-skill\.sh`,
     ].join(String.raw`\s+`);
     expect(publishJob).toMatch(new RegExp(publishSequence));
-    expect(publishJob.match(/publish-openmaic-skill\.sh/g)).toHaveLength(2);
+    expect(publishJob.match(/publish-cheeyoo-skill\.sh/g)).toHaveLength(2);
     expect(publishJob.match(/\bhandle_divergence\b/g)).toHaveLength(4);
   });
 

@@ -93,7 +93,7 @@ export const REQUEST_PROVIDERS_REFUSED =
 export async function resolveModel(params: ModelRequest): Promise<ResolvedModel> {
   const { requestProvidersAllowed } = await import('@/lib/server/model-config/runtime');
   // Under `allowUserKeys: false` users choose only among the
-  // providers openmaic.yml declares: the model, key and endpoint a request
+  // providers cheeyoo.yml declares: the model, key and endpoint a request
   // names are ignored, and only the configuration decides.
   const allowed = requestProvidersAllowed();
   if (params.stage) {
@@ -127,7 +127,7 @@ export async function resolveRequestedModel(
   if (!deprecationLogged) {
     deprecationLogged = true;
     console.warn(
-      '[resolve-model] A request named its own model or key. This is deprecated: configure models in the model settings or openmaic.yml.',
+      '[resolve-model] A request named its own model or key. This is deprecated: configure models in the model settings or cheeyoo.yml.',
     );
   }
   const { providerId, modelId } = parseModelString(modelString);
@@ -162,7 +162,7 @@ export async function resolveRequestedModel(
   ) {
     const { deploymentConfig } = await import('@/lib/server/model-config/runtime');
     const deployment = deploymentConfig();
-    // Do not revive legacy credentials when openmaic.yml replaced them. Use
+    // Do not revive legacy credentials when cheeyoo.yml replaced them. Use
     // the saved-provider path for credentials declared by that file instead.
     if (!deployment.legacy) throw new ModelAuthorizationError();
     assertDeploymentModelAuthorized(

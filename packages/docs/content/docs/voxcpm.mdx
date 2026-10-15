@@ -15,7 +15,7 @@ If you only need one default voice, the built-in **Doubao** or **OpenAI-compatib
 
 ## 1. Run a VoxCPM backend
 
-OpenMAIC supports three deployment modes. All three use the same OpenMAIC adapter; choose the one you run with `options.backend` on the provider in `openmaic.yml` (step 2).
+OpenMAIC supports three deployment modes. All three use the same OpenMAIC adapter; choose the one you run with `options.backend` on the provider in `cheeyoo.yml` (step 2).
 
 | Backend        | Endpoint           | Best for                                      |
 | -------------- | ------------------ | --------------------------------------------- |
@@ -34,9 +34,9 @@ python -m vllm_omni.server --model openbmb/VoxCPM2 --port 8000
 
 ## 2. Point OpenMAIC at it
 
-VoxCPM2 runs on your own network, so its endpoint is configured by the deployment; workspaces cannot add it in **Settings → Model Services**. Declare it in `openmaic.yml`, choose the backend with `options.backend`, and assign it to the `tts` slot. No API key is required:
+VoxCPM2 runs on your own network, so its endpoint is configured by the deployment; workspaces cannot add it in **Settings → Model Services**. Declare it in `cheeyoo.yml`, choose the backend with `options.backend`, and assign it to the `tts` slot. No API key is required:
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   voxcpm:
     preset: voxcpm-tts
@@ -50,7 +50,7 @@ slots:
 
 The provider's `options.backend` applies to every request on the `tts` slot. Voice registration is available only on the `vllm-omni` backend; with `python-api` and `nano-vllm`, the voice prompt is sent with each request.
 
-Without `openmaic.yml`, the legacy variable configures the endpoint but cannot choose a backend, so use `openmaic.yml` for `python-api` or `nano-vllm`:
+Without `cheeyoo.yml`, the legacy variable configures the endpoint but cannot choose a backend, so use `cheeyoo.yml` for `python-api` or `nano-vllm`:
 
 ```bash
 TTS_VOXCPM_BASE_URL=http://localhost:8000/v1

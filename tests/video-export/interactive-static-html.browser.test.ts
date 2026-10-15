@@ -176,9 +176,9 @@ describe.skipIf(!REQUIRED)('frozen interactive HTML in Chromium', () => {
         ).__openmaicVideoDiagnostics;
         const manifest = (
           window as typeof window & {
-            __openmaicVideoManifest?: { runtimeDiagnostics?: Array<{ code: string }> };
+            __cheeyooVideoManifest?: { runtimeDiagnostics?: Array<{ code: string }> };
           }
-        ).__openmaicVideoManifest;
+        ).__cheeyooVideoManifest;
         const runtimeReport = document.querySelector<HTMLElement>(
           '[data-openmaic-runtime-diagnostics]',
         );

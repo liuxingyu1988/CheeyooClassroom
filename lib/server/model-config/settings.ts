@@ -7,7 +7,7 @@
  * subtree cannot be written.
  *
  * Keys are write-only: a view carries a mask and whether a key is set, never
- * the key. Deployment providers (openmaic.yml, or the legacy server
+ * the key. Deployment providers (cheeyoo.yml, or the legacy server
  * configuration) are listed without anything about their credentials, and are
  * read-only. Every change is validated against the whole configuration before
  * it is stored, so a stored workspace configuration always resolves.
@@ -187,7 +187,7 @@ export interface ModelSettingsView {
   revision: number | null;
   /**
    * Whether users may add providers, keys and token plans of their own
-   * (`allowUserKeys` in openmaic.yml, default true). Without it they choose
+   * (`allowUserKeys` in cheeyoo.yml, default true). Without it they choose
    * among the deployment's providers.
    */
   allowUserKeys: boolean;
@@ -254,7 +254,7 @@ function viewEndpoint(url: string): string {
   }
 }
 
-/** A provider id as model references name it (openmaic.yml's grammar). */
+/** A provider id as model references name it (cheeyoo.yml's grammar). */
 const PROVIDER_ID = /^[a-z0-9][a-z0-9-]{0,62}$/;
 
 /** A key's last four characters, as far as that says nothing useful. */
@@ -346,14 +346,14 @@ function officialEndpointOf(provider: Pick<Provider, 'preset' | 'baseUrl'>): str
 
 function workspacePresetProblem(preset: ProviderPreset): string | undefined {
   if (preset.capabilities.chat?.registryId === 'bedrock') {
-    return 'Amazon Bedrock can only be configured by the deployment (openmaic.yml)';
+    return 'Amazon Bedrock can only be configured by the deployment (cheeyoo.yml)';
   }
-  // The settings take one key per provider; a key pair stays in openmaic.yml.
+  // The settings take one key per provider; a key pair stays in cheeyoo.yml.
   if (preset.requiresCredentials) {
-    return `${preset.name} authenticates with a key pair, which only the deployment (openmaic.yml) can configure`;
+    return `${preset.name} authenticates with a key pair, which only the deployment (cheeyoo.yml) can configure`;
   }
   if (preset.requiresBaseUrl && !preset.capabilities.chat) {
-    return `A custom endpoint for ${preset.name} can only be configured by the deployment (openmaic.yml)`;
+    return `A custom endpoint for ${preset.name} can only be configured by the deployment (cheeyoo.yml)`;
   }
   for (const [capability, target] of Object.entries(preset.capabilities) as [
     SlotCapability,
@@ -362,7 +362,7 @@ function workspacePresetProblem(preset: ProviderPreset): string | undefined {
     if (capability === 'chat') continue;
     const endpoint = target.baseUrl ?? registryDefaultBaseUrl(capability, target.registryId);
     if (endpoint && isLocalEndpoint(endpoint)) {
-      return `The ${preset.name} preset runs on the server's own network; only the deployment (openmaic.yml) can configure it`;
+      return `The ${preset.name} preset runs on the server's own network; only the deployment (cheeyoo.yml) can configure it`;
     }
   }
   return undefined;
@@ -555,7 +555,7 @@ async function checkProvider(id: string, provider: Provider): Promise<void> {
   if (provider.proxy) {
     throw new ModelSettingsError(
       'INVALID_PROVIDER',
-      'A proxy can only be configured by the deployment (openmaic.yml)',
+      'A proxy can only be configured by the deployment (cheeyoo.yml)',
     );
   }
   // Only chat goes through the pinned, redirect-refusing transport: media,
@@ -569,7 +569,7 @@ async function checkProvider(id: string, provider: Provider): Promise<void> {
       'INVALID_PROVIDER',
       regional
         ? `${preset.name} takes only its official regional endpoint (${regional})`
-        : `A custom endpoint for ${preset.name} can only be configured by the deployment (openmaic.yml)`,
+        : `A custom endpoint for ${preset.name} can only be configured by the deployment (cheeyoo.yml)`,
     );
   }
   // A local model server's default endpoint is the server's own network: a

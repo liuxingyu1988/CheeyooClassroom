@@ -379,7 +379,7 @@ unreadable counters are reported as an accounting collection failure; they do
 not fabricate measurements or change a confirmed cleanup into an unconfirmed
 one.
 
-Start this mode with `npm run start:resources -- /etc/openmaic/resource.json`;
+Start this mode with `npm run start:resources -- /etc/cheeyoo/resource.json`;
 [`resource-config.example.json`](resource-config.example.json) documents the
 root-owned state directory, fixed tool paths and per-task budget. Provision the
 official alias from the lockfile with browser download disabled when a managed

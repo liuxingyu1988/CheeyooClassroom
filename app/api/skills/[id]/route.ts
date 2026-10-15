@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
   if (!isSafeSkillId(id)) return new Response('Invalid skill id', { status: 400 });
 
-  if (id === 'openmaic') {
+  if (id === 'cheeyoo') {
     const zip = await buildOpenClawSkillZip();
     return zip ? zipResponse(id, zip) : new Response('Not found', { status: 404 });
   }

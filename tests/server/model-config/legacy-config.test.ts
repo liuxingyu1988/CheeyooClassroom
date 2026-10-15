@@ -82,8 +82,8 @@ describe('translateLegacyConfig: providers', () => {
     const { config, notices } = translateLegacyConfig(disabled);
     expect(Object.keys(config.providers ?? {})).toEqual(['bocha']);
     expect(notices).toEqual([
-      'tts.browser-native-tts is switched off by the operator; openmaic.yml has no such switch, so leave it out or set its slot to null',
-      'webSearch.tavily is switched off by the operator; openmaic.yml has no such switch, so leave it out or set its slot to null',
+      'tts.browser-native-tts is switched off by the operator; cheeyoo.yml has no such switch, so leave it out or set its slot to null',
+      'webSearch.tavily is switched off by the operator; cheeyoo.yml has no such switch, so leave it out or set its slot to null',
     ]);
   });
 
@@ -187,7 +187,7 @@ describe('translateLegacyConfig: media defaults after an upgrade', () => {
     webSearch: { tavily: { apiKey: 'tv' } },
   });
   const { config } = translateLegacyConfig(legacy);
-  // Translated, they are server defaults exactly as `slots` in openmaic.yml.
+  // Translated, they are server defaults exactly as `slots` in cheeyoo.yml.
   const deployment = { source: 'deployment' as const, config };
   const slots = ['tts', 'image', 'video', 'webSearch'] as const;
 
@@ -214,7 +214,7 @@ describe('translateLegacyConfig: media defaults after an upgrade', () => {
     }
   });
 
-  it('leaves an openmaic.yml assignment a default too, locked only by lock', () => {
+  it('leaves an cheeyoo.yml assignment a default too, locked only by lock', () => {
     const file = {
       source: 'deployment' as const,
       config: {
@@ -271,7 +271,7 @@ describe('translateLegacyConfig: models', () => {
     });
     expect(chatSlots(config.slots)).toBeUndefined();
     expect(notices).toEqual([
-      'MODEL_FALLBACK is not carried over without DEFAULT_MODEL, so calls that retried on it no longer do; set the llm slot with a fallback in openmaic.yml',
+      'MODEL_FALLBACK is not carried over without DEFAULT_MODEL, so calls that retried on it no longer do; set the llm slot with a fallback in cheeyoo.yml',
     ]);
   });
 
@@ -297,7 +297,7 @@ describe('translateLegacyConfig: models', () => {
     });
     expect(notices).toEqual([
       'DEFAULT_MODEL uses a provider without server configuration; each workspace chooses its model in Settings → Course Model Config, or configure that provider and set DEFAULT_MODEL',
-      'MODEL_FALLBACK is not carried over without DEFAULT_MODEL, so calls that retried on it no longer do; set the llm slot with a fallback in openmaic.yml',
+      'MODEL_FALLBACK is not carried over without DEFAULT_MODEL, so calls that retried on it no longer do; set the llm slot with a fallback in cheeyoo.yml',
     ]);
     const fallback = translateLegacyConfig(withProviders, {
       defaultModel: 'openai:gpt-5.6',
@@ -349,7 +349,7 @@ describe('translateLegacyConfig: models', () => {
 });
 
 describe('translateLegacyConfig output', () => {
-  it('is a valid openmaic.yml that resolves the same models', () => {
+  it('is a valid cheeyoo.yml that resolves the same models', () => {
     const { config } = translateLegacyConfig(withProviders, {
       defaultModel: 'openai:gpt-5.6',
       globalFallback: 'deepseek:deepseek-v4-flash',

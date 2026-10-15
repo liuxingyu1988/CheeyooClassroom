@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Under `allowUserKeys: false` the deprecated request fields
 // (x-model, x-api-key, x-base-url) never pick the model: only providers
-// openmaic.yml declares are used.
+// cheeyoo.yml declares are used.
 
 const mocks = vi.hoisted(() => ({ getModelCalls: [] as Array<Record<string, unknown>> }));
 

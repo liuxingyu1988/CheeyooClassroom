@@ -12,7 +12,7 @@ if [[ "$#" -eq 0 ]]; then
 elif [[ "$#" -eq 1 && "$1" == "--dry-run" ]]; then
   dry_run=true
 else
-  fail "Usage: publish-openmaic-skill.sh [--dry-run]"
+  fail "Usage: publish-cheeyoo-skill.sh [--dry-run]"
 fi
 
 [[ -n "${SOURCE_REPO:-}" ]] || fail "SOURCE_REPO is required."
@@ -21,13 +21,13 @@ fi
 
 source_commit="$(git rev-parse HEAD)"
 publish_args=(
-  skills/openmaic
+  skills/cheeyoo
   --slug openmaic
-  --name OpenMAIC
+  --name CheeyooClassroom
   --owner wyuc
   --source-repo "$SOURCE_REPO"
   --source-commit "$source_commit"
-  --source-path skills/openmaic
+  --source-path skills/cheeyoo
 )
 
 if [[ -n "$PUBLISH_VERSION" ]]; then

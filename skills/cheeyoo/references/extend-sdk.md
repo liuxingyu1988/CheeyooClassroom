@@ -2,7 +2,7 @@
 
 ## Scope
 
-You are building a **separate app** that consumes `@openmaic/*` packages via `npm install` — not working inside the OpenMAIC monorepo. If you are customizing the OpenMAIC product itself, use [extend-cookbook.md](extend-cookbook.md) instead.
+You are building a **separate app** that consumes `@openmaic/*` packages via `npm install` — not working inside the CheeyooClassroom monorepo. If you are customizing the CheeyooClassroom product itself, use [extend-cookbook.md](extend-cookbook.md) instead.
 
 The SDK is early-stage (`0.x`). Versions below are current as of this writing — confirm against the registry when you install.
 
@@ -39,7 +39,7 @@ The SDK is early-stage (`0.x`). Versions below are current as of this writing �
    import { SlideCanvas } from '@openmaic/renderer';
    import type { Slide } from '@openmaic/dsl';
    ```
-   For a working example of props/usage, read `components/slide-renderer/SlideThumbnail.tsx` in the OpenMAIC repo.
+   For a working example of props/usage, read `components/slide-renderer/SlideThumbnail.tsx` in the CheeyooClassroom repo.
 
 ## Precise Import Paths
 
@@ -78,6 +78,6 @@ All six packages are `0.x`. Pin **exact** versions (e.g. `"@openmaic/renderer": 
 
 Consuming via `npm install` means you treat the SDK as a black box. To modify SDK behavior, the path is heavier:
 
-1. Fork `THU-MAIC/OpenMAIC`, edit the package source under `packages/@openmaic/*`, rebuild its `dist/`.
+1. Fork `THU-MAIC/CheeyooClassroom`, edit the package source under `packages/@openmaic/*`, rebuild its `dist/`.
 2. Produce an installable artifact for **just that subpackage** and consume it in your app — e.g. `npm pack` the modified package and `npm install` the tarball, or publish it under a private/different package name and depend on that. ⚠️ A plain Git dependency or npm `overrides` / `resolutions` pointing at the repo **won't work**: a Git dependency resolves to the repository's root package, not `packages/@openmaic/<name>`.
 3. Keep your fork's diff small and track upstream — the SDK is actively versioned.

@@ -212,7 +212,7 @@ describe('legacy TTS_GOOGLE_* configuration', () => {
     );
     expect(config.providers).toBeUndefined();
     expect(notices).toEqual([
-      'tts.google-tts is switched off by the operator; openmaic.yml has no such switch, so leave it out or set its slot to null',
+      'tts.google-tts is switched off by the operator; cheeyoo.yml has no such switch, so leave it out or set its slot to null',
     ]);
   });
 

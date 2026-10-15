@@ -9,24 +9,24 @@ name: Publish OpenMAIC skill
 # require it only through rules that apply to the paths below.
 # PR previews execute the checked-out head scripts, so they intentionally receive no secrets,
 # have read-only contents permission, and disable persisted checkout credentials.
-# Deleting skills/openmaic does not unpublish or deprecate an existing ClawHub release;
+# Deleting skills/cheeyoo does not unpublish or deprecate an existing ClawHub release;
 # that registry lifecycle action must be performed manually in ClawHub.
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - "skills/openmaic/**"
+      - "skills/cheeyoo/**"
       - ".github/scripts/check-clawhub-version.mjs"
-      - ".github/scripts/publish-openmaic-skill.sh"
-      - ".github/workflows/publish-openmaic-skill.yml"
+      - ".github/scripts/publish-cheeyoo-skill.sh"
+      - ".github/workflows/publish-cheeyoo-skill.yml"
   push:
     branches: [main]
     paths:
-      - "skills/openmaic/**"
+      - "skills/cheeyoo/**"
       - ".github/scripts/check-clawhub-version.mjs"
-      - ".github/scripts/publish-openmaic-skill.sh"
-      - ".github/workflows/publish-openmaic-skill.yml"
+      - ".github/scripts/publish-cheeyoo-skill.sh"
+      - ".github/workflows/publish-cheeyoo-skill.yml"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -79,7 +79,7 @@ jobs:
           CLAWHUB=/usr/bin/true \
             PUBLISH_VERSION='' \
             SOURCE_REPO='THU-MAIC/OpenMAIC' \
-            /bin/bash .github/scripts/publish-openmaic-skill.sh
+            /bin/bash .github/scripts/publish-cheeyoo-skill.sh
 
           compat_dir="$RUNNER_TEMP/clawhub-bash3"
           mkdir -p "$compat_dir"
@@ -104,7 +104,7 @@ jobs:
             PUBLISH_VERSION='0.4.0' \
             RUNNER_TEMP="$compat_dir" \
             SOURCE_REPO='THU-MAIC/OpenMAIC' \
-            /bin/bash .github/scripts/publish-openmaic-skill.sh
+            /bin/bash .github/scripts/publish-cheeyoo-skill.sh
           if [[ "$(wc -l < "$compat_dir/calls" | tr -d ' ')" != "2" ]] ||
             ! grep -q -- $'--version\t0.4.0\t' "$compat_dir/calls"; then
             echo "::error::Bash 3.2 manual-version path did not reach canonical publish."
@@ -137,7 +137,7 @@ jobs:
       - name: Check publish script syntax
         run: |
           node --check .github/scripts/check-clawhub-version.mjs
-          bash -n .github/scripts/publish-openmaic-skill.sh
+          bash -n .github/scripts/publish-cheeyoo-skill.sh
 
       - name: Install ClawHub CLI
         working-directory: ${{ runner.temp }}
@@ -178,11 +178,11 @@ jobs:
         run: |
           set -euo pipefail
           source_commit="$(git rev-parse HEAD)"
-          if ! git cat-file -e "HEAD^{tree}:skills/openmaic" 2>/dev/null; then
-            echo "::notice::Skipping $source_commit because skills/openmaic was deleted."
+          if ! git cat-file -e "HEAD^{tree}:skills/cheeyoo" 2>/dev/null; then
+            echo "::notice::Skipping $source_commit because skills/cheeyoo was deleted."
             exit 0
           fi
-          bash .github/scripts/publish-openmaic-skill.sh --dry-run
+          bash .github/scripts/publish-cheeyoo-skill.sh --dry-run
 
   publish:
     name: Publish to ClawHub
@@ -195,7 +195,7 @@ jobs:
     permissions:
       contents: read
     concurrency:
-      group: publish-openmaic-skill
+      group: publish-cheeyoo-skill
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
@@ -212,7 +212,7 @@ jobs:
       - name: Check publish script syntax
         run: |
           node --check .github/scripts/check-clawhub-version.mjs
-          bash -n .github/scripts/publish-openmaic-skill.sh
+          bash -n .github/scripts/publish-cheeyoo-skill.sh
 
       - name: Install ClawHub CLI
         working-directory: ${{ runner.temp }}
@@ -300,15 +300,15 @@ jobs:
             echo "::error::Unable to resolve the checked-out origin/main commit."
             exit 1
           fi
-          if ! git cat-file -e "HEAD^{tree}:skills/openmaic" 2>/dev/null; then
-            handle_divergence "skills/openmaic was deleted"
+          if ! git cat-file -e "HEAD^{tree}:skills/cheeyoo" 2>/dev/null; then
+            handle_divergence "skills/cheeyoo was deleted"
           fi
-          if ! git cat-file -e "origin/main^{tree}:skills/openmaic" 2>/dev/null; then
-            handle_divergence "skills/openmaic was removed from main"
+          if ! git cat-file -e "origin/main^{tree}:skills/cheeyoo" 2>/dev/null; then
+            handle_divergence "skills/cheeyoo was removed from main"
           fi
-          source_tree="$(git rev-parse HEAD:skills/openmaic)"
-          main_tree="$(git rev-parse origin/main:skills/openmaic)"
+          source_tree="$(git rev-parse HEAD:skills/cheeyoo)"
+          main_tree="$(git rev-parse origin/main:skills/cheeyoo)"
           if [[ "$source_tree" != "$main_tree" ]]; then
-            handle_divergence "skills/openmaic changed on main"
+            handle_divergence "skills/cheeyoo changed on main"
           fi
-          bash .github/scripts/publish-openmaic-skill.sh
+          bash .github/scripts/publish-cheeyoo-skill.sh

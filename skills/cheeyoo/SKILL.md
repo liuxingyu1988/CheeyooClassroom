@@ -1,11 +1,11 @@
 ---
-name: openmaic
-description: OpenMAIC assistant for setting up, generating, and extending OpenMAIC. Use when the user wants to use OpenMAIC, generate a multi-agent interactive classroom, or build on / extend / customize OpenMAIC and its @openmaic/* SDK (secondary development, 二开) — covers Live Demo or local setup, startup modes, provider keys, classroom generation, and secondary development (forking, providers/storage/themes, routes, or the renderer/editor).
+name: cheeyoo
+description: CheeyooClassroom assistant for setting up, generating, and extending CheeyooClassroom. Use when the user wants to use CheeyooClassroom, generate a multi-agent interactive classroom, or build on / extend / customize CheeyooClassroom and its @openmaic/* SDK (secondary development, 二开) — covers Live Demo or local setup, startup modes, provider keys, classroom generation, and secondary development (forking, providers/storage/themes, routes, or the renderer/editor).
 user-invocable: true
 metadata: { "openclaw": { "emoji": "🏫" } }
 ---
 
-# OpenMAIC Skill
+# CheeyooClassroom Skill
 
 Use this as a guided, confirmation-heavy SOP. Do not compress the whole setup into one reply and do not perform state-changing actions without explicit user confirmation.
 
@@ -14,8 +14,8 @@ Use this as a guided, confirmation-heavy SOP. Do not compress the whole setup in
 - Move one phase at a time.
 - Before any state-changing action, ask for confirmation.
 - If local state already exists, show what you found and ask whether to keep it.
-- Do not assume the OpenClaw agent's own model or API key will be reused by OpenMAIC.
-- OpenMAIC classroom generation uses OpenMAIC's server-side model configuration (`openmaic.yml` and the model settings in the web app).
+- Do not assume the OpenClaw agent's own model or API key will be reused by CheeyooClassroom.
+- CheeyooClassroom classroom generation uses CheeyooClassroom's server-side model configuration (`cheeyoo.yml` and the model settings in the web app).
 - This skill must not rely on any request-time model or provider overrides.
 - Only that server-side configuration may control provider selection and defaults.
 - Do not default to asking the user to paste API keys into chat.
@@ -36,7 +36,7 @@ If present, read defaults from `~/.openclaw/openclaw.json` under:
         "enabled": true,
         "config": {
           "accessCode": "sk-xxx",
-          "repoDir": "/path/to/OpenMAIC",
+          "repoDir": "/path/to/CheeyooClassroom",
           "url": "http://localhost:3000"
         }
       }
@@ -45,7 +45,7 @@ If present, read defaults from `~/.openclaw/openclaw.json` under:
 }
 ```
 
-- If `accessCode` is present, default to Live Demo mode and skip the mode-selection prompt — unless the user's intent is to extend/build on OpenMAIC (see the exception in Phase 0).
+- If `accessCode` is present, default to Live Demo mode and skip the mode-selection prompt — unless the user's intent is to extend/build on CheeyooClassroom (see the exception in Phase 0).
 - Use `repoDir` and `url` only as defaults for local mode.
 - Still confirm before acting.
 
@@ -53,23 +53,23 @@ If present, read defaults from `~/.openclaw/openclaw.json` under:
 
 ### 0. Choose Mode
 
-First check skill config for `accessCode`. If present, announce that a stored access code was found and proceed directly to Live Demo mode (load [references/live-demo.md](references/live-demo.md), skip phases 1–4). Do not ask the user to paste the code again. **Exception:** if the user's stated intent is to extend / build on / customize OpenMAIC or consume the `@openmaic/*` SDK (二次开发 / 二开 / SDK), do not auto-shortcut — go to the extend branch below regardless of `accessCode`. A returning Live Demo user who now wants to do 二开 should be routed to extend, not silently sent back to Live Demo.
+First check skill config for `accessCode`. If present, announce that a stored access code was found and proceed directly to Live Demo mode (load [references/live-demo.md](references/live-demo.md), skip phases 1–4). Do not ask the user to paste the code again. **Exception:** if the user's stated intent is to extend / build on / customize CheeyooClassroom or consume the `@openmaic/*` SDK (二次开发 / 二开 / SDK), do not auto-shortcut — go to the extend branch below regardless of `accessCode`. A returning Live Demo user who now wants to do 二开 should be routed to extend, not silently sent back to Live Demo.
 
-If no `accessCode` in config (or the extend exception above applies), ask the user how they want to use OpenMAIC:
+If no `accessCode` in config (or the extend exception above applies), ask the user how they want to use CheeyooClassroom:
 
-1. **Use the OpenMAIC Live Demo** (recommended for quick start) — The cloud edition: the version officially deployed and hosted by the OpenMAIC team at open.maic.chat. Requires an access code (starts with `sk-`). Get yours by signing in at https://open.maic.chat, clicking your account in the top-right corner, opening "访问码设置" (access code settings), and generating a code; then add it to `~/.openclaw/openclaw.json` under `skills.entries.openmaic.config.accessCode`. No local setup needed.
+1. **Use the CheeyooClassroom Live Demo** (recommended for quick start) — The cloud edition: the version officially deployed and hosted by the CheeyooClassroom team at open.maic.chat. Requires an access code (starts with `sk-`). Get yours by signing in at https://open.maic.chat, clicking your account in the top-right corner, opening "访问码设置" (access code settings), and generating a code; then add it to `~/.openclaw/openclaw.json` under `skills.entries.openmaic.config.accessCode`. No local setup needed.
 2. **Run locally** — Clone the repo, configure provider keys, and run on your machine.
-3. **Extend or build on OpenMAIC (二次开发)** — Fork the repo and customize the product, or consume the `@openmaic/*` SDK to build something new.
+3. **Extend or build on CheeyooClassroom (二次开发)** — Fork the repo and customize the product, or consume the `@openmaic/*` SDK to build something new.
 
 If the user chooses Live Demo mode, load [references/live-demo.md](references/live-demo.md) and skip phases 1–4.
 If the user chooses local mode, proceed to phase 1 as usual.
-If the user chooses to extend/build on OpenMAIC, load [references/extend.md](references/extend.md) and skip the setup/generation phases.
+If the user chooses to extend/build on CheeyooClassroom, load [references/extend.md](references/extend.md) and skip the setup/generation phases.
 
 ### 1. Clone Or Reuse Existing Repo
 
 Load [references/clone.md](references/clone.md).
 
-Use this when the user has not installed OpenMAIC yet or when you need to confirm which local checkout to use.
+Use this when the user has not installed CheeyooClassroom yet or when you need to confirm which local checkout to use.
 
 ### 2. Choose Startup Mode
 
@@ -81,13 +81,13 @@ Use this after the repo location is confirmed. Present the available startup mod
 
 Load [references/provider-keys.md](references/provider-keys.md).
 
-Use this before starting classroom generation. Recommend a provider path and tell the user exactly what to edit themselves (`openmaic.yml` and `.env.local`, or the model settings in the web app). If generation later fails due to provider/model/auth issues, return to this phase and direct the user to update the same configuration.
+Use this before starting classroom generation. Recommend a provider path and tell the user exactly what to edit themselves (`cheeyoo.yml` and `.env.local`, or the model settings in the web app). If generation later fails due to provider/model/auth issues, return to this phase and direct the user to update the same configuration.
 
 After the core LLM key is configured, ask the user if they want to enable optional features (web search, image generation, video generation, TTS). Each is a slot with its own provider — see the "Optional Features" section in provider-keys.md.
 
-### 4. Start And Verify OpenMAIC
+### 4. Start And Verify CheeyooClassroom
 
-After the user has chosen a startup mode and configured keys, start OpenMAIC using the chosen method, then verify the service with `GET {url}/api/health`.
+After the user has chosen a startup mode and configured keys, start CheeyooClassroom using the chosen method, then verify the service with `GET {url}/api/health`.
 
 ### 5. Generate A Classroom
 

@@ -1,8 +1,8 @@
-# Extend The OpenMAIC Product (Cookbook)
+# Extend The CheeyooClassroom Product (Cookbook)
 
 ## Scope
 
-You are working **inside a fork of the OpenMAIC product** (the Next.js app at the repo root), customizing it in place. If instead you want to consume `@openmaic/*` in a separate app, use [extend-sdk.md](extend-sdk.md) instead.
+You are working **inside a fork of the CheeyooClassroom product** (the Next.js app at the repo root), customizing it in place. If instead you want to consume `@openmaic/*` in a separate app, use [extend-sdk.md](extend-sdk.md) instead.
 
 Entry points below are given as **file + symbol name** (not line numbers — they drift). Read the file, then jump to the symbol. The `@/*` path alias is anchored at the repo root.
 
@@ -12,15 +12,15 @@ Entry points below are given as **file + symbol name** (not line numbers — the
 
 Two distinct cases:
 
-- **Use an already-supported provider** (it's in the union below): no source change. Declare it in `openmaic.yml` with its preset and assign it to a slot, key in `.env.local` as `${VAR}` — follow [provider-keys.md](provider-keys.md). Chat slots always name `<provider id>:<model id>`.
+- **Use an already-supported provider** (it's in the union below): no source change. Declare it in `cheeyoo.yml` with its preset and assign it to a slot, key in `.env.local` as `${VAR}` — follow [provider-keys.md](provider-keys.md). Chat slots always name `<provider id>:<model id>`.
 - **Register a NEW provider** (source change):
   1. Add the id to the `BuiltInProviderId` union in `lib/types/provider.ts`.
   2. Register its config + models in the `PROVIDERS` registry in `lib/ai/providers.ts`.
-  3. The registry entry becomes a preset automatically (`lib/config/provider-presets.ts`; the preset id is the registry id unless `lib/config/preset-ids.ts` overrides it), so `openmaic.yml` can declare it with `preset: your-id` and the model settings offer it. No env wiring is needed.
-  4. Optional, legacy only: to also accept `<PREFIX>_API_KEY` / `_BASE_URL` / `_MODELS` from the environment without `openmaic.yml`, add a `PREFIX: 'your-id'` entry to `LLM_ENV_MAP` in `lib/server/provider-config.ts`. That path is deprecated.
+  3. The registry entry becomes a preset automatically (`lib/config/provider-presets.ts`; the preset id is the registry id unless `lib/config/preset-ids.ts` overrides it), so `cheeyoo.yml` can declare it with `preset: your-id` and the model settings offer it. No env wiring is needed.
+  4. Optional, legacy only: to also accept `<PREFIX>_API_KEY` / `_BASE_URL` / `_MODELS` from the environment without `cheeyoo.yml`, add a `PREFIX: 'your-id'` entry to `LLM_ENV_MAP` in `lib/server/provider-config.ts`. That path is deprecated.
   5. A new token plan (one key, several capabilities) is one entry in `lib/config/token-plan-presets.ts`; it becomes a preset whose recommended models fill the slots it covers in the first-run setup.
 
-**Gotcha:** OpenMAIC has **no hardcoded model fallback**. If no model is assigned to the `llm` slot (or the more specific slot a call uses), generation fails with `No model is configured for <slot>` rather than picking a vendor — always assign one.
+**Gotcha:** CheeyooClassroom has **no hardcoded model fallback**. If no model is assigned to the `llm` slot (or the more specific slot a call uses), generation fails with `No model is configured for <slot>` rather than picking a vendor — always assign one.
 
 ## Task 2 — Server-Side Persistence (PostgreSQL / S3)
 

@@ -3,11 +3,11 @@ title: Supported Models
 description: Built-in model and provider lists for the open-source OpenMAIC edition.
 ---
 
-This page lists the providers and models built into the open-source OpenMAIC edition. In [`openmaic.yml`](./configuration.mdx) a provider names one of these as its `preset`, and the model settings of the web app offer the same catalogue. Availability also depends on the provider account, region and server configuration, and a provider's `models` list can narrow what the model settings offer.
+This page lists the providers and models built into the open-source OpenMAIC edition. In [`cheeyoo.yml`](./configuration.mdx) a provider names one of these as its `preset`, and the model settings of the web app offer the same catalogue. Availability also depends on the provider account, region and server configuration, and a provider's `models` list can narrow what the model settings offer.
 
 ## Presets
 
-A preset is a built-in provider template: which vendor, which endpoint, and which capabilities one account covers. Every provider in `openmaic.yml` or in the model settings names a preset.
+A preset is a built-in provider template: which vendor, which endpoint, and which capabilities one account covers. Every provider in `cheeyoo.yml` or in the model settings names a preset.
 
 **Single-capability presets** have the provider IDs of the tables below, one per capability: `openai` is OpenAI chat, while OpenAI images, speech and transcription are `openai-image`, `openai-tts` and `openai-whisper`. Three IDs differ from the registry ID because another preset already uses it: MiniMax web search is `minimax-search`, Doubao web search is `doubao-search`, and Lemonade image generation is `lemonade-image`.
 
@@ -34,11 +34,11 @@ All preset IDs:
 | Web search | `tavily`, `exa`, `bocha`, `brave`, `baidu`, `claude`, `minimax-search`, `doubao-search`, `searxng` |
 | Document parsing | `unpdf`, `mineru`, `mineru-cloud`, `alidocmind` |
 
-`azure`, `openai-compatible`, `searxng` and `mineru` need a `baseUrl`; `alidocmind` authenticates with `credentials` (a key pair). Self-hosted TTS, ASR, image, search and document presets, key-pair presets and Bedrock can only be configured in `openmaic.yml`; see [Configuration](./configuration.mdx).
+`azure`, `openai-compatible`, `searxng` and `mineru` need a `baseUrl`; `alidocmind` authenticates with `credentials` (a key pair). Self-hosted TTS, ASR, image, search and document presets, key-pair presets and Bedrock can only be configured in `cheeyoo.yml`; see [Configuration](./configuration.mdx).
 
 ## LLM models
 
-In `openmaic.yml` a chat slot names `<provider id>:<model id>`, where the provider id is the one you declared under `providers`, for example `openai:gpt-5.6`, `qwen:qwen3.7-plus` or `ollama:llama3.3` when the provider ids match the preset ids.
+In `cheeyoo.yml` a chat slot names `<provider id>:<model id>`, where the provider id is the one you declared under `providers`, for example `openai:gpt-5.6`, `qwen:qwen3.7-plus` or `ollama:llama3.3` when the provider ids match the preset ids.
 
 | Provider        | Provider ID       | Built-in models                                                                                                                                                                                                                                                                                                                                                                                                            |
 | --------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -126,7 +126,7 @@ This table lists model selectors and self-hosted backends. It does not enumerate
 
 ## Web Search providers
 
-Most web search providers have no model selector, so slots usually name them by provider id alone (`webSearch: tavily`). SearXNG can only be configured in `openmaic.yml`; the other providers need an API key or a base URL as listed. The preset IDs of MiniMax and Doubao web search are `minimax-search` and `doubao-search`.
+Most web search providers have no model selector, so slots usually name them by provider id alone (`webSearch: tavily`). SearXNG can only be configured in `cheeyoo.yml`; the other providers need an API key or a base URL as listed. The preset IDs of MiniMax and Doubao web search are `minimax-search` and `doubao-search`.
 
 | Provider     | Provider ID |
 | ------------ | ----------- |

@@ -31,13 +31,13 @@ pnpm install
 cp .env.example .env.local
 ```
 
-接著設定一個模型。最簡單的檔案方式是在 `.env.local` 旁邊放一個最小的 `openmaic.yml`，key 寫在 `.env.local` 中：
+接著設定一個模型。最簡單的檔案方式是在 `.env.local` 旁邊放一個最小的 `cheeyoo.yml`，key 寫在 `.env.local` 中：
 
 ```bash title=".env.local"
 OPENAI_API_KEY=sk-...
 ```
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   openai:
     preset: openai
@@ -47,14 +47,14 @@ slots:
   llm: openai:gpt-5.5
 ```
 
-`openmaic.example.yml` 就是這個起點，另外附有已註解的選用供應商和插槽。不使用該檔案時，舊版供應商變數仍然有效，前提是用 `DEFAULT_MODEL` 指定模型：
+`cheeyoo.example.yml` 就是這個起點，另外附有已註解的選用供應商和插槽。不使用該檔案時，舊版供應商變數仍然有效，前提是用 `DEFAULT_MODEL` 指定模型：
 
 ```bash title=".env.local"
 ANTHROPIC_API_KEY=sk-ant-...
 DEFAULT_MODEL=anthropic:claude-sonnet-4-6
 ```
 
-兩者都不想設定的話，啟動應用程式後在 **設定 → Token Plan** 中填入方案 key，或在 **設定 → 模型服務** 中填入某個服務的 key。既沒有 `openmaic.yml`、也沒有 `DEFAULT_MODEL`、也沒有在那裡設定服務時，沒有任何可用模型，生成會失敗。
+兩者都不想設定的話，啟動應用程式後在 **設定 → Token Plan** 中填入方案 key，或在 **設定 → 模型服務** 中填入某個服務的 key。既沒有 `cheeyoo.yml`、也沒有 `DEFAULT_MODEL`、也沒有在那裡設定服務時，沒有任何可用模型，生成會失敗。
 
 完整的 provider、圖片／影片生成、TTS、ASR、文件解析、網路搜尋、存取控制和 feature flag 設定請見[設定說明](./configuration.mdx)。
 

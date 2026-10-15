@@ -157,7 +157,7 @@ describe('material analysis from the slots', () => {
 
     expect(failure.reason).toBe('service-required');
     expect(failure.message).toBe(
-      'DOCX extraction needs a document service, and none is configured. Assign one to the document slot in the model settings or openmaic.yml.',
+      'DOCX extraction needs a document service, and none is configured. Assign one to the document slot in the model settings or cheeyoo.yml.',
     );
     expect(mocks.parseWithMinerUCloud).not.toHaveBeenCalled();
   });

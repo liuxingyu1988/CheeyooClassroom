@@ -34,7 +34,7 @@ export interface SlotDefinition {
    * `agent` does).
    */
   requires?: readonly SlotRequirement[];
-  /** Configurable in `openmaic.yml` only; the settings UI does not show it. */
+  /** Configurable in `cheeyoo.yml` only; the settings UI does not show it. */
   configOnly?: boolean;
   /**
    * The slot's calls carry function tools, which a reasoning effort cannot

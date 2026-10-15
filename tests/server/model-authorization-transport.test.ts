@@ -41,7 +41,7 @@ beforeEach(() => {
   captures.calls = [];
   for (const key of [
     'DATABASE_URL',
-    'OPENMAIC_CONFIG',
+    'CHEEYOO_CONFIG',
     'DEFAULT_MODEL',
     'MODEL_FALLBACK',
     'MODEL_ROUTES',

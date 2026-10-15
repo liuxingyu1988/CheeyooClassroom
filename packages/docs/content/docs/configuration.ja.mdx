@@ -1,17 +1,17 @@
 ---
 title: 設定
-description: モデルとプロバイダー（openmaic.yml とモデル設定）、アクセス制御、機能フラグ、その他のサーバーオプション。
+description: モデルとプロバイダー（cheeyoo.yml とモデル設定）、アクセス制御、機能フラグ、その他のサーバーオプション。
 ---
 
 OpenMAIC には 3 つの設定ソースがあり、それぞれが 1 つの役割だけを担います。
 
 | ソース | 書く人 | 内容 | 反映タイミング |
 | --- | --- | --- | --- |
-| `openmaic.yml` | 運用者 | プロバイダー、サーバーの既定の割り当て、ロックするスロット、ユーザーが独自のキーを追加できるか | 起動時（変更後は再起動が必要） |
-| Web アプリのモデル設定 | ワークスペースのユーザー | ユーザー自身のプロバイダーと、`openmaic.yml` がロックしていないスロットの割り当て。データベースに保存 | 即時 |
-| 環境変数（`.env.local`、コンテナの Secret） | 運用者 | `openmaic.yml` が参照するシークレットと、その他すべてのサーバーオプション | 起動時 |
+| `cheeyoo.yml` | 運用者 | プロバイダー、サーバーの既定の割り当て、ロックするスロット、ユーザーが独自のキーを追加できるか | 起動時（変更後は再起動が必要） |
+| Web アプリのモデル設定 | ワークスペースのユーザー | ユーザー自身のプロバイダーと、`cheeyoo.yml` がロックしていないスロットの割り当て。データベースに保存 | 即時 |
+| 環境変数（`.env.local`、コンテナの Secret） | 運用者 | `cheeyoo.yml` が参照するシークレットと、その他すべてのサーバーオプション | 起動時 |
 
-`DATABASE_URL` is required; other environment variables are optional (see [Deployment](./deployment.mdx)). Providers that use server credentials for model selection also need authorized model lists, as described below. See [`.env.example`](https://github.com/THU-MAIC/OpenMAIC/blob/main/.env.example) for environment variables, [`openmaic.example.yml`](https://github.com/THU-MAIC/OpenMAIC/blob/main/openmaic.example.yml) for a sample model configuration, and [Supported models](./supported-models.mdx) for preset and model IDs.
+`DATABASE_URL` is required; other environment variables are optional (see [Deployment](./deployment.mdx)). Providers that use server credentials for model selection also need authorized model lists, as described below. See [`.env.example`](https://github.com/THU-MAIC/OpenMAIC/blob/main/.env.example) for environment variables, [`cheeyoo.example.yml`](https://github.com/THU-MAIC/OpenMAIC/blob/main/cheeyoo.example.yml) for a sample model configuration, and [Supported models](./supported-models.mdx) for preset and model IDs.
 
 以前のリリースでは、モデルはプロバイダー環境変数、`server-providers.yml`、`DEFAULT_MODEL`、`MODEL_ROUTES` でしか設定できませんでした。`MODEL_ROUTES` を除き、これらは現在も動作しますが非推奨です。[旧設定からの移行](#旧設定からの移行)を参照してください。
 
@@ -25,14 +25,14 @@ OpenMAIC には 3 つの設定ソースがあり、それぞれが 1 つの役�
 
 機能が使えるかどうかは、そのスロットが割り当てに解決されるかどうかだけで決まります。別のオン／オフスイッチはありません。
 
-### openmaic.yml
+### cheeyoo.yml
 
-サーバーは起動ディレクトリ（リポジトリのルート。Docker イメージでは `/app`）から `openmaic.yml` を読み込みます。別のパスを使うには `OPENMAIC_CONFIG` を設定します。相対パスは同じディレクトリを基準に解決され、この場合ファイルは必ず存在しなければなりません。ファイルがない場合、サーバーは Web アプリの設定と、まだ設定されている[旧来の変数](#旧設定からの移行)を使います。
+サーバーは起動ディレクトリ（リポジトリのルート。Docker イメージでは `/app`）から `cheeyoo.yml` を読み込みます。別のパスを使うには `CHEEYOO_CONFIG` を設定します。相対パスは同じディレクトリを基準に解決され、この場合ファイルは必ず存在しなければなりません。ファイルがない場合、サーバーは Web アプリの設定と、まだ設定されている[旧来の変数](#旧設定からの移行)を使います。
 
 ファイルは起動時に一度だけ読み込まれるため、変更後はサーバーを再起動してください。サーバーは起動前にファイル全体を検証します。未設定の `${VAR}`、不明なプリセットやスロット、宣言されていないプロバイダーへの参照、スロットの機能を提供しないプロバイダーがあるとサーバーは起動せず、問題ごとにその場所が表示されます。
 
 ```text
-[boot] Invalid server configuration; the server will not start: Invalid model configuration in /app/openmaic.yml:
+[boot] Invalid server configuration; the server will not start: Invalid model configuration in /app/cheeyoo.yml:
   - providers.openai.apiKey: environment variable OPENAI_API_KEY is not set
   - slots.course.outlines: unknown slot
 ```
@@ -41,7 +41,7 @@ OpenMAIC には 3 つの設定ソースがあり、それぞれが 1 つの役�
 
 ### 完全な例
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   # <プロバイダー ID>：小文字、数字、ハイフン
   openai:
@@ -122,7 +122,7 @@ Amazon Bedrock（`preset: bedrock`）はサーバーの AWS 認証情報チェ�
 | `course.actions` | chat | `llm` | シーンのアクション（各シーンでエージェントが話す内容と行う動作） |
 | `classroom` | chat | `llm` | 授業中のチャット、クイズの採点、PBL ランタイム |
 | `agent` | chat | `llm` | Pro ワークベンチのエージェント。**ツール呼び出しが必要。** `api` と `contextWindow` も指定可能 |
-| `agent.title` | chat | `agent` | Pro セッションのタイトル。`openmaic.yml` でのみ設定でき、モデル設定には表示されません |
+| `agent.title` | chat | `agent` | Pro セッションのタイトル。`cheeyoo.yml` でのみ設定でき、モデル設定には表示されません |
 | `tts` | tts | — | 音声合成 |
 | `asr` | asr | — | 音声認識（音声入力、音声・動画の文字起こし） |
 | `image` | image | — | 画像生成 |
@@ -133,7 +133,7 @@ Amazon Bedrock（`preset: bedrock`）はサーバーの AWS 認証情報チェ�
 スロットの解決方法：
 
 - 呼び出し元のスロットから機能のルートへ向かって上にたどり、最初に見つかった割り当てが使われます。つまり親の割り当てがそのサブツリー全体の既定値になり、親を変えると自分の割り当てを持たない子もすべて変わります。
-- ロックされたサブツリーの中（そのスロットか祖先が `lock` に挙げられている、または `lock: all`）では `openmaic.yml` だけが参照されます。ロックされたスロットまで上にたどり、ファイルに書かれた最初の割り当てが使われます。それ以外ではユーザーの選択が優先されます。まずスロットからルートまでワークスペース自身の割り当てを探し、一つもない場合にだけ、同じくスロットから上へ `openmaic.yml` の既定値を探します。そのため、ワークスペースが親を設定していれば、子にサーバーの既定値が書かれていても、ワークスペースが変更していない子は親に従います。サーバーの値はあくまで既定値です。
+- ロックされたサブツリーの中（そのスロットか祖先が `lock` に挙げられている、または `lock: all`）では `cheeyoo.yml` だけが参照されます。ロックされたスロットまで上にたどり、ファイルに書かれた最初の割り当てが使われます。それ以外ではユーザーの選択が優先されます。まずスロットからルートまでワークスペース自身の割り当てを探し、一つもない場合にだけ、同じくスロットから上へ `cheeyoo.yml` の既定値を探します。そのため、ワークスペースが親を設定していれば、子にサーバーの既定値が書かれていても、ワークスペースが変更していない子は親に従います。サーバーの値はあくまで既定値です。
 - `null` はそこで探索を止めます。そのスロットと、その下で自分の割り当てを持たないスロットはすべて無効になります。
 - ルートまで割り当てがなければ、その機能は未設定です。呼び出しはスロット名を示すエラーで失敗し、どのベンダーにもフォールバックしません。
 - 要件（requirement）はそれを宣言したスロットに属し、割り当てか継承かにかかわらず、そのスロットが解決したモデルに対してチェックされます。`agent` はツール呼び出しを必要とし、組み込みカタログがそのモデルは非対応だとしている場合、エージェントは妥協せずに実行を拒否します。カタログにないモデルは許可されます。`agent.title` には要件がないので、小さいモデルを使えます。
@@ -171,7 +171,7 @@ slots:
 
 ### フォールバック
 
-フォールバックは言語モデルのスロット、つまり `llm` とその下のすべてのスロットにだけ適用されます。`tts`、`asr`、`image`、`video`、`webSearch`、`document` のスロットに書いた `fallback` は拒否されます（`openmaic.yml` では起動時、モデル設定では保存時）。
+フォールバックは言語モデルのスロット、つまり `llm` とその下のすべてのスロットにだけ適用されます。`tts`、`asr`、`image`、`video`、`webSearch`、`document` のスロットに書いた `fallback` は拒否されます（`cheeyoo.yml` では起動時、モデル設定では保存時）。
 
 主モデルの呼び出しが自身の再試行の後も再試行可能な失敗で終わった場合、スロットの `fallback` で一度だけ再試行します。再試行可能な失敗とは、SDK が一時的と判断したエラー、タイムアウト、ネットワークエラー、レート制限（429）、容量不足（503）、または空の出力です。プロバイダーがクォータ切れを明示的に返した場合（`insufficient_quota` などの OpenAI 互換のクォータコード。HTTP ステータスは問いません）は、主モデルで再試行せず、すぐにフォールバックに切り替えます。コンテンツ安全性による拒否やその他の 4xx エラーではフォールバックしません。フォールバックは通常の呼び出しとストリーミング呼び出しの両方に適用され、スロットの `thinking` パラメーターを使います。
 
@@ -183,7 +183,7 @@ slots:
 
 ### 既定値・ロックとモデル設定
 
-`openmaic.yml` が `slots` に書いたものはサーバーの**既定値**です。ユーザーはモデル設定で変更でき、カードには **サーバー既定** と表示され、**サーバー既定に戻す** で変更を取り消せます。`lock` に挙げたものは**管理者が固定**し、サブツリー全体とともに全員に対して固定されます。
+`cheeyoo.yml` が `slots` に書いたものはサーバーの**既定値**です。ユーザーはモデル設定で変更でき、カードには **サーバー既定** と表示され、**サーバー既定に戻す** で変更を取り消せます。`lock` に挙げたものは**管理者が固定**し、サブツリー全体とともに全員に対して固定されます。
 
 ```yaml
 lock: [llm, video]   # これらのスロットとその下のすべてのスロット
@@ -191,7 +191,7 @@ lock: [llm, video]   # これらのスロットとその下のすべてのスロ
 ```
 
 - `lock` に挙げるスロットはすべて `slots` に書かれている必要があります（`null` も含みます。`video: null` と `lock: [video]` で全員の動画が無効のままになります）。未知のスロットや、`slots` に書かれていないロック対象のスロットがあると、位置（`lock.1: ...`）を示してサーバーは起動しません。
-- ロックしたスロットは子も固定します。`lock: [llm]` では、どのユーザーも `course.outline` などの言語モデルスロットを設定できず、すべて `openmaic.yml` だけで解決されます。
+- ロックしたスロットは子も固定します。`lock: [llm]` では、どのユーザーも `course.outline` などの言語モデルスロットを設定できず、すべて `cheeyoo.yml` だけで解決されます。
 - `lock: all` は書かれているかどうかにかかわらずすべてのスロットを固定します。`slots` に書かれていない機能のルートは、全員に対して未設定になります。
 - `null`、サーバーの既定値、ロックは組み合わせて使えます。`video: null` だけなら既定で無効でユーザーが有効にでき、`lock: [video]` を加えると無効のままです。
 
@@ -200,7 +200,7 @@ lock: [llm, video]   # これらのスロットとその下のすべてのスロ
 | 形 | 条件 | 表示されるもの |
 | --- | --- | --- |
 | **自分で設定する** | `allowUserKeys` が有効（既定） | Token Plan、モデルサービス、コースモデル設定 |
-| **モデルを選ぶ** | `allowUserKeys: false` | コースモデル設定のみ。`openmaic.yml` が宣言したプロバイダーから選ぶ |
+| **モデルを選ぶ** | `allowUserKeys: false` | コースモデル設定のみ。`cheeyoo.yml` が宣言したプロバイダーから選ぶ |
 | **管理者が設定済み** | すべてのスロットがロックされている（`lock: all`） | コースモデルの図。すべてのカードが読み取り専用（各カードにモデル、または無効・未設定を表示） |
 
 すべてのコントロールは同じ規則に従います。使って何かが変わる場合にだけ表示されます。モデルサービスの各機能のタブとサービスの追加は、その機能にユーザーが設定できるスロットが残っている間だけ表示されます。Token Plan は、プランがまだロックされていないスロットを埋められる間だけ表示され、プランを接続してもロックされたスロットには触れません。コースモデル設定でロックされたカードは、**管理者が固定** と表示された読み取り専用の 1 行になります。ホームページのモデル選択は、既定モデルを変更できる場合（`llm` がロックされておらず、言語モデルを提供するプロバイダーがある場合）にだけ表示されます。
@@ -208,10 +208,10 @@ lock: [llm, video]   # これらのスロットとその下のすべてのスロ
 Web アプリのモデル設定は、現在のワークスペースについて同じ木を読み書きします。
 
 - **Token Plan**：プランを接続すると、そのキーでプランのプロバイダーを追加し、プランが推奨するスロットのうちまだ割り当てのないものにモデルを設定します。接続を解除するとプロバイダーが削除され、それを使っていたスロットは親に従います。
-- **モデルサービス**：機能ごとのタブ（言語モデル、画像、動画、音声合成、音声認識、ドキュメント解析、Web 検索）にそれぞれのサービスが並びます。`openmaic.yml` のプロバイダーは読み取り専用で表示され、キーに関する情報は一切表示されません。ワークスペースが設定したサービスはワークスペースのプロバイダーになり、キーは書き込み専用で `…abcd` のようなマスクだけが表示されます。独自のエンドポイントは言語モデルのみ（Azure Speech はリージョンの公式エンドポイント、例えば `https://<region>.tts.speech.microsoft.com` を使います）、セルフホストのサービスとキーペアは `openmaic.yml` で設定します。テストボタンは保存済みのプロバイダーをサーバー側で確認します。
+- **モデルサービス**：機能ごとのタブ（言語モデル、画像、動画、音声合成、音声認識、ドキュメント解析、Web 検索）にそれぞれのサービスが並びます。`cheeyoo.yml` のプロバイダーは読み取り専用で表示され、キーに関する情報は一切表示されません。ワークスペースが設定したサービスはワークスペースのプロバイダーになり、キーは書き込み専用で `…abcd` のようなマスクだけが表示されます。独自のエンドポイントは言語モデルのみ（Azure Speech はリージョンの公式エンドポイント、例えば `https://<region>.tts.speech.microsoft.com` を使います）、セルフホストのサービスとキーペアは `cheeyoo.yml` で設定します。テストボタンは保存済みのプロバイダーをサーバー側で確認します。
 - **コースモデル設定**：メインモデルは `llm` スロット、パイプラインの各工程はそれぞれのスロットです（メインモデルに従う＝その工程に独自の割り当てがない）。画像・動画・音声・検索・文字起こしのスイッチはスロットを `null` にします。ロックされたスロットは読み取り専用の 1 行になり、サーバー既定のスロットはユーザーが変更すると **サーバー既定に戻す** を表示します。
 
-以前のバージョンでブラウザーに保存されていたプロバイダー設定（プロバイダーとそのキーや Base URL、選択したモデル、Token Plan の接続状態、各機能の選択）は、ワークスペースに一度だけインポートされます。インポートはワークスペースの既存の設定や `openmaic.yml` がロックしたサブツリーのスロットを置き換えず、`allowUserKeys: false` や検証で拒否された項目はスキップします。2xx の応答を受けた後、ブラウザーから削除されるのはワークスペースが保持した項目だけです。サーバーがスキップした項目（メディアサービスの独自エンドポイント、ワークスペースで使えないプリセット、デプロイが宣言しているプロバイダー ID など）はキーとともにこのブラウザーに残り、再送されることはなく、設定し直すか破棄するまで「設定 → モデルサービス」に理由とともに表示されます（通知は一度だけです）。リージョンの公式エンドポイントを持つ Azure Speech のプロバイダーはインポートされます。400 の場合はインポート内容全体が拒否され、再送はされず、各項目はキーとともにこのブラウザーに残り、スキップされた項目と同様に表示されます。インポート内容が読み取れない場合は破棄されます。401、404、409、5xx、ネットワークエラーの場合だけ、後で再試行するためにブラウザーに残ります。明示的にオフにしていた音声入力は `asr: null` になり、使えるプロバイダーがある状態でオフにしていたナレーション・画像・動画は `tts: null`・`image: null`・`video: null` になります（`openmaic.yml` がロックしたスロットはそのままです）。次のものは手動で設定し直す必要があります：ステージ別のモデル（コースモデル設定、または `openmaic.yml` の `slots`）、推論設定（スロットの `thinking`）、独自の音声合成・文字起こしプロバイダーと AliDocMind のキーペア（`openmaic.yml`。これらはブラウザーに残り、スキップされた項目と一緒に表示されます）、VoxCPM のバックエンド（`options.backend`）、Baidu 検索のサブソース（サーバーの既定値が適用されます）。オフにしていた調査のスイッチは引き継がれません（コースの調査を止めるだけで、チャットとエージェントは検索を続けていました）。既定値のためにオフだっただけのスイッチも引き継がれません。各機能はスロットが解決される限り動作します。
+以前のバージョンでブラウザーに保存されていたプロバイダー設定（プロバイダーとそのキーや Base URL、選択したモデル、Token Plan の接続状態、各機能の選択）は、ワークスペースに一度だけインポートされます。インポートはワークスペースの既存の設定や `cheeyoo.yml` がロックしたサブツリーのスロットを置き換えず、`allowUserKeys: false` や検証で拒否された項目はスキップします。2xx の応答を受けた後、ブラウザーから削除されるのはワークスペースが保持した項目だけです。サーバーがスキップした項目（メディアサービスの独自エンドポイント、ワークスペースで使えないプリセット、デプロイが宣言しているプロバイダー ID など）はキーとともにこのブラウザーに残り、再送されることはなく、設定し直すか破棄するまで「設定 → モデルサービス」に理由とともに表示されます（通知は一度だけです）。リージョンの公式エンドポイントを持つ Azure Speech のプロバイダーはインポートされます。400 の場合はインポート内容全体が拒否され、再送はされず、各項目はキーとともにこのブラウザーに残り、スキップされた項目と同様に表示されます。インポート内容が読み取れない場合は破棄されます。401、404、409、5xx、ネットワークエラーの場合だけ、後で再試行するためにブラウザーに残ります。明示的にオフにしていた音声入力は `asr: null` になり、使えるプロバイダーがある状態でオフにしていたナレーション・画像・動画は `tts: null`・`image: null`・`video: null` になります（`cheeyoo.yml` がロックしたスロットはそのままです）。次のものは手動で設定し直す必要があります：ステージ別のモデル（コースモデル設定、または `cheeyoo.yml` の `slots`）、推論設定（スロットの `thinking`）、独自の音声合成・文字起こしプロバイダーと AliDocMind のキーペア（`cheeyoo.yml`。これらはブラウザーに残り、スキップされた項目と一緒に表示されます）、VoxCPM のバックエンド（`options.backend`）、Baidu 検索のサブソース（サーバーの既定値が適用されます）。オフにしていた調査のスイッチは引き継がれません（コースの調査を止めるだけで、チャットとエージェントは検索を続けていました）。既定値のためにオフだっただけのスイッチも引き継がれません。各機能はスロットが解決される限り動作します。
 
 ワークスペースとは[永続化のドキュメント](./deployment.mdx)でいうオーナー（owner）です。既定の Docker Compose 構成（シングルユーザーモード）ではワークスペースは 1 つで、マルチユーザー構成ではサインインした各アカウントが自分のワークスペースを持ちます。
 
@@ -221,11 +221,11 @@ Web アプリのモデル設定は、現在のワークスペースについて�
 allowUserKeys: false
 ```
 
-`allowUserKeys`（既定値 `true`）は、ユーザーが独自のプロバイダー、キー、Token Plan を追加できるかどうかを決めます。`false` の場合、ユーザーは `openmaic.yml` が宣言したプロバイダーの中から、ロックされていないスロットについてのみ選択できます。Token Plan とサービスの追加は表示されず、ワークスペースが以前に追加したプロバイダーも使われなくなります。リクエストが独自のモデル、キー、エンドポイントを指定しても（非推奨の `x-model`、`x-api-key`、`x-base-url` ヘッダーや、メディア系 API のプロバイダーフィールド）無視され、プロバイダーのテストボタンのヘッダー形式は拒否されます。すべての利用料を負担するマルチユーザー環境では、通常これを設定し、固定したいスロットをロックします。
+`allowUserKeys`（既定値 `true`）は、ユーザーが独自のプロバイダー、キー、Token Plan を追加できるかどうかを決めます。`false` の場合、ユーザーは `cheeyoo.yml` が宣言したプロバイダーの中から、ロックされていないスロットについてのみ選択できます。Token Plan とサービスの追加は表示されず、ワークスペースが以前に追加したプロバイダーも使われなくなります。リクエストが独自のモデル、キー、エンドポイントを指定しても（非推奨の `x-model`、`x-api-key`、`x-base-url` ヘッダーや、メディア系 API のプロバイダーフィールド）無視され、プロバイダーのテストボタンのヘッダー形式は拒否されます。すべての利用料を負担するマルチユーザー環境では、通常これを設定し、固定したいスロットをロックします。
 
 ### シークレットと OPENMAIC_SECRET_KEY
 
-- `openmaic.yml` のキーは `${VAR}` で環境変数から読み込まれ、データベースに保存されることもブラウザーに送られることもありません。
+- `cheeyoo.yml` のキーは `${VAR}` で環境変数から読み込まれ、データベースに保存されることもブラウザーに送られることもありません。
 - ワークスペースがモデル設定で入力したキーはデータベースに保存され、インスタンスシークレット `OPENMAIC_SECRET_KEY` を使って AES-256-GCM で暗号化されます。
 - `OPENMAIC_SECRET_KEY` が未設定の場合、サーバーは初回使用時に `data/instance-secret.key`（Docker Compose では `openmaic-data` ボリューム内）にランダムなシークレットを作成し、以降それを使います。
 
@@ -235,12 +235,12 @@ allowUserKeys: false
 
 ```bash
 OPENMAIC_SECRET_KEY=...        # モデル設定に保存されるキー用のインスタンスシークレット
-OPENMAIC_CONFIG=/etc/openmaic/openmaic.yml   # 任意：openmaic.yml の別のパス
+CHEEYOO_CONFIG=/etc/cheeyoo/cheeyoo.yml   # 任意：cheeyoo.yml の別のパス
 ```
 
 ### ワークスペースが追加できるもの
 
-`openmaic.yml` のプロバイダーはスキーマが許すものなら何でも構いません。ワークスペースがモデル設定で追加するプロバイダーは、エンドポイントとキーを Web アプリのユーザーが入力するため、より制限されます。
+`cheeyoo.yml` のプロバイダーはスキーマが許すものなら何でも構いません。ワークスペースがモデル設定で追加するプロバイダーは、エンドポイントとキーを Web アプリのユーザーが入力するため、より制限されます。
 
 - Amazon Bedrock は提供されません。サーバー自身の AWS 認証情報で署名してしまうためです。
 - `proxy` とキーペア（`credentials`）は使えません。AliDocMind などキーペアで認証するプリセットはデプロイ専用です。
@@ -248,19 +248,19 @@ OPENMAIC_CONFIG=/etc/openmaic/openmaic.yml   # 任意：openmaic.yml の別の�
 - ローカルのモデルサーバー（Ollama、Lemonade）は、プリセット既定の `localhost` ではなく自分のエンドポイントを指定する必要があります。
 - セルフホストのメディア・検索・ドキュメントサービス（VoxCPM2、FunASR、Lemonade の音声と画像、ComfyUI、SearXNG、セルフホストの MinerU）はサーバー自身のネットワーク上で動くため、デプロイ専用です。
 - 運用者が旧来の `<CAP>_<VENDOR>_ENABLED=false` 変数で無効にしたプロバイダーは提供されません。
-- ワークスペースは `openmaic.yml` が既に宣言しているプロバイダー ID を宣言できません。
+- ワークスペースは `cheeyoo.yml` が既に宣言しているプロバイダー ID を宣言できません。
 
-ユーザーに内部サービスを使わせたい場合は、そのプロバイダーを `openmaic.yml` で宣言してください。
+ユーザーに内部サービスを使わせたい場合は、そのプロバイダーを `cheeyoo.yml` で宣言してください。
 
 ### API クライアントと非推奨のリクエストフィールド
 
 生成リクエストでキーやモデルの選択を送る必要はなくなりました。`/api/generate-classroom` のようなブラウザーを使わない API 呼び出しも、呼び出し元のワークスペースについて Web アプリと同じスロットで解決されます。
 
-旧来のリクエストヘッダー `x-model`、`x-api-key`、`x-base-url`、`x-provider-type`、`x-model-routes`、`x-image-provider`、`x-image-model`、`x-video-provider`、`x-video-model`、および音声・検索・ドキュメント API の対応するボディフィールドは非推奨です。これらは、影響するスロットに何も割り当てられていない間、またはレガシー変数で構成されたままのサーバーで、それらから変換された既定値しかない間だけ有効です（`DEFAULT_MODEL` は以前からリクエストが指定したモデルより優先度が低いため）。`openmaic.yml` の既定値、ワークスペース自身の選択、ロックされたスロットが優先され、`null` のスロットはリクエストの内容にかかわらず拒否されます。`allowUserKeys: false` の場合は常に無視されます。リクエストが初めてこれらを使ったとき、サーバーは警告をログに記録します。上記のモデル設定のリリースから 2 マイナーバージョン後に削除される予定です。
+旧来のリクエストヘッダー `x-model`、`x-api-key`、`x-base-url`、`x-provider-type`、`x-model-routes`、`x-image-provider`、`x-image-model`、`x-video-provider`、`x-video-model`、および音声・検索・ドキュメント API の対応するボディフィールドは非推奨です。これらは、影響するスロットに何も割り当てられていない間、またはレガシー変数で構成されたままのサーバーで、それらから変換された既定値しかない間だけ有効です（`DEFAULT_MODEL` は以前からリクエストが指定したモデルより優先度が低いため）。`cheeyoo.yml` の既定値、ワークスペース自身の選択、ロックされたスロットが優先され、`null` のスロットはリクエストの内容にかかわらず拒否されます。`allowUserKeys: false` の場合は常に無視されます。リクエストが初めてこれらを使ったとき、サーバーは警告をログに記録します。上記のモデル設定のリリースから 2 マイナーバージョン後に削除される予定です。
 
 ### 旧設定からの移行
 
-`openmaic.yml` がない場合、サーバーは起動時に旧設定を変換し、非推奨の通知と、変換できなかった項目ごとの通知をログに出します。
+`cheeyoo.yml` がない場合、サーバーは起動時に旧設定を変換し、非推奨の通知と、変換できなかった項目ごとの通知をログに出します。
 
 | 旧設定 | 変換後 |
 | --- | --- |
@@ -272,7 +272,7 @@ OPENMAIC_CONFIG=/etc/openmaic/openmaic.yml   # 任意：openmaic.yml の別の�
 | `MODEL_ROUTES` | **変換されません。** サーバーは起動を拒否します（後述） |
 | `<CAP>_<VENDOR>_ENABLED=false` | 引き続き有効。誰が割り当てても、そのプロバイダーは無効のままです |
 
-`openmaic.yml` がある場合、プロバイダー変数、`server-providers.yml`、`DEFAULT_MODEL`、`MODEL_FALLBACK`、`MODEL_ROUTES` はモデルの解決に使われず、その旨が通知されます。`<CAP>_<VENDOR>_ENABLED=false` は引き続き適用されます。機能を無効にするには、代わりにスロットを `null` にしてください。
+`cheeyoo.yml` がある場合、プロバイダー変数、`server-providers.yml`、`DEFAULT_MODEL`、`MODEL_FALLBACK`、`MODEL_ROUTES` はモデルの解決に使われず、その旨が通知されます。`<CAP>_<VENDOR>_ENABLED=false` は引き続き適用されます。機能を無効にするには、代わりにスロットを `null` にしてください。
 
 **環境変数。** 移行前：
 
@@ -287,7 +287,7 @@ TAVILY_API_KEY=tvly-...
 
 移行後（キーは環境変数に残します）：
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   openai:
     preset: openai
@@ -331,7 +331,7 @@ web-search:
 
 移行後：
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   azure:
     preset: azure
@@ -355,10 +355,10 @@ slots:
 
 `server-providers.yml` の各セクションは、対応するプリセットのプロバイダーになります（`providers` → チャットのプリセット、`tts`、`asr`、`pdf` → ドキュメント、`image`、`video`、`web-search`）。`accessKeyId`／`accessKeySecret` は `credentials` の下に移します。
 
-**MODEL_ROUTES。** `openmaic.yml` なしで `MODEL_ROUTES` を設定したサーバーは起動しません。
+**MODEL_ROUTES。** `cheeyoo.yml` なしで `MODEL_ROUTES` を設定したサーバーは起動しません。
 
 ```text
-MODEL_ROUTES does not carry over to the model configuration: write the per-stage models as slots in openmaic.yml (or the file named by OPENMAIC_CONFIG) and remove MODEL_ROUTES
+MODEL_ROUTES does not carry over to the model configuration: write the per-stage models as slots in cheeyoo.yml (or the file named by CHEEYOO_CONFIG) and remove MODEL_ROUTES
 ```
 
 ステージ別のルートはスロットと 1 対 1 に対応しないため、変換されません。各ルートを、そのステージが属するスロットとして書き直してください。
@@ -386,7 +386,7 @@ MODEL_ROUTES='{"scene-outlines-stream":"anthropic:claude-sonnet-4-6","scene-cont
 
 移行後：
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   openai:
     preset: openai
@@ -406,7 +406,7 @@ slots:
     api: openai-completions
 ```
 
-`openmaic.yml` が存在すると、プロバイダー変数だけでは何も設定されません。変数だけで設定していた TTS、画像、ドキュメント、Web 検索のプロバイダー（`TTS_MINIMAX_API_KEY`、`IMAGE_SEEDREAM_API_KEY`、`PDF_MINERU_BASE_URL`、`TAVILY_API_KEY` など）は使われなくなり、どの機能にもデフォルトのプロバイダーは割り当てられません。使用するプロバイダーをすべて `providers` に宣言し、上の環境変数の例と同様に `slots` で `tts`、`image`、`document`、`webSearch`（および `asr`、`video`）を割り当ててください。割り当てられていないスロットは、ワークスペースがモデル設定で割り当てない限り未設定のままです。
+`cheeyoo.yml` が存在すると、プロバイダー変数だけでは何も設定されません。変数だけで設定していた TTS、画像、ドキュメント、Web 検索のプロバイダー（`TTS_MINIMAX_API_KEY`、`IMAGE_SEEDREAM_API_KEY`、`PDF_MINERU_BASE_URL`、`TAVILY_API_KEY` など）は使われなくなり、どの機能にもデフォルトのプロバイダーは割り当てられません。使用するプロバイダーをすべて `providers` に宣言し、上の環境変数の例と同様に `slots` で `tts`、`image`、`document`、`webSearch`（および `asr`、`video`）を割り当ててください。割り当てられていないスロットは、ワークスペースがモデル設定で割り当てない限り未設定のままです。
 
 その後 `MODEL_ROUTES`、`DEFAULT_MODEL`、`MODEL_FALLBACK` を削除します。
 
@@ -416,7 +416,7 @@ slots:
 services:
   openmaic:
     volumes:
-      - ./openmaic.yml:/app/openmaic.yml:ro
+      - ./cheeyoo.yml:/app/cheeyoo.yml:ro
 ```
 
 ## ACCESS_CODE — サイト全体のパスワード
@@ -488,7 +488,7 @@ LLM_THINKING_DISABLED=false
 
 ## 旧来のプロバイダー環境変数
 
-これらの変数と `server-providers.yml` は以前のリリースの設定方法です。`openmaic.yml` がない場合は引き続き動作しますが（[旧設定からの移行](#旧設定からの移行)を参照）、非推奨であり、モデル設定のリリースから 2 マイナーバージョン後に削除されます。`openmaic.yml` を使う場合は `${VAR}` 参照の元としてのみ使ってください。`DEFAULT_MODEL` と `MODEL_FALLBACK` は移行のセクションで説明しています。`MODEL_ROUTES` はもう読み込まれません。
+これらの変数と `server-providers.yml` は以前のリリースの設定方法です。`cheeyoo.yml` がない場合は引き続き動作しますが（[旧設定からの移行](#旧設定からの移行)を参照）、非推奨であり、モデル設定のリリースから 2 マイナーバージョン後に削除されます。`cheeyoo.yml` を使う場合は `${VAR}` 参照の元としてのみ使ってください。`DEFAULT_MODEL` と `MODEL_FALLBACK` は移行のセクションで説明しています。`MODEL_ROUTES` はもう読み込まれません。
 
 ### LLM プロバイダー
 
@@ -532,7 +532,7 @@ AZURE_OPENAI_BASE_URL=https://YOUR-RESOURCE.openai.azure.com/openai
 AZURE_OPENAI_MODELS=your-deployment-name
 ```
 
-別の OpenAI 互換 LLM サービスに接続するには、`openmaic.yml` で `baseUrl` と `models` を指定した `openai-compatible` プロバイダーを宣言するか、**設定 → モデルサービス → 言語モデル** の **プロバイダーを追加** で追加してください。
+別の OpenAI 互換 LLM サービスに接続するには、`cheeyoo.yml` で `baseUrl` と `models` を指定した `openai-compatible` プロバイダーを宣言するか、**設定 → モデルサービス → 言語モデル** の **プロバイダーを追加** で追加してください。
 
 ### ローカルモデル（Ollama と Lemonade）
 
@@ -570,7 +570,7 @@ TTS_VOXCPM_BASE_URL=http://localhost:8000
 
 管理者は `TTS_<PROVIDER>_ENABLED=false` で特定の TTS プロバイダーをサーバー側で強制無効化できます。VoxCPM2（セルフホスト TTS＋音声クローン）については専用の [VoxCPM2](./voxcpm.mdx) ページを参照してください。
 
-別の OpenAI 互換 TTS エンドポイントを使うには、`openmaic.yml` でその `baseUrl` を指定した `openai-tts` プロバイダーを宣言し、`tts` スロットに割り当ててください。ワークスペースはモデル設定で独自の TTS エンドポイントを追加できません。
+別の OpenAI 互換 TTS エンドポイントを使うには、`cheeyoo.yml` でその `baseUrl` を指定した `openai-tts` プロバイダーを宣言し、`tts` スロットに割り当ててください。ワークスペースはモデル設定で独自の TTS エンドポイントを追加できません。
 
 ### ASR（音声認識）
 
@@ -598,9 +598,9 @@ ASR_LEMONADE_BASE_URL=http://localhost:13305/v1
 
 ブラウザのネイティブ ASR はサーバー設定不要です。
 
-別の OpenAI 互換 ASR エンドポイントを使うには、`openmaic.yml` で `openai-whisper` プリセットとその `baseUrl` を指定して宣言し、`asr` スロットに割り当ててください。ワークスペースはモデル設定で独自の ASR エンドポイントを追加できません。
+別の OpenAI 互換 ASR エンドポイントを使うには、`cheeyoo.yml` で `openai-whisper` プリセットとその `baseUrl` を指定して宣言し、`asr` スロットに割り当ててください。ワークスペースはモデル設定で独自の ASR エンドポイントを追加できません。
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   my-asr:
     preset: openai-whisper
@@ -623,9 +623,9 @@ Lemonade はローカルサービスで API key 不要です：
 IMAGE_LEMONADE_BASE_URL=http://localhost:13305/v1
 ```
 
-ComfyUI Image に API キーは不要です。自分のネットワーク上で動くため、デプロイ側で設定します。`openmaic.yml` で ComfyUI サーバーのアドレスを指定して宣言し、`image` スロットに割り当ててください。
+ComfyUI Image に API キーは不要です。自分のネットワーク上で動くため、デプロイ側で設定します。`cheeyoo.yml` で ComfyUI サーバーのアドレスを指定して宣言し、`image` スロットに割り当ててください。
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   comfyui:
     preset: comfyui-image
@@ -692,11 +692,11 @@ WEB_SEARCH_MINIMAX_API_KEY=
 WEB_SEARCH_MINIMAX_BASE_URL=https://api.minimaxi.com  # 任意の上書き
 ```
 
-Brave と SearXNG は API key 不要です。Web 検索には生成ごとのスイッチはなく、ワークスペースの `webSearch` スロットが解決される限り実行されます。無効にする（`openmaic.yml` で `webSearch: null`、または **設定 → コースモデル設定** の検索スイッチで無効化）と、そのワークスペースの以降の生成に影響します。Grok の Web 検索は Grok LLM の検索ツール経由で提供され、独立した Web 検索 provider ではありません。
+Brave と SearXNG は API key 不要です。Web 検索には生成ごとのスイッチはなく、ワークスペースの `webSearch` スロットが解決される限り実行されます。無効にする（`cheeyoo.yml` で `webSearch: null`、または **設定 → コースモデル設定** の検索スイッチで無効化）と、そのワークスペースの以降の生成に影響します。Grok の Web 検索は Grok LLM の検索ツール経由で提供され、独立した Web 検索 provider ではありません。
 
 ### server-providers.yml
 
-`openmaic.yml` に置き換えられ、非推奨です。両方がある場合、モデルの設定には `openmaic.yml` だけが使われます。
+`cheeyoo.yml` に置き換えられ、非推奨です。両方がある場合、モデルの設定には `cheeyoo.yml` だけが使われます。
 
 環境変数のほかに、コード内で登録済みの provider 設定をプロジェクトルートの `server-providers.yml` に書くこともできます。サーバー起動時に読み込まれ、環境変数のカテゴリに対応した構造です。
 
@@ -746,7 +746,7 @@ web-search:
 
 ## Model authorization for server-managed providers
 
-For providers that use deployment credentials to send a selected model upstream, set an explicit `models` list in `openmaic.yml` (`providers.<id>.models`), or the corresponding `*_MODELS` environment variable / `server-providers.yml` section's `models` list. This applies to chat, image, video, text to speech, speech recognition and model-based web search. Model ids match exactly, including case, after surrounding whitespace is removed at configuration load. Deterministic adapter aliases use the declared model id for authorization. Requests for unlisted models return HTTP 403 with `PROVIDER_DISABLED` and the message “This model is not authorized for server-managed credentials”.
+For providers that use deployment credentials to send a selected model upstream, set an explicit `models` list in `cheeyoo.yml` (`providers.<id>.models`), or the corresponding `*_MODELS` environment variable / `server-providers.yml` section's `models` list. This applies to chat, image, video, text to speech, speech recognition and model-based web search. Model ids match exactly, including case, after surrounding whitespace is removed at configuration load. Deterministic adapter aliases use the declared model id for authorization. Requests for unlisted models return HTTP 403 with `PROVIDER_DISABLED` and the message “This model is not authorized for server-managed credentials”.
 
 **Breaking change:** without an explicit list, only deployment default/fallback models and the primary/fallback models referenced by slots for that capability are usable. `DEFAULT_MODEL` and `MODEL_FALLBACK` grant chat models on legacy deployments. A provider-only media slot grants its single adapter default model; it does not grant the preset's catalogue. Workspace assignments cannot expand the deployment's authorized set. Voice registration and synthesis must also authorize any model selected for voice compatibility.
 

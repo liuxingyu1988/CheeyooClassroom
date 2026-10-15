@@ -33,7 +33,7 @@ export interface ExtractionServices {
   /** The document slot's service, or null for self-contained extraction only. */
   document: MediaConnection | null;
   /**
-   * How the document slot resolved: configured (openmaic.yml or the model
+   * How the document slot resolved: configured (cheeyoo.yml or the model
    * settings), a legacy default, turned off (self-contained extraction only),
    * unassigned (a request may still name a provider the old way), or
    * unassigned inside a locked subtree (`lock: all`): fixed as nothing, so

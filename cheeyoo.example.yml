@@ -1,0 +1,140 @@
+# =============================================================================
+# cheeyoo.yml: the model configuration of a CheeyooClassroom deployment
+#
+# Copy this file to cheeyoo.yml in the directory the server starts in (the
+# repository root; /app in the Docker image), or point CHEEYOO_CONFIG at it,
+# then restart the server. The file is read once at startup.
+#
+# As shipped, it needs three keys: set MINIMAX_API_KEY, ASR_QWEN_API_KEY and
+# PDF_MINERU_CLOUD_API_KEY in .env.local (or change the providers below to ones
+# you have keys for). The commented blocks are optional; uncomment the ones you
+# want and set the variables they name.
+#
+# - providers: the accounts the server can call.
+#   For every model capability, models is an authorization allowlist, not just a picker list.
+#   Deployment slot models and fallbacks for that capability are also authorized.
+#   Provider-only media slots authorize only their single adapter default.
+#   Set models for each provider with credentials; restart after changes.
+#   A provider with neither has no authorized models. SDK catalogues and
+#   workspace assignments never grant access to additional server-paid models.
+#   These rules also apply to connection tests. With legacy configuration,
+#   use <PREFIX>_MODELS and/or DEFAULT_MODEL / MODEL_FALLBACK.
+# - slots: which provider and model each use of AI gets. A slot left out
+#   follows its parent, but every slot named in lock must be written here.
+# - lock: the slots fixed for everyone, each with its whole subtree.
+#   Users cannot change a locked slot, and cannot add providers or keys of
+#   their own (allowUserKeys below). Everything else is theirs to pick.
+# - allowUserKeys: whether users may add providers and keys of their own.
+#
+# Deployment note: keep lock and allowUserKeys: false as shipped. They are what
+# keep the model settings read-only, so teachers never have to configure a
+# provider. The one capability deliberately left open is document parsing, so
+# the extractor dropdown stays and users can fall back to unpdf when the
+# configured parser is unreachable.
+#
+# Secrets stay in the environment (.env.local, a Docker or Kubernetes secret)
+# and are referenced as ${VAR}. An unset variable, an unknown preset or slot,
+# or a reference to an undeclared provider stops the server at startup with
+# the exact location of the problem.
+#
+# Note: once cheeyoo.yml exists, the legacy provider variables (*_API_KEY as
+# configuration, *_MODELS, DEFAULT_MODEL, MODEL_FALLBACK, server-providers.yml)
+# no longer configure providers. Keep your keys in .env.local — that is what
+# ${VAR} reads — but do not rely on *_MODELS or *_ENABLED.
+#
+# Full reference: packages/docs/content/docs/configuration.mdx
+# =============================================================================
+
+providers:
+  # A provider id (the key) is lowercase letters, digits and dashes. Slots
+  # refer to models as "<provider id>:<model id>".
+  #
+  # MiniMax is a token plan: one key covers chat, images, video, text to
+  # speech and web search. models is one flat list, not per capability, so
+  # the chat id and the media ids are mixed here.
+  minimax:
+    preset: minimax
+    apiKey: ${MINIMAX_API_KEY}
+    models:
+      - MiniMax-M3
+      - image-01
+      - image-01-live
+      - MiniMax-Hailuo-2.3
+      - speech-2.8-hd
+      - speech-2.8-turbo
+
+  # Voice recognition. One DashScope key.
+  qwen-asr:
+    preset: qwen-asr
+    apiKey: ${ASR_QWEN_API_KEY}
+    models: [qwen3-asr-flash]
+
+  # PDF parsing: OCR, tables, formulas and layout analysis. One key.
+  mineru-cloud:
+    preset: mineru-cloud
+    apiKey: ${PDF_MINERU_CLOUD_API_KEY}
+
+  # --- Optional providers ----------------------------------------------------
+
+  # The built-in PDF parser. No key and no network; users can pick it in the
+  # extractor dropdown, which is why document is not locked below.
+  # unpdf:
+  #   preset: unpdf
+
+  # Another PDF service. It authenticates with a key pair, not an apiKey.
+  # alidocmind:
+  #   preset: alidocmind
+  #   credentials:
+  #     accessKeyId: ${ALIDOCMIND_ACCESS_KEY_ID}
+  #     accessKeySecret: ${ALIDOCMIND_ACCESS_KEY_SECRET}
+
+  # Speech to text on OpenAI instead.
+  # openai-whisper:
+  #   preset: openai-whisper
+  #   apiKey: ${OPENAI_API_KEY}
+  #   models: [gpt-4o-mini-transcribe, whisper-1]
+
+  # Web search on a dedicated vendor.
+  # tavily:
+  #   preset: tavily
+  #   apiKey: ${TAVILY_API_KEY}
+
+  # Any OpenAI-compatible server: baseUrl is required, and models lists what
+  # the web settings offer from it.
+  # local:
+  #   preset: openai-compatible
+  #   baseUrl: http://host.docker.internal:11434/v1
+  #   models: [qwen3:8b]
+
+  # A different chat model for one use only. An object adds call parameters
+  # and a fallback model, tried once when the primary fails with a retryable
+  # error after its own retries. Fallbacks apply to language-model slots only.
+  # course.outline:
+  #   model: local:qwen3:8b
+  #   fallback: minimax:MiniMax-M3
+
+slots:
+  # Only the roots are written. A locked slot fixes its whole subtree, so llm
+  # covers the twelve course and agent slots below it — lock it and none of
+  # them can be changed either.
+  llm: minimax:MiniMax-M3
+  tts: minimax:speech-2.8-turbo
+  image: minimax:image-01
+  video: minimax:MiniMax-Hailuo-2.3
+  webSearch: minimax
+  asr: qwen-asr
+
+  # The default parser. Users may switch to another one — that is what keeps
+  # the extractor dropdown in the toolbar — so document is not in the lock
+  # list below. To take it away, add it there; the settings then stop showing
+  # the dropdown and unpdf is no longer reachable.
+  document: mineru-cloud
+
+# Slots fixed for everyone, with every slot below them. Each must be written
+# under slots above (null counts). Do not add document here unless you also
+# accept losing the extractor dropdown.
+lock: [llm, tts, image, video, webSearch, asr]
+
+# false: users cannot add providers, keys or token plans. They only pick
+# among the providers declared above, for the slots lock leaves open.
+allowUserKeys: false

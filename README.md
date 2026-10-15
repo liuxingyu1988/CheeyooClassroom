@@ -43,7 +43,7 @@
 
 ## 🗞️ News
 
-- **2026-10-04** — [v1.2.0-rc.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.2.0-rc.1) (pre-release): **server-first.** Until 1.1.x, the browser drove course generation step by step and kept courses, keys and model settings itself, so closing the tab stopped a course halfway, every browser had to be configured on its own, and the headless API ran a separate pipeline. In 1.2.0 the server owns all of it: generation runs on the server and survives closed tabs and restarts, models are configured once in `openmaic.yml` (with defaults, locks and an option to forbid user keys), materials are parsed as soon as they are attached, and the web app and the API share one pipeline. It needs PostgreSQL and a long-running server; Vercel deployments stay on [1.1.x](#vercel-deployment-up-to-11x). Read the [changelog](CHANGELOG.md) before upgrading.
+- **2026-10-04** — [v1.2.0-rc.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.2.0-rc.1) (pre-release): **server-first.** Until 1.1.x, the browser drove course generation step by step and kept courses, keys and model settings itself, so closing the tab stopped a course halfway, every browser had to be configured on its own, and the headless API ran a separate pipeline. In 1.2.0 the server owns all of it: generation runs on the server and survives closed tabs and restarts, models are configured once in `cheeyoo.yml` (with defaults, locks and an option to forbid user keys), materials are parsed as soon as they are attached, and the web app and the API share one pipeline. It needs PostgreSQL and a long-running server; Vercel deployments stay on [1.1.x](#vercel-deployment-up-to-11x). Read the [changelog](CHANGELOG.md) before upgrading.
 - **2026-09-28** — [v1.1.2](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.1.2): security — provider requests connect only to validated addresses and refuse redirects ([GHSA-g87c-cm4q-cw5x](https://github.com/THU-MAIC/OpenMAIC/security/advisories/GHSA-g87c-cm4q-cw5x)).
 - **2026-09-27** — [v1.1.1](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.1.1): security — hardened MinerU Cloud parsing ([GHSA-cpjc-vgjh-c5jp](https://github.com/THU-MAIC/OpenMAIC/security/advisories/GHSA-cpjc-vgjh-c5jp)).
 - **2026-09-24** — [v1.1.0](https://github.com/THU-MAIC/OpenMAIC/releases/tag/v1.1.0): agentic classroom chat (ask about any slide element, interactive, or whiteboard drawing); settings rebuilt around the course workflow; Token Plan connections.
@@ -104,10 +104,10 @@ pnpm install
 
 ```bash
 cp .env.example .env.local            # API keys and server options
-cp openmaic.example.yml openmaic.yml  # which models the server uses
+cp cheeyoo.example.yml cheeyoo.yml  # which models the server uses
 ```
 
-The copied example needs only `OPENAI_API_KEY` in `.env.local` (or change its provider to one you have a key for); everything else in it is commented out until you want it. `openmaic.yml` declares **providers** (accounts the server can call) and gives each **slot** (a use of AI: the outline, slide content, text to speech, web search, …) a model. Keys stay in `.env.local` and are referenced as `${VAR}`:
+The copied example needs only `OPENAI_API_KEY` in `.env.local` (or change its provider to one you have a key for); everything else in it is commented out until you want it. `cheeyoo.yml` declares **providers** (accounts the server can call) and gives each **slot** (a use of AI: the outline, slide content, text to speech, web search, …) a model. Keys stay in `.env.local` and are referenced as `${VAR}`:
 
 ```yaml
 providers:
@@ -130,7 +130,7 @@ The slots you write are the server's defaults; users can change them, or connect
 | --- | --- |
 | Slots, presets, fallbacks, `lock`, `allowUserKeys`, `OPENMAIC_SECRET_KEY` | [Configuration](packages/docs/content/docs/configuration.mdx) |
 | Every provider preset and model ID | [Supported models](packages/docs/content/docs/supported-models.mdx) |
-| Upgrading: provider variables, `server-providers.yml`, `DEFAULT_MODEL` and `MODEL_FALLBACK` still work without `openmaic.yml`; `MODEL_ROUTES` must become slots | [Migrating from the legacy configuration](packages/docs/content/docs/configuration.mdx#migrating-from-the-legacy-configuration) |
+| Upgrading: provider variables, `server-providers.yml`, `DEFAULT_MODEL` and `MODEL_FALLBACK` still work without `cheeyoo.yml`; `MODEL_ROUTES` must become slots | [Migrating from the legacy configuration](packages/docs/content/docs/configuration.mdx#migrating-from-the-legacy-configuration) |
 
 **Providers:** OpenAI, Azure OpenAI, Anthropic, Amazon Bedrock, Google Gemini, DeepSeek, Qwen, Kimi, MiniMax, Grok (xAI), OpenRouter, TokenDance, Doubao, Tencent Hunyuan/TokenHub, Xiaomi MiMo, GLM (Zhipu), Ollama, [Lemonade](#lemonade-local-ai) and [FunASR](#funasr-local-asr) (local), and any OpenAI-compatible API.
 
@@ -252,7 +252,7 @@ cp .env.example .env.local
 docker compose up --build
 ```
 
-Open **http://localhost:3000**. The stack is two containers, the app and PostgreSQL. Courses, generated media and runtime sessions live in the named volumes `openmaic-postgres` and `openmaic-data`, which survive `docker compose down` and rebuilds; `docker compose down -v` deletes them. To configure models with `openmaic.yml`, create it from `openmaic.example.yml` and uncomment its mount in `docker-compose.yml`; otherwise connect a model service in the model settings once the app is running.
+Open **http://localhost:3000**. The stack is two containers, the app and PostgreSQL. Courses, generated media and runtime sessions live in the named volumes `openmaic-postgres` and `openmaic-data`, which survive `docker compose down` and rebuilds; `docker compose down -v` deletes them. To configure models with `cheeyoo.yml`, create it from `cheeyoo.example.yml` and uncomment its mount in `docker-compose.yml`; otherwise connect a model service in the model settings once the app is running.
 
 The Compose file is a **personal installation**: it runs in [single-user mode](#server-backed-persistence-postgresql) (every browser sees one shared library) and listens on `127.0.0.1:3000` only. To serve other machines, protect it first:
 
@@ -472,7 +472,7 @@ The app auto-detects the service via `RENDER_SERVICE_URL` (preset in `docker-com
 
 [MinerU](https://github.com/opendatalab/MinerU) provides enhanced parsing for complex tables, formulas, and OCR. You can use the [MinerU official API](https://mineru.net/) or [self-host your own instance](https://opendatalab.github.io/MinerU/quick_start/docker_deployment/).
 
-Declare it in `openmaic.yml` and assign the `document` slot to it: `mineru-cloud` for the official API, or `mineru` with the `baseUrl` of your own instance.
+Declare it in `cheeyoo.yml` and assign the `document` slot to it: `mineru-cloud` for the official API, or `mineru` with the `baseUrl` of your own instance.
 
 ```yaml
 providers:
@@ -484,13 +484,13 @@ slots:
   document: mineru
 ```
 
-Without `openmaic.yml`, the legacy variables `PDF_MINERU_CLOUD_API_KEY` or `PDF_MINERU_BASE_URL` in `.env.local` still work.
+Without `cheeyoo.yml`, the legacy variables `PDF_MINERU_CLOUD_API_KEY` or `PDF_MINERU_BASE_URL` in `.env.local` still work.
 
 ### Optional: VoxCPM2 (Self-Hosted TTS with Voice Cloning)
 
 [VoxCPM2](https://github.com/OpenBMB/VoxCPM) is an open-source TTS model from OpenBMB with voice cloning. OpenMAIC ships an adapter; run VoxCPM on your own hardware and OpenMAIC will talk to it.
 
-**1. Run a VoxCPM backend.** Three deployment styles, all behind the same OpenMAIC adapter. You pick which one with `options.backend` in `openmaic.yml` (step 2).
+**1. Run a VoxCPM backend.** Three deployment styles, all behind the same OpenMAIC adapter. You pick which one with `options.backend` in `cheeyoo.yml` (step 2).
 
 | Backend | Endpoint | When to use |
 | --- | --- | --- |
@@ -500,7 +500,7 @@ Without `openmaic.yml`, the legacy variables `PDF_MINERU_CLOUD_API_KEY` or `PDF_
 
 See the [VoxCPM repo](https://github.com/OpenBMB/VoxCPM) for backend setup.
 
-**2. Point OpenMAIC at it.** VoxCPM2 runs on your own network, so the deployment configures it in `openmaic.yml` (no API key required); workspaces cannot add it in **Settings → Model Services**:
+**2. Point OpenMAIC at it.** VoxCPM2 runs on your own network, so the deployment configures it in `cheeyoo.yml` (no API key required); workspaces cannot add it in **Settings → Model Services**:
 
 ```yaml
 providers:
@@ -516,7 +516,7 @@ slots:
 
 Voice registration works only on the `vllm-omni` backend; `python-api` and `nano-vllm` send the voice prompt with each request.
 
-Without `openmaic.yml`, the legacy `TTS_VOXCPM_BASE_URL=http://localhost:8000/v1` sets the endpoint but cannot choose a backend.
+Without `cheeyoo.yml`, the legacy `TTS_VOXCPM_BASE_URL=http://localhost:8000/v1` sets the endpoint but cannot choose a backend.
 
 **3. Manage voices.** With VoxCPM2 assigned to the `tts` slot, open **Settings → Model Services → Text-to-Speech → VoxCPM2** (the voice manager appears only when `tts` resolves to a `voxcpm-tts` provider). Three voice modes:
 
@@ -785,7 +785,7 @@ Choose a role and collaborate with AI agents on structured projects with milesto
 <tr>
 <td valign="top">
 
-The OpenMAIC skill package (`skills/openmaic/`) uses the standard SKILL.md format and can be loaded by various agent workbenches — besides OpenClaw, this includes **Codex**, **DeepSeek**, **WorkBuddy**, and others. It is a guided SOP covering the live demo, local setup, classroom generation, and secondary development on top of the `@openmaic/*` SDK.
+The OpenMAIC skill package (`skills/cheeyoo/`) uses the standard SKILL.md format and can be loaded by various agent workbenches — besides OpenClaw, this includes **Codex**, **DeepSeek**, **WorkBuddy**, and others. It is a guided SOP covering the live demo, local setup, classroom generation, and secondary development on top of the `@openmaic/*` SDK.
 
 [OpenClaw](https://github.com/openclaw/openclaw) is a personal AI assistant that connects to the messaging platforms you already use (Feishu, Slack, Discord, Telegram, WhatsApp, etc.). With this integration, you can **generate and view interactive classrooms directly from your chat app** without ever touching a terminal.
 
@@ -815,7 +815,7 @@ Every step asks for your confirmation first. No black-box automation.
 clawhub install openmaic
 ```
 
-Or, in other agent workbenches such as Codex, DeepSeek, or WorkBuddy, import the `skills/openmaic/` folder from the repo (or its zipped archive) into the workbench to use it:
+Or, in other agent workbenches such as Codex, DeepSeek, or WorkBuddy, import the `skills/cheeyoo/` folder from the repo (or its zipped archive) into the workbench to use it:
 
 </td></tr></table>
 
@@ -861,7 +861,7 @@ Optional config in `~/.openclaw/openclaw.json`:
 
 Importing a classroom ZIP stores its embedded audio, images, video, and posters in the server asset pool before saving the course, so other browsers resolve those assets without the importing browser's cache. A ZIP is also a way to move a course between deployments: export it from one and import it on the other.
 
-**Offline / intranet classrooms:** When you export a classroom (`.maic.zip`) or a Resource Pack, OpenMAIC inlines the external assets referenced by interactive scenes (KaTeX, Three.js incl. `three/addons`, Tailwind CDN, Google Fonts, images) into the exported HTML as `data:` URIs. The exported course then plays fully offline after import into an air-gapped/intranet instance — no public CDN is contacted at playback time. Assets that can't be fetched at export time (e.g. CORS-restricted image hosts) are reported and left as URLs. Classrooms exported *before* this feature still reference CDNs and must be re-exported to gain offline support.
+**Offline / intranet classrooms:** When you export a classroom (`.cheeyoo.zip`) or a Resource Pack, OpenMAIC inlines the external assets referenced by interactive scenes (KaTeX, Three.js incl. `three/addons`, Tailwind CDN, Google Fonts, images) into the exported HTML as `data:` URIs. The exported course then plays fully offline after import into an air-gapped/intranet instance — no public CDN is contacted at playback time. Assets that can't be fetched at export time (e.g. CORS-restricted image hosts) are reported and left as URLs. Classrooms exported *before* this feature still reference CDNs and must be re-exported to gain offline support.
 
 ### And More
 

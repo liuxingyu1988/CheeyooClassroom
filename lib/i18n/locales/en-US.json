@@ -10,7 +10,7 @@
     "close": "Close"
   },
   "home": {
-    "slogan": "Generative Learning in Multi-Agent Interactive Classroom",
+    "slogan": "AI-built expert classes, 24/7 learning, immersive sessions on demand!",
     "greetingWithName": "Hi, {{name}}"
   },
   "toolbar": {
@@ -207,7 +207,7 @@
     "success": "Classroom imported successfully",
     "pptxSuccess": "PPTX parsed successfully ({{count}} slides, output logged to console)",
     "error": {
-      "invalidZip": "Invalid file. Please select a valid .maic.zip file.",
+      "invalidZip": "Invalid file. Please select a valid .cheeyoo.zip file.",
       "invalidPptx": "Failed to parse PPTX. Please check the file is valid.",
       "parserUnavailable": "PPTX import is unavailable: the parser bundle is not deployed. Re-run install/sync.",
       "invalidManifest": "Invalid classroom file: manifest.json is missing or corrupted.",
@@ -1121,7 +1121,7 @@
     "courseMaterialFormats": "Supports {{formats}} — up to {{size}}MB per file",
     "formatListSeparator": ", ",
     "generateFailed": "Failed to generate classroom, please try again",
-    "requirementPlaceholder": "Tell me anything you want to learn, e.g.\n\"Teach me Python from scratch in 30 minutes\"\n\"Explain Fourier Transform on the whiteboard\"\n\"How to play the board game Avalon\"",
+    "requirementPlaceholder": "Tell me anything you want to learn, e.g.\n\"Explore linear functions with an interactive graph\"\n\"Understand Ohm's law through a virtual experiment\"\n\"Master the periodic table through a memory challenge\"\n\"How to answer questions when reading argumentative essays\"\n\"High-scoring sentence patterns for English essays\"",
     "requirementRequired": "Please enter course requirements",
     "fileTooLarge": "File too large. Please select a file smaller than 50MB",
     "courseMaterialCountLimit": "You can upload up to 5 course material files",
@@ -1845,7 +1845,7 @@
       "download": "Download",
       "detailFailed": "Could not load the skill details",
       "contentLabel": "Content",
-      "builtinDetailNote": "This skill ships with OpenMAIC. Download it to import into another agent workspace.",
+      "builtinDetailNote": "This skill ships with CheeyooClassroom. Download it to import into another agent workspace.",
       "upload": "Upload",
       "uploading": "Uploading…",
       "uploadFailed": "Could not upload the skill. Check the file and try again.",
@@ -2000,7 +2000,7 @@
       "conflict": "The settings changed elsewhere and were reloaded. Check them and try again.",
       "lockedNow": "The administrator has fixed this, so it was not changed.",
       "unconfirmed": "The server's answer was lost, so the settings were reloaded. Check whether the change took effect.",
-      "serverOnly": "Only the server's configuration (openmaic.yml) can set up this service. Ask the server's administrator.",
+      "serverOnly": "Only the server's configuration (cheeyoo.yml) can set up this service. Ask the server's administrator.",
       "serverOnlyPolicy": "This server does not let workspaces add their own services. Ask the server's administrator.",
       "endpointServerOnly": "This service is reached at its own endpoint; only the server's configuration can point it elsewhere.",
       "endpointChatOnly": "With its own endpoint, this service is used for language models only.",
@@ -2184,8 +2184,8 @@
       "reason": {
         "refused": "The server did not accept it: {{detail}}",
         "reserved": "The server already configures a service under this name.",
-        "customService": "A custom speech service can only be configured on the server (openmaic.yml).",
-        "keyPair": "A service that uses a key pair can only be configured on the server (openmaic.yml).",
+        "customService": "A custom speech service can only be configured on the server (cheeyoo.yml).",
+        "keyPair": "A service that uses a key pair can only be configured on the server (cheeyoo.yml).",
         "unsupported": "This kind of custom provider cannot be moved: add it again as an OpenAI-compatible endpoint.",
         "unconfirmed": "The server did not confirm that it was imported."
       }

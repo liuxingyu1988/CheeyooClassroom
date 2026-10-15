@@ -71,13 +71,13 @@ export async function languageModelFor(
     if (registered.type === 'bedrock') {
       throw new ModelConfigurationError(
         'MODEL_CONFIG_INVALID',
-        'Amazon Bedrock can only be configured by the deployment (openmaic.yml)',
+        'Amazon Bedrock can only be configured by the deployment (cheeyoo.yml)',
       );
     }
     if (target.proxy) {
       throw new ModelConfigurationError(
         'MODEL_CONFIG_INVALID',
-        'A proxy can only be configured by the deployment (openmaic.yml)',
+        'A proxy can only be configured by the deployment (cheeyoo.yml)',
       );
     }
   }

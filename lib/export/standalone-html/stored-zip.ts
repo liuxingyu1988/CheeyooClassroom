@@ -3,7 +3,7 @@
  * every entry is stored (no compression) and the archive is returned as a
  * Blob built from the entries' own Blobs.
  *
- * Why not JSZip (used by the classroom `.maic.zip` export): JSZip reads every
+ * Why not JSZip (used by the classroom `.cheeyoo.zip` export): JSZip reads every
  * input Blob into an ArrayBuffer when it is added and concatenates its output
  * into one ArrayBuffer before wrapping it in a Blob, so a large archive sits
  * in the tab's memory several times over. The media here is already

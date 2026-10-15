@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/*': [
       'lib/server/agent-runtime/import-pptx-worker.mjs',
-      'skills/openmaic/**',
+      'skills/cheeyoo/**',
       'skills/agent-runtime/**',
       // Loaded through a runtime-only `import('undici')` (see the LLM
       // dispatcher in lib/ai/providers.ts and the Google proxy transport), so

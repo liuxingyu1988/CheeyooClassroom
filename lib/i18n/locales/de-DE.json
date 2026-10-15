@@ -207,7 +207,7 @@
     "success": "Kurs erfolgreich importiert",
     "pptxSuccess": "PPTX erfolgreich verarbeitet (Folien: {{count}}; Ausgabe in der Konsole protokolliert)",
     "error": {
-      "invalidZip": "Ungültige Datei. Wähle eine gültige .maic.zip-Datei aus.",
+      "invalidZip": "Ungültige Datei. Wähle eine gültige .cheeyoo.zip-Datei aus.",
       "invalidPptx": "PPTX konnte nicht verarbeitet werden. Prüfe, ob die Datei gültig ist.",
       "parserUnavailable": "Der PPTX-Import ist nicht verfügbar: Das Parser-Bundle wurde nicht bereitgestellt. Führe Installation/Synchronisierung erneut aus.",
       "invalidManifest": "Ungültige Kursdatei: manifest.json fehlt oder ist beschädigt.",
@@ -1845,7 +1845,7 @@
       "download": "Herunterladen",
       "detailFailed": "Die Skill-Details konnten nicht geladen werden",
       "contentLabel": "Inhalt",
-      "builtinDetailNote": "Dieser Skill ist in OpenMAIC enthalten. Lade ihn herunter, um ihn in einen anderen Agenten-Arbeitsbereich zu importieren.",
+      "builtinDetailNote": "Dieser Skill ist in CheeyooClassroom enthalten. Lade ihn herunter, um ihn in einen anderen Agenten-Arbeitsbereich zu importieren.",
       "upload": "Hochladen",
       "uploading": "Wird hochgeladen…",
       "uploadFailed": "Der Skill konnte nicht hochgeladen werden. Prüfe die Datei und versuche es erneut.",
@@ -2000,7 +2000,7 @@
       "conflict": "Die Einstellungen wurden an anderer Stelle geändert und neu geladen. Prüfen Sie sie und versuchen Sie es erneut.",
       "lockedNow": "Der Administrator hat dies festgelegt, daher wurde es nicht geändert.",
       "unconfirmed": "Die Antwort des Servers ging verloren, daher wurden die Einstellungen neu geladen. Prüfen Sie, ob die Änderung übernommen wurde.",
-      "serverOnly": "Dieser Dienst kann nur in der Serverkonfiguration (openmaic.yml) eingerichtet werden. Wenden Sie sich an die Serveradministration.",
+      "serverOnly": "Dieser Dienst kann nur in der Serverkonfiguration (cheeyoo.yml) eingerichtet werden. Wenden Sie sich an die Serveradministration.",
       "serverOnlyPolicy": "Dieser Server erlaubt Arbeitsbereichen keine eigenen Dienste. Wenden Sie sich an die Serveradministration.",
       "endpointServerOnly": "Dieser Dienst wird über seinen eigenen Endpunkt erreicht; nur die Serverkonfiguration kann einen anderen festlegen.",
       "endpointChatOnly": "Mit eigenem Endpunkt wird dieser Dienst nur für Sprachmodelle verwendet.",
@@ -2184,8 +2184,8 @@
       "reason": {
         "refused": "Der Server hat sie nicht angenommen: {{detail}}",
         "reserved": "Der Server konfiguriert bereits einen Dienst unter diesem Namen.",
-        "customService": "Ein eigener Sprachdienst kann nur auf dem Server (openmaic.yml) konfiguriert werden.",
-        "keyPair": "Ein Dienst mit Schlüsselpaar kann nur auf dem Server (openmaic.yml) konfiguriert werden.",
+        "customService": "Ein eigener Sprachdienst kann nur auf dem Server (cheeyoo.yml) konfiguriert werden.",
+        "keyPair": "Ein Dienst mit Schlüsselpaar kann nur auf dem Server (cheeyoo.yml) konfiguriert werden.",
         "unsupported": "Diese Art von eigenem Anbieter kann nicht übertragen werden: Fügen Sie ihn als OpenAI-kompatiblen Endpunkt erneut hinzu.",
         "unconfirmed": "Der Server hat den Import nicht bestätigt."
       }

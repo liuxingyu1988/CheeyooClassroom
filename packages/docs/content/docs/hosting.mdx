@@ -100,7 +100,7 @@ For local development, `pnpm db:up` starts a separate development database
 matching `DATABASE_URL` is commented in `.env.example`, and `pnpm db:down` stops
 it again.
 
-Configure models as usual (`openmaic.yml` with keys in `.env.local`, or Settings → Model Services). Course documents, folders,
+Configure models as usual (`cheeyoo.yml` with keys in `.env.local`, or Settings → Model Services). Course documents, folders,
 chat history and learner runtime sessions, and generated media are stored on
 the server. What stays in the browser is what belongs to the device and can be
 lost without losing a course: app settings and UI preferences, the playback
@@ -345,7 +345,7 @@ OPENMAIC_AGENT_RUNTIME_ENABLED=true
 DATABASE_URL=postgres://openmaic:openmaic-dev@postgres:5432/openmaic
 ```
 
-The agent runs on the `agent` slot of `openmaic.yml` (or the model settings), which follows the default chat model unless it has its own assignment and needs a model with tool calling:
+The agent runs on the `agent` slot of `cheeyoo.yml` (or the model settings), which follows the default chat model unless it has its own assignment and needs a model with tool calling:
 
 ```yaml
 providers:

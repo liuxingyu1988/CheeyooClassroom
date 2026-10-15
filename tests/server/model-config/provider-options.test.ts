@@ -1,5 +1,5 @@
 /**
- * A provider's non-secret `options` (openmaic.yml), from the schema through
+ * A provider's non-secret `options` (cheeyoo.yml), from the schema through
  * slot resolution and media connections to the TTS adapter: a VoxCPM
  * `backend` decides the endpoint the server synthesizes with.
  */
@@ -54,7 +54,7 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-describe('options in openmaic.yml', () => {
+describe('options in cheeyoo.yml', () => {
   it('accepts a map of scalar settings, with ${VAR} interpolation', () => {
     const config = parseModelConfig(
       [
@@ -208,7 +208,7 @@ describe('voice registration follows the backend', () => {
 });
 
 describe('workspace providers', () => {
-  it("cannot set options: they are the deployment's (openmaic.yml)", async () => {
+  it("cannot set options: they are the deployment's (cheeyoo.yml)", async () => {
     const next = await applyModelSettingsChange(null, {
       kind: 'provider',
       id: 'mm',

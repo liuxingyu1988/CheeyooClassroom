@@ -9,10 +9,18 @@
  */
 
 export interface BrandConfig {
-  /** Full product name (page titles, logo alt text). */
+  /** Full product name (page titles, logo alt text). Always the Latin name. */
   productName: string;
   /** Short name for space-constrained spots. */
   shortName: string;
+  /**
+   * The name to actually render, resolved for the active locale: `shortName` on
+   * Chinese locales, `productName` everywhere else. BrandProvider fills this in
+   * from the live i18n language; `DEFAULT_BRAND` carries the default-locale
+   * value so un-provisioned reads stay correct. Render sites use this field and
+   * never pick between the two names themselves.
+   */
+  displayName: string;
   /** Horizontal logo asset under `public/`. */
   logoSrc: string;
   /** Whether `logoSrc` already carries the product wordmark. */
@@ -27,6 +35,9 @@ export interface BrandConfig {
 export const DEFAULT_BRAND: BrandConfig = {
   productName: 'CheeyooClassroom',
   shortName: '启云课堂',
+  // The default locale (zh-CN) is also what i18n starts on and what the server
+  // renders, so this matches BrandProvider's first client render — no mismatch.
+  displayName: '启云课堂',
   logoSrc: '/logo-horizontal.png',
   logoHasWordmark: true,
   markSrc: '/logo.png',
@@ -34,3 +45,11 @@ export const DEFAULT_BRAND: BrandConfig = {
   // for the browser chrome; the token drives the UI itself.
   themeColor: '#e8884a',
 };
+
+/** Picks the render name for a locale: Chinese gets the Chinese name. */
+export function resolveBrand(brand: BrandConfig, locale: string): BrandConfig {
+  return {
+    ...brand,
+    displayName: locale.toLowerCase().startsWith('zh') ? brand.shortName : brand.productName,
+  };
+}

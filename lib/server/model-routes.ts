@@ -4,7 +4,7 @@
  * A stage is a `callLLM` call site's label; each belongs to one capability
  * slot (lib/config/model-slots.ts), which decides its model (RFC #1701). The
  * operator's `MODEL_ROUTES` is gone: a deployment that still sets it without
- * openmaic.yml stops at startup (lib/server/model-config/deployment-layer.ts).
+ * cheeyoo.yml stops at startup (lib/server/model-config/deployment-layer.ts).
  *
  * What remains is the browser's own per-stage selection, sent as the
  * `x-model-routes` header and consulted, deprecated, only for a slot the

@@ -51,7 +51,7 @@ export function VoxCPMVoiceManager() {
   const { profiles, addPromptVoice, addCloneVoice, deleteVoice } = useVoxCPMVoiceProfiles();
   const ttsSpeed = useSettingsStore((state) => state.ttsSpeed);
   const { previewing, startPreview, stopPreview } = useTTSPreview();
-  // The backend is the tts slot's provider option (openmaic.yml `options`).
+  // The backend is the tts slot's provider option (cheeyoo.yml `options`).
   const voxcpmBackend = slotVoxCPMBackend(useModelCapabilities().tts);
   const supportsReferenceAudio = voxCPMBackendSupportsReferenceAudio(voxcpmBackend);
 

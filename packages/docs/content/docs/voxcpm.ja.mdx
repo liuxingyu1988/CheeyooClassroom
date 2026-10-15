@@ -15,7 +15,7 @@ description: 自ホスト TTS と音声クローン。バックエンド選択�
 
 ## 1. VoxCPM バックエンドを起動する
 
-OpenMAIC は 3 種類のデプロイ形態に対応しています。いずれも同じ OpenMAIC アダプターを使い、実際に動かしている形態は `openmaic.yml` のプロバイダーの `options.backend` で選びます（手順 2）。
+OpenMAIC は 3 種類のデプロイ形態に対応しています。いずれも同じ OpenMAIC アダプターを使い、実際に動かしている形態は `cheeyoo.yml` のプロバイダーの `options.backend` で選びます（手順 2）。
 
 | バックエンド    | エンドポイント       | 適用シーン                                      |
 | -------------- | ------------------ | ---------------------------------------------- |
@@ -34,9 +34,9 @@ python -m vllm_omni.server --model openbmb/VoxCPM2 --port 8000
 
 ## 2. OpenMAIC から接続する
 
-VoxCPM2 は自分のネットワーク上で動くため、エンドポイントはデプロイ側で設定し、ワークスペースは **設定 → モデルサービス** で追加できません。`openmaic.yml` で宣言し、`options.backend` でバックエンドを選んで `tts` スロットに割り当ててください。API キーは不要です。
+VoxCPM2 は自分のネットワーク上で動くため、エンドポイントはデプロイ側で設定し、ワークスペースは **設定 → モデルサービス** で追加できません。`cheeyoo.yml` で宣言し、`options.backend` でバックエンドを選んで `tts` スロットに割り当ててください。API キーは不要です。
 
-```yaml title="openmaic.yml"
+```yaml title="cheeyoo.yml"
 providers:
   voxcpm:
     preset: voxcpm-tts
@@ -50,7 +50,7 @@ slots:
 
 プロバイダーの `options.backend` は `tts` スロットのすべてのリクエストに適用されます。音声の登録は `vllm-omni` バックエンドでのみ使え、`python-api` と `nano-vllm` では音声プロンプトがリクエストごとに送られます。
 
-`openmaic.yml` がない場合、旧来の変数でエンドポイントは設定できますが、バックエンドは選べません。`python-api` や `nano-vllm` を使うには `openmaic.yml` を使ってください。
+`cheeyoo.yml` がない場合、旧来の変数でエンドポイントは設定できますが、バックエンドは選べません。`python-api` や `nano-vllm` を使うには `cheeyoo.yml` を使ってください。
 
 ```bash
 TTS_VOXCPM_BASE_URL=http://localhost:8000/v1

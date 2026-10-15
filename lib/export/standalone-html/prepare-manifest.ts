@@ -1,7 +1,7 @@
 /**
  * Pure preparation of a classroom manifest for the standalone HTML player.
  *
- * The manifest is the same one the `.maic.zip` export writes. The standalone
+ * The manifest is the same one the `.cheeyoo.zip` export writes. The standalone
  * file has no archive next to it, so this step makes the embedded copy
  * self-contained:
  *

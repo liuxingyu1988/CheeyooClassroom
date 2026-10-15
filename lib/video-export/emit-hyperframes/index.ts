@@ -147,7 +147,7 @@ export interface EmitHyperframesOptions {
   compositionId?: string;
   /** Relative path the emitted HTML loads GSAP from. Default `assets/vendor/gsap.min.js`. */
   gsapVendorPath?: string;
-  /** Manifest filename. Default `openmaic-video-manifest.json`. */
+  /** Manifest filename. Default `cheeyoo-video-manifest.json`. */
   manifestPath?: string;
   /** Cover-card chrome; each omitted key falls back to its `en-US` default. */
   labels?: VideoExportLabelOverrides;
@@ -186,7 +186,7 @@ export interface EmittedProject {
 
 const DEFAULT_WIDTH = 1920;
 const DEFAULT_GSAP_PATH = 'assets/vendor/gsap.min.js';
-const DEFAULT_MANIFEST = 'openmaic-video-manifest.json';
+const DEFAULT_MANIFEST = 'cheeyoo-video-manifest.json';
 const DEFAULT_LOCALE = 'en-US';
 
 /** Language subtags written right-to-left; everything else renders LTR. */
@@ -318,7 +318,7 @@ function interactiveStaticBridgeScript(labels: InteractiveFallbackLabels): strin
 function initializeOpenMaicInteractiveStaticFrames() {
   var hosts = Array.from(document.querySelectorAll('[data-interactive-static-host]'));
   window.__openmaicVideoDiagnostics = window.__openmaicVideoDiagnostics || [];
-  window.__openmaicVideoManifest = window.__openmaicVideoManifest || { runtimeDiagnostics: [] };
+  window.__cheeyooVideoManifest = window.__cheeyooVideoManifest || { runtimeDiagnostics: [] };
   var labels = ${localized};
   var diagnosticCodes = new Set(${diagnosticCodes});
   var runtimeReport = document.querySelector('[data-openmaic-runtime-diagnostics]');
@@ -326,7 +326,7 @@ function initializeOpenMaicInteractiveStaticFrames() {
     var normalizedCode = diagnosticCodes.has(code) ? code : 'interactive-ready-failure';
     var diagnostic = { sceneId: sceneId, code: normalizedCode, message: String(message || '').slice(0, 1200) };
     window.__openmaicVideoDiagnostics.push(diagnostic);
-    window.__openmaicVideoManifest.runtimeDiagnostics = window.__openmaicVideoDiagnostics.slice();
+    window.__cheeyooVideoManifest.runtimeDiagnostics = window.__openmaicVideoDiagnostics.slice();
     if (runtimeReport) runtimeReport.textContent = JSON.stringify(window.__openmaicVideoDiagnostics);
     console.error('interactive-static-diagnostic', diagnostic);
   }
@@ -1160,7 +1160,7 @@ function renderReadme(project: {
   const scriptFontSummary = project.quizScriptFonts.length
     ? `, ${project.quizScriptFonts.join(' and ')}`
     : '';
-  return `# ${project.stageName} — OpenMAIC video export
+  return `# ${project.stageName} — CheeyooClassroom video export
 
 Self-contained [Hyperframes](https://github.com/heygen-com/hyperframes) composition
 for the classroom **${project.stageName}**. Everything needed to render is in this
@@ -1168,7 +1168,7 @@ folder — no network access, no CDN.
 
 - \`index.html\` — the composition (one data-composition-id=${optionValue(project.compositionId)} stage, one paused GSAP timeline on \`window.__timelines\`).
 - ${optionValue(project.manifestPath)} — the \`VideoTimeline\` manifest / export report (scenes, timing, assets, diagnostics).
-- Runtime interactive diagnostics are exposed live through \`window.__openmaicVideoManifest.runtimeDiagnostics\` and the machine-readable DOM report in \`index.html\`.
+- Runtime interactive diagnostics are exposed live through \`window.__cheeyooVideoManifest.runtimeDiagnostics\` and the machine-readable DOM report in \`index.html\`.
 - \`subtitles.srt\` / \`subtitles.vtt\` — narration subtitles.
 - \`assets/frames\`, \`assets/audio\`, \`assets/media\`, \`assets/interactive\` — slide snapshots, narration audio, embedded video clips, frozen interactive pages.
 - ${optionValue(project.gsapVendorPath)} — vendored GSAP (determinism: no CDN at render time).
@@ -1233,7 +1233,7 @@ export function emitHyperframes(
   const width = options.width ?? DEFAULT_WIDTH;
   const height =
     options.height ?? Math.round(width * (ir.canvas.pixelBase.height / ir.canvas.pixelBase.width));
-  const compositionId = options.compositionId ?? 'openmaic';
+  const compositionId = options.compositionId ?? 'cheeyoo';
   const gsapVendorPath = options.gsapVendorPath ?? DEFAULT_GSAP_PATH;
   const manifestPath = options.manifestPath ?? DEFAULT_MANIFEST;
   const labels: VideoExportLabels = {
@@ -1309,7 +1309,7 @@ export function emitHyperframes(
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${escapeHtml(ir.stage.name)} — OpenMAIC video</title>
+<title>${escapeHtml(ir.stage.name)} — CheeyooClassroom video</title>
 <style>
   ${INTER_FONT_FACE_CSS}${
     hasQuizQuestionList
@@ -1334,7 +1334,7 @@ ${subtitles.html}
 ${EASE_DEFS}
 var tl = gsap.timeline({ paused: true });
 ${statements.join('\n')}
-window.__openmaicVideoManifest = { runtimeDiagnostics: [], manifestPath: ${JSON.stringify(manifestPath)} };
+window.__cheeyooVideoManifest = { runtimeDiagnostics: [], manifestPath: ${JSON.stringify(manifestPath)} };
 window.__timelines = window.__timelines || {};
 ${
   hasInteractiveHtml

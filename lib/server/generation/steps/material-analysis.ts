@@ -250,7 +250,7 @@ export async function analyzeMaterial(
         `Provider "${requestConfig.providerId}" cannot extract ${mimeType}. Choose a media-capable provider (AliDocMind or local ffmpeg).`,
       );
     }
-    // The document slot's media extractor (openmaic.yml or the model
+    // The document slot's media extractor (cheeyoo.yml or the model
     // settings), else the legacy rules below.
     const slotMedia = slotMediaExtractorConfig(services, requestConfig.providerId);
     const mediaManaged =
@@ -328,7 +328,7 @@ export async function analyzeMaterial(
     return mediaResult;
   }
 
-  // The document slot's service (openmaic.yml, the model settings, or the
+  // The document slot's service (cheeyoo.yml, the model settings, or the
   // default translated from the legacy provider variables) when the request
   // names no other extractor; a provider the request names keeps the legacy
   // rules below.
@@ -381,7 +381,7 @@ export async function analyzeMaterial(
       'service-required',
       `${requestedTypeLabel(mimeType)} extraction needs a document service, and ${
         services.document ? 'the configured one cannot read this type' : 'none is configured'
-      }. Assign one to the document slot in the model settings or openmaic.yml.`,
+      }. Assign one to the document slot in the model settings or cheeyoo.yml.`,
     );
   }
 

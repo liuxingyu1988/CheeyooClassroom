@@ -1,6 +1,6 @@
 /** How a provider's own options meet a request's (see {@link adapterOptions}). */
 interface OptionsSource {
-  /** The provider's non-secret options (openmaic.yml `options`). */
+  /** The provider's non-secret options (cheeyoo.yml `options`). */
   options?: Record<string, string | number | boolean>;
   /** Where the connection came from: a configured slot, or the deprecated request path. */
   origin: 'configuration' | 'request' | 'default';
@@ -8,7 +8,7 @@ interface OptionsSource {
 
 /**
  * The options a provider's adapter runs with: the connection's own (the
- * provider's `options` in openmaic.yml) and what
+ * provider's `options` in cheeyoo.yml) and what
  * a request adds (a voice's prompt or reference, for instance). A configured
  * provider's options win over the request's; while the slot is unassigned
  * (the deprecated path) the request's win, as they always did.

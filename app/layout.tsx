@@ -12,6 +12,7 @@ import 'animate.css';
 import 'katex/dist/katex.min.css';
 import { ThemeProvider } from '@/lib/hooks/use-theme';
 import { DEFAULT_BRAND } from '@/lib/brand/brand-config';
+import { BrandProvider } from '@/lib/brand/brand-context';
 import { I18nProvider } from '@/lib/hooks/use-i18n';
 import { Toaster } from '@/components/ui/sonner';
 import { AgentRegistryInit } from '@/components/agent-registry-init';
@@ -65,15 +66,17 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <I18nProvider>
-            <ModelSettingsInit />
-            <AgentRegistryInit />
-            <ProSwapWatcher />
-            <AccessCodeGuard>{children}</AccessCodeGuard>
-            <Toaster position="top-center" />
-            {/* After the Toaster: this one raises a toast on mount when
-                persistence is already broken, and a toast raised before its
-                host exists has nowhere to go. */}
-            <StorageHealthNotice />
+            <BrandProvider>
+              <ModelSettingsInit />
+              <AgentRegistryInit />
+              <ProSwapWatcher />
+              <AccessCodeGuard>{children}</AccessCodeGuard>
+              <Toaster position="top-center" />
+              {/* After the Toaster: this one raises a toast on mount when
+                  persistence is already broken, and a toast raised before its
+                  host exists has nowhere to go. */}
+              <StorageHealthNotice />
+            </BrandProvider>
           </I18nProvider>
         </ThemeProvider>
       </body>

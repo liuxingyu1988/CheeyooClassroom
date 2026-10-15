@@ -279,7 +279,7 @@ describe('what a request names the old way, against defaults and locks', () => {
       notices: [],
     });
 
-  it("keeps openmaic.yml's default over the request's provider", async () => {
+  it("keeps cheeyoo.yml's default over the request's provider", async () => {
     deployment(operator);
     const legacyRequest = vi.fn(async () => requested);
     expect(await resolveMediaSlot('image', { workspaceId: null, legacyRequest })).toMatchObject({

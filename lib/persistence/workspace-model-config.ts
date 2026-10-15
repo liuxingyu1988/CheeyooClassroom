@@ -2,7 +2,7 @@
  * The workspace model configuration: the providers and slot assignments a
  * workspace sets in the web settings (RFC #1701, tracked in #1725). A
  * workspace is an owner (see `lib/server/identity`), and each owner has at most
- * one row, holding the same shape as `openmaic.yml` minus `policy`.
+ * one row, holding the same shape as `cheeyoo.yml` minus `policy`.
  *
  * Provider secrets (`apiKey`, `credentials`) never sit in the `config` column.
  * They are sealed per provider under the instance secret

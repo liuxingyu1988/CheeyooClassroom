@@ -39,7 +39,7 @@ let dir: string;
 beforeEach(() => {
   dir = fs.mkdtempSync(path.join(os.tmpdir(), 'openmaic-deployment-layer-'));
   vi.spyOn(process, 'cwd').mockReturnValue(dir);
-  for (const name of ['OPENMAIC_CONFIG', 'DEFAULT_MODEL', 'MODEL_ROUTES', 'MODEL_FALLBACK']) {
+  for (const name of ['CHEEYOO_CONFIG', 'DEFAULT_MODEL', 'MODEL_ROUTES', 'MODEL_FALLBACK']) {
     vi.stubEnv(name, '');
   }
   legacy.providers = {};
@@ -57,14 +57,14 @@ describe('loadDeploymentLayer', () => {
     expect(loadDeploymentLayer()).toEqual({ layer: null, legacy: false, notices: [] });
   });
 
-  it('translates the legacy configuration when there is no openmaic.yml', () => {
+  it('translates the legacy configuration when there is no cheeyoo.yml', () => {
     legacy.providers = { openai: { apiKey: 'sk-openai' } };
     vi.stubEnv('DEFAULT_MODEL', ' openai:gpt-5.6 ');
     const { layer, legacy: translated, notices } = loadDeploymentLayer();
     expect(notices).toHaveLength(2);
     expect(notices[0]).toMatch(DEPRECATED);
     // One deployment layer: the providers, and the default model as a server
-    // default, exactly as openmaic.yml's slots (nothing locked).
+    // default, exactly as cheeyoo.yml's slots (nothing locked).
     expect(translated).toBe(true);
     expect(layer).toEqual({
       source: 'deployment',
@@ -76,22 +76,22 @@ describe('loadDeploymentLayer', () => {
     expect(layer?.config.lock).toBeUndefined();
   });
 
-  it('asks for openmaic.yml when MODEL_ROUTES is set', () => {
+  it('asks for cheeyoo.yml when MODEL_ROUTES is set', () => {
     legacy.providers = { openai: { apiKey: 'sk-openai' } };
     vi.stubEnv('MODEL_ROUTES', '{"scene-content":{"model":"openai:gpt-5.6"}}');
     expect(() => loadDeploymentLayer()).toThrow(LegacyRoutesError);
     expect(() => loadDeploymentLayer()).toThrow(
-      /write the per-stage models as slots in openmaic\.yml/,
+      /write the per-stage models as slots in cheeyoo\.yml/,
     );
   });
 
-  it('ignores MODEL_ROUTES once openmaic.yml exists', () => {
+  it('ignores MODEL_ROUTES once cheeyoo.yml exists', () => {
     vi.stubEnv('MODEL_ROUTES', '{"scene-content":{"model":"openai:gpt-5.6"}}');
-    fs.writeFileSync(path.join(dir, 'openmaic.yml'), 'slots:\n  video: null\n');
+    fs.writeFileSync(path.join(dir, 'cheeyoo.yml'), 'slots:\n  video: null\n');
     const { layer, notices } = loadDeploymentLayer();
     expect(layer?.config).toEqual({ slots: { video: null } });
     expect(notices).toHaveLength(1);
-    expect(notices[0]).toMatch(/^openmaic\.yml is present/);
+    expect(notices[0]).toMatch(/^cheeyoo\.yml is present/);
   });
 
   it('reports a legacy configuration that only switches providers off', () => {
@@ -103,23 +103,23 @@ describe('loadDeploymentLayer', () => {
     expect(notices[1]).toMatch(/^tts\.browser-native-tts is switched off by the operator/);
   });
 
-  it('uses openmaic.yml over the legacy configuration and says so', () => {
+  it('uses cheeyoo.yml over the legacy configuration and says so', () => {
     legacy.providers = { openai: { apiKey: 'sk-openai' } };
     vi.stubEnv('DS_KEY', 'sk-ds');
     fs.writeFileSync(
-      path.join(dir, 'openmaic.yml'),
+      path.join(dir, 'cheeyoo.yml'),
       'providers:\n  ds:\n    preset: deepseek\n    apiKey: ${DS_KEY}\nslots:\n  llm: ds:deepseek-v4-pro\n',
     );
     const { layer, notices } = loadDeploymentLayer();
     expect(layer?.config.slots).toEqual({ llm: 'ds:deepseek-v4-pro' });
     expect(layer?.config.providers).toEqual({ ds: { preset: 'deepseek', apiKey: 'sk-ds' } });
     expect(notices).toHaveLength(2);
-    expect(notices[0]).toMatch(/^openmaic\.yml is present/);
+    expect(notices[0]).toMatch(/^cheeyoo\.yml is present/);
   });
 
   it('does not mention the legacy configuration when there is none', () => {
     fs.writeFileSync(path.join(dir, 'custom.yml'), 'slots:\n  video: null\n');
-    vi.stubEnv('OPENMAIC_CONFIG', 'custom.yml');
+    vi.stubEnv('CHEEYOO_CONFIG', 'custom.yml');
     expect(loadDeploymentLayer()).toEqual({
       layer: { source: 'deployment', config: { slots: { video: null } } },
       legacy: false,
@@ -147,7 +147,7 @@ describe('loadDeploymentLayer', () => {
 
   it('names the YAML models key for every credentialed provider without a list', () => {
     fs.writeFileSync(
-      path.join(dir, 'openmaic.yml'),
+      path.join(dir, 'cheeyoo.yml'),
       `providers:
   chat:
     preset: openai
