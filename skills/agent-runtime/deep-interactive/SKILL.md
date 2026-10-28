@@ -1,7 +1,7 @@
 ---
 name: deep-interactive
 title: "深度交互"
-description: Deep Interactive courses. Plans the course so the learner manipulates something on most pages — simulations, diagrams they explore, code they run, games, 3D scenes — with slides reserved for the opening frame and the closing consolidation. Use when the topic has a mechanism, a variable to vary, a process to trace, or a structure to inspect.
+description: 深度交互课程。把课程规划成学习者在大多数页面上都要动手操作——仿真、可探索的图示、可运行的代码、游戏、3D 场景，slides 只留给开篇框架和结尾的归纳整合。当主题本身有机制、有可变的量、有可追踪的流程或有可拆解的结构时使用。
 ---
 
 # Deep Interactive course design

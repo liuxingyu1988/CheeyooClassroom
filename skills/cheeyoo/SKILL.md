@@ -1,6 +1,6 @@
 ---
 name: cheeyoo
-description: CheeyooClassroom assistant for setting up, generating, and extending CheeyooClassroom. Use when the user wants to use CheeyooClassroom, generate a multi-agent interactive classroom, or build on / extend / customize CheeyooClassroom and its @openmaic/* SDK (secondary development, 二开) — covers Live Demo or local setup, startup modes, provider keys, classroom generation, and secondary development (forking, providers/storage/themes, routes, or the renderer/editor).
+description: 启云课堂 助手，用于安装、生成和扩展 启云课堂。当用户想使用 启云课堂、生成多 agent 互动课堂，或在 启云课堂 及其 SDK 之上构建／扩展／定制（二次开发）时使用——涵盖 本地安装、启动模式、provider 密钥、课堂生成，以及二次开发（fork、providers/storage/themes、路由，或 renderer/editor）。
 user-invocable: true
 metadata: { "openclaw": { "emoji": "🏫" } }
 ---

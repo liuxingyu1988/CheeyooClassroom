@@ -1,7 +1,7 @@
 ---
 name: style-clone
 title: "名师复刻"
-description: Building a new course inside someone else's deck — import the deck as a library of layouts, then produce each page of the new course by copying the layout that fits it and rewriting that copy's content element by element, so the result reads as though the original author made it. Use when the session has an imported deck (or a `.pptx` to import) and the ask is to teach new material in its design — its palette, its typography, its way of dividing a page. Not for a straight import that must stay slide-for-slide identical to the file (that is `pptx-import`), and not for extracting how a teacher speaks from a recording or handout (that is `teacher-style-clone`, which supplies the voice while this one supplies the look; the two compose).
+description: 在别人的课件风格里造一门新课——把该课件当作版式库导入，然后为新课的每一页挑一个合适的版式复制过来，再逐个元素重写副本内容，让成品读起来像原作者做的。当会话里有导入的课件（或有可导入的 .pptx），而请求是用它的设计——它的配色、字体、页面分割方式——来讲新材料时使用。不适用于必须与文件逐页一致的直接导入（那是 pptx-import），也不适用于从录像或讲义里提取教师说话风格（那是 teacher-style-clone，它提供声音，这个提供外观，两者可组合）。
 ---
 
 # Cloning a deck's style

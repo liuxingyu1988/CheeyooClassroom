@@ -1,7 +1,7 @@
 ---
 name: learning-to-learn
-title: "学会学习（Learning to Learn）"
-description: "Infuse learning strategies and metacognition into a concept-centered OpenMAIC classroom as a parallel goal. Use when the user wants students to learn how to learn while studying a subject: retrieval practice, self-explanation, prediction before feedback, monitoring understanding, deliberate review, or productive failure. Do not use when learning science or study skills should be the standalone subject of the lesson."
+title: "学会学习"
+description: 把学习策略与元认知作为平行目标，融入以概念为中心的 启云 课堂。当用户希望学生在学习学科内容的同时学会怎么学——提取练习、自我解释、先预测后反馈、监控理解、刻意复习、有成效的失败——时使用。当学习科学或学习技能本身就应作为独立主题时不要使用。
 ---
 
 # 学会学习（Learning to Learn）

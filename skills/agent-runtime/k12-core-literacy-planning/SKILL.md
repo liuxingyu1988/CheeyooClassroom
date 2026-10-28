@@ -1,7 +1,7 @@
 ---
 name: k12-core-literacy-planning
 title: "核心素养教学设计"
-description: "Chinese K-12 core-literacy course design for a single OpenMAIC classroom. Use when a teacher asks for 中小学课程、核心素养、素养导向、2022 课标、真实情境、任务群、表现性评价, or wants a grade-and-subject lesson designed around authentic tasks rather than content delivery. Covers Chinese, mathematics, languages, science, humanities, technology, arts, PE and labor education across primary, junior-high and senior-high stages."
+description: 面向单个课堂的中国 K-12 核心素养教学设计。当教师提出中小学课程、核心素养、素养导向、2022 课标、真实情境、任务群、表现性评价等需求，或希望围绕真实任务而非知识讲授来设计某学段某学科的课时使用。覆盖小学、初中、高中各学段的语文、数学、语言、科学、人文、技术、艺术、体育与劳动教育。
 ---
 
 # K-12 core-literacy classroom design

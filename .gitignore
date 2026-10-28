@@ -99,3 +99,8 @@ e2e/__screenshots-619/
 
 # Temporary render-service sources extracted by the mixed-pool regression test
 render-service/.owner-bound-parent-*/
+
+# Local deployment staging: holds a real .env with provider keys and a
+# multi-hundred-MB release tarball. Never commit it.
+/deploy/
+/build-docker.log

@@ -1,7 +1,7 @@
 ---
 name: pro-editing
 title: "专业编辑"
-description: Professional editing of a course that already exists. Use when the user wants to revise, improve, restructure or polish pages the course already has — fix a page, tune a layout, repair a quiz, reword narration, reorder the deck, or raise the quality of the whole course. Not for building a new course from scratch.
+description: 对已存在的课程做专业编辑。当用户想修改、改进、重构或打磨课程已有的页面——修一页、调一个版式、修复测验、润色旁白、重排页面顺序，或提升整门课的质量时使用。不适用于从零新建课程。
 ---
 
 # Professional course editing

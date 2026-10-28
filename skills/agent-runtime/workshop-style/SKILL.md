@@ -1,7 +1,7 @@
 ---
 name: workshop-style
 title: "互动工作坊"
-description: Hands-on workshop — the learner works through the course instead of watching it, with an exercise or a check every couple of pages, short slides that only set up the next task, guiding narration that asks more than it tells, and a closing page where the pieces come together in one small project. Use when the ask is a workshop, a bootcamp session, 「动手」「实操」「练中学」「边做边学」, or a skill the learner is meant to leave holding; also use when the user names this style. Not for a systematic explanatory course (that is `lecture-style`) and not for occupational procedure training with tools and safety gates (that is `vocational`).
+description: 动手工作坊——学习者跟着做而不是看着学，每隔一两页就有一次练习或检查，slide 简短到只为下一个任务铺垫，旁白以提问多于陈述，最后一页把所有零件收进一个小项目。当请求是工作坊、训练营课程、「动手」「实操」「练中学」「边做边学」，或一门学了要带得走技能的课时使用；用户点名这种风格时也使用。不适用于系统讲解型课程（那是 lecture-style），也不适用于有工具和安全关卡的操作流程培训（那是 vocational）。
 ---
 
 # Workshop design

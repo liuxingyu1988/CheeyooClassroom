@@ -1,7 +1,7 @@
 ---
 name: deep-research
 title: "深度调研"
-description: Courses whose content rests on current, external or real-world facts that must be verified against live sources before being taught — recent events, market or policy data, product and version specifics, scientific developments, named cases. Researches the topic first, keeps a claim-to-source ledger, and grounds the outline and every page in what was actually fetched. Use when the request depends on up-to-date or externally checkable facts; not for timeless textbook topics that stand on established knowledge alone.
+description: 深度调研课程。课程内容依赖当下的、外部的或现实世界的事实，讲授前必须对照实时信源核实——近期事件、市场或政策数据、产品与版本细节、科学发展、具名案例。先调研主题，维护一份论点—信源台账，并让大纲与每一页都落在实际抓取到的内容上。当请求依赖最新或可对外核实的事实时使用；不适用于仅凭公认知识即可成立的、不随时间变化的教材主题。
 ---
 
 # Deep Research course design

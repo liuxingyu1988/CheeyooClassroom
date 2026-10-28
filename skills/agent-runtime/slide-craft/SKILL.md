@@ -1,7 +1,7 @@
 ---
 name: slide-craft
 title: "页面设计"
-description: The design law of a slide page — canvas geometry, the text height table, the type scale, contrast pairs, spacing rhythm, and which element type carries which content. Load it when patching slide elements one at a time, when a fix is about colour or contrast, when text has to grow or shrink inside a box, when a page feels crowded or empty, or when replacement content needs real rich-text structure. It is the standard `page-clone` and `pro-editing` edit against, not a procedure of its own — those two decide which pages to touch and in what order, this one decides what a good page looks like when you put it back.
+description: 幻灯片页面的设计法则——画布几何、文字高度表、字号层级、对比配色、间距节奏，以及哪种元素类型承载哪类内容。当逐个修补 slide 元素、修复涉及颜色或对比度的问题、需要在盒子里让文字变大或变小、页面显得拥挤或空旷、或替换内容需要真正的富文本结构时加载。它是 page-clone 与 pro-editing 的编辑基准，本身不是流程——那两个 Skill 决定改哪些页面、按什么顺序改，这个决定改回去之后什么是好页面。
 ---
 
 # The design law of a slide page

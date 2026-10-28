@@ -1,7 +1,7 @@
 ---
 name: slide-dsl
 title: "页面数据结构"
-description: The complete slide DSL manual — the canvas and its background, the ten element types field by field with units, defaults and legal values, where each type keeps its words, which field the renderer actually paints when two disagree, exactly what happens to the HTML you put in `content`, and the structure schema that is now the ONLY thing a write is checked against. Nothing filters your markup and nothing normalises your values, so this manual is the whole of what makes a page render correctly. Load it before patching a field you have not patched before, when a patch comes back rejected, when a patch lands but nothing moves on screen, or when you need to know where a colour, a font, a table cell or a code line really lives. This is a field reference and not a procedure — `page-clone` and `pro-editing` decide which pages to touch, `slide-craft` decides what a good page looks like, and this one says what the JSON means.
+description: 完整的 slide DSL 手册——画布与背景、十种元素类型逐字段说明（含单位、默认值与合法取值）、每种类型把文字存在哪里、两个字段冲突时渲染器实际按哪个画、你放进 content 的 HTML 究竟会怎样，以及如今写入唯一校验依据的结构 schema。没有任何东西会过滤你的标记或归一化你的取值，所以这份手册就是页面正确渲染的全部依据。在修补一个你之前没改过的字段、补丁被拒绝、补丁写进去了但屏幕上没变化，或你需要知道某种颜色、字体、表格单元格、代码行究竟存在哪里时加载。它是字段参考而非流程——page-clone 与 pro-editing 决定改哪些页面，slide-craft 决定什么是好页面，这份说明 JSON 的含义。
 ---
 
 # The slide DSL

@@ -1,7 +1,7 @@
 ---
 name: stage-design
 title: "课堂设计"
-description: The baseline method for building ONE stage — a single classroom — with this runtime. Covers how the plan is settled in conversation, the order the generation tools are called in, how the classroom roster is written, when narration has to be re-synthesized, and what must be true before a stage is called done. Load this before generating or rebuilding any stage from scratch, whatever its subject; it is the floor the topic skills build on, not an alternative to them.
+description: 用本运行时构建单节课堂（一节 stage）的基线方法。涵盖计划如何在对话中敲定、生成工具的调用顺序、课堂 roster 如何写入、旁白何时必须重新合成，以及一节课堂被判定完成之前必须满足什么。无论什么主题，在从零生成或重建任何一节课堂之前先加载它；它是各主题 Skill 站在其上的地板，而不是它们的替代品。
 ---
 
 # Building one stage

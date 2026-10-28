@@ -1,7 +1,7 @@
 ---
 name: understanding-by-design
 title: "理解本位设计（UbD）"
-description: "Use Understanding by Design (UbD) to plan one OpenMAIC classroom or a course series around transferable conceptual understanding. Use when the user wants backward design, enduring understandings, essential questions, GRASPS performance evidence, WHERETO learning experiences, or a concept-centered lesson rather than a list of facts. Do not use for visual style cloning, teacher-style imitation, or direct PPT import."
+description: 用理解本位设计（UbD）围绕可迁移的概念性理解，规划一节 启云 课堂或一组课程系列。当用户需要逆向设计、持久理解、基本问题、GRASPS 表现性证据、WHERETO 学习经历，或希望围绕概念而非事实清单来设计课时时使用。不用于视觉风格复刻、教师风格模仿或 PPT 直接导入。
 ---
 
 # 理解本位设计（UbD）

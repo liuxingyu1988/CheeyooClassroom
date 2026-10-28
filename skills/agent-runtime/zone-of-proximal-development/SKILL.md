@@ -1,12 +1,12 @@
 ---
 name: zone-of-proximal-development
-description: "Design a coherent assessment-and-practice lesson using zone-of-proximal-development principles: independent diagnosis, targeted review, supported practice, fresh independent checks, and an evidence-based next step. Use for 习题课（最近发展区）, 最近发展区, 测验习题课, diagnostic review lessons, or guided-to-independent practice. Can also run one practice cycle in chat; do not turn a request for a single exercise or theory explanation into a full lesson."
+description: 用“Zone of Proximal Development（ZPD）”原则设计一节结构完整的讲评—练习课：独立诊断、针对性复习、有支架的练习、全新任务的独立检测，以及基于证据的下一步安排。用于习题课、最近发展区、测验习题课、诊断式复习课，或从扶到放的练习。也可以在对话里跑一轮练习循环；但不要把用户只要一道题或一段理论解释的请求扩成一整节课。
 metadata:
-  title: "习题课（最近发展区）"
+  title: "习题课"
   version: "0.2.0-experimental"
 ---
 
-# 习题课（最近发展区）
+# 习题课（ZPD）
 
 把已有学习内容组织成一节测验习题课，而不只生成题目：用独立尝试找到本次需处理的困难，以针对性讲评和暂时支持帮助学习者继续行动，再用新任务复核，留下有依据的后续练习安排。教师或更有经验的同伴提供支持，让学习者逐步承担关键判断与操作。
 

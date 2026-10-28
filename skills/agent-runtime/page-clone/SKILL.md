@@ -1,7 +1,7 @@
 ---
 name: page-clone
 title: "页面克隆"
-description: Building one page that looks like a page the course already has — copy the model page with `duplicate_scene`, then rewrite the copy's words with one `patch_stage` op per content slot. Use when a new page has to inherit an existing page's design, whether the model page came from an imported deck or the course wrote it earlier. Not for revising a page that is already the page you want (that is `pro-editing`), and not for the course-level work of cataloguing layouts and assigning one per outline entry (that is `style-clone`).
+description: 造出一页与课程中已有页面观感一致的页面——用 duplicate_scene 复制样板页，再用每个内容位一次 patch_stage op 重写副本的文案。当新页面必须继承某个已有页面的设计时使用，无论样板页来自导入的课件还是课程早前自己生成的。不适用于修改一个"已经是目标"的页面（那是 pro-editing），也不适用于课程层面的版式盘点与逐条目指派（那是 style-clone）。
 ---
 
 # Cloning one page's design

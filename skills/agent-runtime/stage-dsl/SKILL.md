@@ -1,7 +1,7 @@
 ---
 name: stage-dsl
 title: "课堂文档结构"
-description: The map for reading and editing an OpenMAIC stage document with read_stage, patch_stage, and grep_stage. Load it before patching a structure you have not patched before, when patch_stage rejects an operation, or whenever the path from a stage, outline, scene, content object, or action to the field you need is uncertain. It routes to field-level references for quizzes, interactive widgets, actions, and PBL projects; the installed slide-dsl skill remains the complete slide canvas manual.
+description: 用 read_stage、patch_stage、grep_stage 阅读和编辑 启云 课堂文档的地图。在修补一个你之前没改过的结构、patch_stage 拒绝某个操作，或从 stage、outline、scene、content 对象、action 到你需要的字段的路径不确定时加载。它会把内容路由到测验、交互 widget、action 和 PBL 项目的字段级参考；已安装的 slide-dsl Skill 仍然是完整的 slide 画布手册。
 ---
 
 # The stage document map

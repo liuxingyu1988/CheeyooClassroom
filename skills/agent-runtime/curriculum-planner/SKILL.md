@@ -1,7 +1,7 @@
 ---
 name: curriculum-planner
 title: "系列课规划"
-description: Multi-stage series — a request for several classrooms that belong together, like 「7 天学 Python」, a four-week onboarding track, a semester unit split across lessons, or "turn this book into a lesson per chapter". Clarifies the series brief, gets the user's explicit sign-off on the full lesson list before spending anything, then builds the stages one at a time into a shared folder. Use when the ask is a sequence of classrooms; not for a single stage, however large.
+description: 多阶段系列课——用户要求若干节彼此配套的课堂，例如「7 天学 Python」、为期四周的入职培训系列、跨多节课的学期单元，或「把这本书按章节做成每章一课」。先澄清系列的整体需求，在投入成本之前获得用户对完整课表的明确认可，再把各阶段逐节建进同一个文件夹。当请求是"一串课堂"时使用；不适用于单节课堂，无论它内容多庞大。
 ---
 
 # Planning and building a stage series

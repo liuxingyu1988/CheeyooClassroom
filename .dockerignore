@@ -1,6 +1,13 @@
 # dependencies
-node_modules
-.pnpm-store
+# Depth-aware: a bare `node_modules` matches only the repository root, so
+# `COPY . .` in the builder stage used to copy the host's
+# packages/*/node_modules over the ones the deps stage had just installed.
+# Those host entries are absolute Windows symlinks into the host's .pnpm
+# store, so they are dangling inside the container and the package builds
+# fail with "Cannot find module .../node_modules/rollup/dist/bin/rollup".
+# CI never hit this because a fresh clone has no node_modules to copy.
+**/node_modules
+**/.pnpm-store
 
 # build output
 .next

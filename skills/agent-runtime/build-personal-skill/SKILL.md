@@ -1,6 +1,6 @@
 ---
 name: build-personal-skill
-description: Evidence-based creation of a reusable personal course-making Skill from the user's own classroom and chat history. Use when the user asks to summarize, analyze, or learn from their past course-making records/history and create a personal, exclusive, or reusable Skill, such as “总结我的做课记录，给我做个专属 Skill” or “从我过去的课程和对话里提炼一个个人技能”.
+description: 基于用户自己的课堂与对话历史，有据可依地创建一个可复用的个人课程制作 Skill。当用户要求总结、分析或学习自己过去的课程制作记录，并据此创建个人专属或可复用的 Skill 时使用，例如「总结我的课程制作记录，给我做个专属 Skill」「从我过去的课程和对话里提炼一个个人技能」。
 metadata:
   title: "创建专属 Skill"
 ---
