@@ -43,11 +43,19 @@ import {
 } from './curriculum-tools';
 import {
   buildFetchUrlTool,
+  resolveWebFetchCapability,
   fetchPromptBlock,
   untrustedContentPolicyPromptBlock,
 } from './fetch-url';
 import { assembleRunnerTools, buildRunnerCoursePrompt } from './runner-contract';
 import { buildMaterialTools, MATERIAL_TOOL_NAMES } from './material-tools';
+import { defaultLocale, supportedLocaleOf, type Locale } from '@/lib/i18n/types';
+import { startExtractionWatcher, type ExtractionWatcher } from './extraction-watcher';
+import {
+  buildMaterialLibraryTools,
+  MATERIAL_LIBRARY_TOOL_NAMES,
+  type MaterialLibraryChange,
+} from './material-library-tools';
 import { buildRosterTools, ROSTER_TOOL_NAMES, ROSTER_TOOLS_PROMPT } from './roster-tools';
 import {
   buildVoiceCloneTools,
@@ -64,7 +72,8 @@ import {
   preloadUserMessage,
   type SkillPreload,
 } from './skill-preload';
-import { listSessionMaterials, sessionMaterialsPromptBlock } from './session-materials';
+import { listSessionScopeMaterials } from './material-resolver';
+import { materialsPromptBlock } from './material-prompt';
 import {
   availableSkillsPromptBlock,
   createNativeSkillReadTool,
@@ -122,8 +131,8 @@ export const MINIMAL_AGENT_TOOL_NAMES = new Set(['ask_user']);
  * capability block that is actually registered — the web-search block only
  * when a web-search backend is configured, the curriculum block always, the
  * skill discovery block when skills are installed, the fetch_url guidance
- * and untrusted-content policy always (fetch_url is always registered), and
- * the session-materials block only when the session has materials.
+ * when fetching is enabled, and untrusted-content policy always, and
+ * the materials block always — static guidance, independent of the material set.
  */
 function isLeaseLostError(error: unknown): boolean {
   let current = error;
@@ -708,6 +717,25 @@ export function durableUserMessageSeq(message: AgentMessage): number | null {
 }
 
 /**
+ * The interface language in effect once the user message `through` has been
+ * consumed (#1880): the latest message up to it that names a supported
+ * locale, else the session's own (for a first run with no message event at
+ * all), else the project default. Messages after `through` never count, so a
+ * queued message cannot change the words of the turn before it.
+ */
+export function localeThrough(
+  messages: ReadonlyMap<number, Locale>,
+  through: number,
+  sessionLocale: unknown,
+): Locale {
+  let latest: { seq: number; locale: Locale } | null = null;
+  for (const [seq, locale] of messages) {
+    if (seq <= through && (!latest || seq > latest.seq)) latest = { seq, locale };
+  }
+  return latest?.locale ?? supportedLocaleOf(sessionLocale) ?? defaultLocale;
+}
+
+/**
  * The classrooms a message named, resolved against the owner's own library.
  *
  * The composer stores a SNAPSHOT title on the ref, which is right for the
@@ -856,14 +884,17 @@ export function planRunStart(input: {
   if (input.plan.kind === 'start') {
     // A session created with opening context requeues its opening message as a
     // durable `user_message` before the runner claims; `pending[0]` is that
-    // message. Its classrooms must reach the model, or the run would not know
-    // which classroom the user named. Nothing else changes: the raw prompt is
-    // still the base, and materials are already listed in the system block.
-    // Messages that are not the opening one are delivered as follow-ups.
-    if (opening?.courseRefs?.length || opening?.elementRefs?.length) {
+    // message. Classrooms, element refs, and attachments on it must reach the
+    // model. The raw prompt stays the base text. The attachment note is the
+    // same one follow-up messages carry, and it stays out of the system prompt.
+    // Messages that are not the opening one are follow-ups.
+    if (
+      opening &&
+      (opening.courseRefs?.length || opening.elementRefs?.length || opening.materials?.length)
+    ) {
       return {
         kind: 'prompt',
-        text: composeFollowUpText({ ...opening, text: input.prompt, materials: undefined }),
+        text: composeFollowUpText({ ...opening, text: input.prompt }),
         ...(opening.durableMessageSeq ? { durableMessageSeq: opening.durableMessageSeq } : {}),
       };
     }
@@ -976,6 +1007,7 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
   let criticalWriteError: unknown;
   let entryWritesHealthy = true;
   let terminalFrameEmitted = false;
+  let extractionWatcher: ExtractionWatcher | undefined;
 
   const markLeaseLost = () => {
     leaseLost = true;
@@ -1059,6 +1091,9 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         abort.abort();
       }
       return;
+    }
+    if (type === LIFECYCLE.sessionEnd || type === LIFECYCLE.sessionInterrupted) {
+      extractionWatcher?.stop();
     }
     runEventEmitted = true;
     if (type === LIFECYCLE.sessionEnd) terminalFrameEmitted = true;
@@ -1272,6 +1307,14 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
 
     const loggedMessages = await listAgentUserMessages(store, id);
     let deliveredThrough = meta.deliveredUserMessageSeq ?? 0;
+    // Each durable message's interface language (#1880), filled as the run
+    // reads messages; `localeThrough` decides which one is in effect.
+    const messageLocales = new Map<number, Locale>();
+    const rememberLocale = (message: { seq: number; locale?: unknown }) => {
+      const locale = supportedLocaleOf(message.locale);
+      if (locale) messageLocales.set(message.seq, locale);
+    };
+    loggedMessages.forEach(rememberLocale);
     // Resolve the classrooms each pending message named against the owner's
     // library BEFORE the prompt is built: the run must be told the course's
     // current name (reference semantics), and the same resolved refs feed the
@@ -1352,7 +1395,9 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
     // unconfigured deployment gets no tool, so the model never sees a dead one.
     // Every result URL is registered with this session's durable URL trust
     // gate before the tool result is returned (reference semantics).
-    const search = await resolveWebSearchCapability(await backgroundWorkspaceId(meta.ownerId));
+    const workspaceId = await backgroundWorkspaceId(meta.ownerId);
+    const search = await resolveWebSearchCapability(workspaceId);
+    const fetchConnection = await resolveWebFetchCapability(workspaceId);
     const webSearchTools = search
       ? [
           buildWebSearchTool(search, (urls) =>
@@ -1418,6 +1463,23 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
       idleAttach,
       firstRunSeq: recovery.firstRunSeq,
     });
+    // The language of the message this run answers first: the one it starts
+    // from (not the newest queued), or -- a first prompt, or a resume -- what
+    // was in effect at the last consumed message. A user frame in the retained
+    // transcript was consumed even when the delivered cursor, a separate
+    // write, did not land before the worker stopped. It moves only when a
+    // steered message is actually consumed (below).
+    const consumedInTranscript = plannedMessages.reduce(
+      (latest, message) => Math.max(latest, durableUserMessageSeq(message) ?? 0),
+      0,
+    );
+    let runLocale = localeThrough(
+      messageLocales,
+      plannedStart.kind === 'prompt' && plannedStart.durableMessageSeq !== undefined
+        ? plannedStart.durableMessageSeq
+        : Math.max(deliveredThrough, consumedInTranscript),
+      meta.locale,
+    );
     // The owner probe is the tool layer's legality boundary: every course call
     // declares its stageId, and stageAccess resolves that stage against the
     // session owner (owned / foreign / missing / tombstoned) before the tool
@@ -1437,6 +1499,7 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
     // voice registration all use its provider.
     const ttsConnection = await serverMediaConnection('tts', meta.ownerId);
     const dslTools = buildDslCourseToolset({
+      locale: () => runLocale,
       store: ownerScopedStore,
       backgroundStore: mediaJobStore,
       // The video slot for this run's owner; generate_video exists only when
@@ -1469,13 +1532,41 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
       stageAccess,
       ownerId: meta.ownerId,
     });
-    // Session-scoped material tools and the materials prompt block are wired
-    // from durable session identity on every start and resume (reference
-    // semantics: the material tools are always registered alongside the
-    // capability-gated web_search). The listing only feeds the prompt block;
-    // the tools read through the same session-scoped store on each call.
-    const materials = await listSessionMaterials(id);
-    const materialTools = buildMaterialTools({ sessionId: id });
+    // Session-scoped material tools are wired from durable session identity
+    // on every start and resume (the tools are always registered alongside
+    // the capability-gated web_search). The resolved set is passed into the
+    // materials block, which must not render it: names, ids and extraction
+    // status would change the system prompt and drop the prefix cache.
+    // The tools read the store on each call.
+    const materials = await listSessionScopeMaterials(id);
+    // Material-library changes reach the client as the durable
+    // `library_changed` with `library: 'materials'`; its material lists
+    // refetch, and the course tree does not.
+    const onMaterialLibraryChanged = (change: MaterialLibraryChange) =>
+      emit(LIFECYCLE.libraryChanged, change);
+    // Sources whose extraction this run cares about are watched while it
+    // lasts, so a settlement reaches the client without another wait.
+    extractionWatcher = startExtractionWatcher({
+      onSettled: (materialIds) =>
+        onMaterialLibraryChanged({
+          library: 'materials',
+          change: 'extraction_settled',
+          materialIds,
+        }),
+    });
+    const materialTools = buildMaterialTools({
+      sessionId: id,
+      onLibraryChanged: onMaterialLibraryChanged,
+      extractionWatcher,
+      locale: () => runLocale,
+    });
+    // Organizing the knowledge base: the run's owner, never a parameter.
+    const materialLibraryTools = buildMaterialLibraryTools({
+      sessionId: id,
+      ownerId: meta.ownerId,
+      onLibraryChanged: onMaterialLibraryChanged,
+      locale: () => runLocale,
+    });
     // Session-scoped registered voices: register_voice appends here, and
     // list_voices / set_roster (roster-tools) read the same array, so a cloned
     // voice stays bindable within the session that registered it (in-session
@@ -1531,16 +1622,22 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         // The native `read` tool is restricted to installed skill resources; it is
         // present exactly when skills exist. Discovery and invocation stay pi-native.
         skillReadTool ? [skillReadTool] : [],
-        // fetch_url is registered unconditionally (reference semantics: the
-        // material tools are always registered alongside the capability-gated
-        // web_search). The URL trust gate — not registration — is what keeps a
-        // fetch inside the session's observed origins, and it is the tool's core
-        // security property.
-        [buildFetchUrlTool({ sessionId: id, ownerId: meta.ownerId })],
+        ...(fetchConnection
+          ? [
+              [
+                buildFetchUrlTool({
+                  sessionId: id,
+                  ownerId: meta.ownerId,
+                  connection: fetchConnection,
+                }),
+              ],
+            ]
+          : []),
         dslTools,
         curriculumTools,
         scenePreviewTools,
         materialTools,
+        materialLibraryTools,
         rosterTools,
         voiceCloneTools,
         personalHistoryTools,
@@ -1555,9 +1652,11 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         availableSkills: availableSkillsPromptBlock(installedSkills),
         curriculum: CURRICULUM_TOOLS_PROMPT,
         ...(search ? { search: searchPromptBlock() } : {}),
-        fetch: fetchPromptBlock(),
-        untrustedContent: untrustedContentPolicyPromptBlock(),
-        ...(materials.length ? { materials: sessionMaterialsPromptBlock(materials) } : {}),
+        ...(fetchConnection ? { fetch: fetchPromptBlock() } : {}),
+        untrustedContent: untrustedContentPolicyPromptBlock(!!fetchConnection),
+        // Always: a conversation with nothing attached can still use the
+        // knowledge base.
+        materials: materialsPromptBlock(materials),
         roster: ROSTER_TOOLS_PROMPT,
         voice: voiceCloneToolsPrompt(voiceRegistrationEnabled),
       }),
@@ -1570,6 +1669,8 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         ...SKILL_EDIT_TOOL_NAMES,
         ...(skillReadTool ? ['read'] : []),
         ...MATERIAL_TOOL_NAMES,
+        ...MATERIAL_LIBRARY_TOOL_NAMES,
+        ...(fetchConnection ? ['fetch_url'] : []),
         ...dslTools.map((tool) => tool.name),
         ...scenePreviewTools.map((tool) => tool.name),
         ...CURRICULUM_ALLOWLIST,
@@ -1605,7 +1706,14 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         if (event.message.role === 'assistant') {
           trackToolCallMessage(inFlightToolCalls, event.message);
         }
-        if (event.message.role === 'user') userFramesSeen += 1;
+        if (event.message.role === 'user') {
+          userFramesSeen += 1;
+          // A durable message enters the transcript here -- the start prompt
+          // or a steered follow-up -- and from now on the run answers it, in
+          // its language.
+          const consumed = durableUserMessageSeq(event.message);
+          if (consumed !== null) runLocale = localeThrough(messageLocales, consumed, meta.locale);
+        }
         enqueue(async () => {
           await entrySession!.appendMessage(event.message);
           const deliveredSeq = durableUserMessageSeq(event.message);
@@ -1665,6 +1773,8 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
       let delivered = 0;
       for (const message of all) {
         if (message.seq <= deliveredThrough || acceptedMessageSeqs.has(message.seq)) continue;
+        // Recorded now, in effect only once pi consumes the message.
+        rememberLocale(message);
         const followUp = toFollowUp(message);
         // Same resolution as the start path: a steered message names its
         // classrooms on the durable event, and the model must be told the
@@ -1948,6 +2058,7 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
   } finally {
     clearInterval(heartbeatTimer);
     clearInterval(cancelPoll);
+    extractionWatcher?.stop();
     unsubscribeWakeup();
     drainOnWake = null;
     await flushAll(false);
@@ -1998,7 +2109,7 @@ export function startAgentRunner(): AgentRunnerHandle {
   log.info(
     'agent runner toolset: ask_user always; web_search when a web-search backend is configured; ' +
       'create_skill/read_skill/patch_skill and the skill-scoped read when skills are installed; ' +
-      'fetch_url always (URL trust gate enforced per call); ' +
+      'fetch_url when enabled (URL trust gate enforced per call); ' +
       'read_stage/patch_stage/grep_stage and create_stage/read_stage_outline always (owner-scoped store)',
   );
 

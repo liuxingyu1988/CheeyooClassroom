@@ -78,6 +78,7 @@ next-env.d.ts
 # docs
 /docs
 # Eval results
+eval/whiteboard-shapes/results/
 eval/whiteboard-layout/results/
 eval/outline-language/results/
 eval/orchestration/results/
@@ -99,6 +100,9 @@ e2e/__screenshots-619/
 
 # Temporary render-service sources extracted by the mixed-pool regression test
 render-service/.owner-bound-parent-*/
+
+# Generated interactive libraries
+/public/vendor/interactive
 
 # Local deployment staging: holds a real .env with provider keys and a
 # multi-hundred-MB release tarball. Never commit it.
