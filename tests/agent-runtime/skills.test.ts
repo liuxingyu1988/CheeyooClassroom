@@ -355,7 +355,7 @@ describe('shipped skill constraints', () => {
     });
     expect(factCheck?.description).toContain('事实性错误');
     expect(factCheck?.description).toContain('deep-research');
-    expect(factCheck?.description).toContain('while creating or reviewing');
+    expect(factCheck?.description).toContain('在创建或复核课程');
     expect(availableSkillsPromptBlock(all)).toContain('<name>fact-check</name>');
 
     for (const tool of [
@@ -488,9 +488,9 @@ describe('shipped course-design skills', () => {
       source: 'builtin',
     });
     expect(courseDsl?.description.length).toBeLessThanOrEqual(1024);
-    expect(courseDsl?.description).toContain('before patching a structure');
-    expect(courseDsl?.description).toContain('rejects');
-    expect(courseDsl?.description).toContain('path');
+    expect(courseDsl?.description).toContain('在修补一个你之前没改过的结构');
+    expect(courseDsl?.description).toContain('拒绝某个操作');
+    expect(courseDsl?.description).toContain('路径不确定');
     expect(courseDsl?.content).toContain('references/quiz.md');
     expect(courseDsl?.content).toContain('references/widget.md');
     expect(courseDsl?.content).toContain('references/actions.md');
@@ -647,7 +647,7 @@ describe('shipped course-design skills', () => {
     const all = await listSkills();
     const planner = all.find((s) => s.id === 'curriculum-planner');
     expect(planner).toBeTruthy();
-    expect(planner!.description.toLowerCase()).toContain('series');
+    expect(planner!.description).toContain('系列课');
     expect(availableSkillsPromptBlock(all)).toContain('<name>curriculum-planner</name>');
     for (const tool of [
       'ask_user',
@@ -669,7 +669,7 @@ describe('shipped course-design skills', () => {
     const personal = all.find((skill) => skill.id === 'build-personal-skill');
     expect(personal).toBeTruthy();
     expect(personal!.title).toBe('创建专属 Skill');
-    expect(personal!.description).toContain('总结我的做课记录');
+    expect(personal!.description).toContain('总结我的课程制作记录');
     expect(availableSkillsPromptBlock(all)).toContain('<name>build-personal-skill</name>');
     for (const tool of [
       'search_classrooms',
@@ -783,9 +783,9 @@ describe('pedagogy style skills', () => {
     }
     const lecture = (await findSkill('lecture-style'))!.description;
     const workshop = (await findSkill('workshop-style'))!.description;
-    expect(lecture.toLowerCase()).toContain('masterclass');
+    expect(lecture).toContain('大师讲授');
     expect(lecture).toContain('大师课');
-    expect(workshop.toLowerCase()).toContain('workshop');
+    expect(workshop).toContain('动手工作坊');
     expect(workshop).toContain('动手');
     expect(lecture).toContain('workshop-style');
     expect(workshop).toContain('lecture-style');
@@ -1026,7 +1026,7 @@ describe('slide-dsl', () => {
     expect(dsl).toBeTruthy();
     expect(availableSkillsPromptBlock(all)).toContain('<name>slide-dsl</name>');
     const description = flat(dsl!.description);
-    expect(description).toContain('field reference and not a procedure');
+    expect(description).toContain('它是字段参考而非流程');
     for (const neighbour of ['page-clone', 'pro-editing', 'slide-craft']) {
       expect(description, neighbour).toContain(neighbour);
     }
@@ -1231,9 +1231,9 @@ describe('slide-craft', () => {
     expect(availableSkillsPromptBlock(all)).toContain('<name>slide-craft</name>');
     expect(craft!.description).toContain('page-clone');
     expect(craft!.description).toContain('pro-editing');
-    expect(flat(craft!.description)).toContain('not a procedure of its own');
+    expect(flat(craft!.description)).toContain('本身不是流程');
     const description = craft!.description.toLowerCase();
-    for (const trigger of ['contrast', 'patching slide elements', 'crowded']) {
+    for (const trigger of ['对比', '逐个修补 slide 元素', '拥挤']) {
       expect(description, trigger).toContain(trigger);
     }
   });
