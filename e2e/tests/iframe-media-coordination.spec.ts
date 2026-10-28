@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import { buildSync } from 'esbuild';
 import ts from 'typescript';
 
+import { STANDALONE_MEDIA_TABLE_ELEMENT_ID } from '../../lib/export/standalone-html/contract';
+
 // Exercise the real iframe component and playback callbacks, isolating unrelated
 // classroom UI, persistence and providers (as in interactive-observation-http).
 function sourceFunction(path: string, name: string): string {
@@ -147,7 +149,7 @@ for (const surface of ['app', 'standalone'] as const) {
       await page.route('http://localhost/media-test', (route) =>
         route.fulfill({
           contentType: 'text/html',
-          body: `<!doctype html><html><head><style>.relative{position:relative;width:1280px;height:720px}.absolute{position:absolute}.inset-0{inset:100px 0 0}</style></head><body><script id="openmaic-media" type="application/json">${JSON.stringify({ narration: { src: audio } })}</script><div id="app"></div></body></html>`,
+          body: `<!doctype html><html><head><style>.relative{position:relative;width:1280px;height:720px}.absolute{position:absolute}.inset-0{inset:100px 0 0}</style></head><body><script id="${STANDALONE_MEDIA_TABLE_ELEMENT_ID}" type="application/json">${JSON.stringify({ narration: { src: audio } })}</script><div id="app"></div></body></html>`,
         }),
       );
       await page.goto('http://localhost/media-test');
